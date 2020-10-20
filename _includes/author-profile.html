@@ -147,6 +147,12 @@
       {% if author.youtube %}
         <li><a href="https://www.youtube.com/user/{{ author.youtube }}"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
       {% endif %}
+      {% if author.wikipedia %}
+        <li><a href="https://en.wikipedia.org/wiki/User:{{ author.wikipedia }}"><i class="fab fa-fw fa-wikipedia-w" aria-hidden="true"></i> Wikipedia</a></li>
+{% endif %}
+      {% if author.goodreads %}
+        <li><a href="https://www.goodreads.com/{{ author.goodreads }}"><i class="fab fa-fw fa-goodreads" aria-hidden="true"></i> Goodreads</a></li>
+      {% endif %}
     </ul>
   </div>
 </div>

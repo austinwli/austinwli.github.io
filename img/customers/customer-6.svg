@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="84.87" height="86.386" viewBox="0 0 84.87 86.386">
+  <defs>
+    <linearGradient id="linear-gradient" x1="-0.424" y1="-0.286" x2="0.935" y2="0.87" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#00d47e"/>
+      <stop offset="0.142" stop-color="#02d484" stop-opacity="0.996"/>
+      <stop offset="0.337" stop-color="#08d696" stop-opacity="0.988"/>
+      <stop offset="0.564" stop-color="#11d8b3" stop-opacity="0.984"/>
+      <stop offset="0.812" stop-color="#1edbdb" stop-opacity="0.976"/>
+      <stop offset="1" stop-color="#2adeff" stop-opacity="0.969"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="-0.477" y1="2.533" x2="0.863" y2="-0.255" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#00bc7e"/>
+      <stop offset="0.218" stop-color="#00bc7f"/>
+      <stop offset="0.393" stop-color="#01bd82" stop-opacity="0.992"/>
+      <stop offset="0.529" stop-color="#04bf8c" stop-opacity="0.988"/>
+      <stop offset="0.651" stop-color="#0ac49c" stop-opacity="0.984"/>
+      <stop offset="0.765" stop-color="#11cab3" stop-opacity="0.98"/>
+      <stop offset="0.874" stop-color="#1bd2d1" stop-opacity="0.976"/>
+      <stop offset="0.977" stop-color="#27dcf6" stop-opacity="0.973"/>
+      <stop offset="1" stop-color="#2adeff" stop-opacity="0.969"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="1.207" y1="1.344" x2="-0.603" y2="-0.817" gradientUnits="objectBoundingBox">
+      <stop offset="0.005" stop-color="#00bc7e"/>
+      <stop offset="0.143" stop-color="#02be85" stop-opacity="0.996"/>
+      <stop offset="0.351" stop-color="#09c39a" stop-opacity="0.988"/>
+      <stop offset="0.603" stop-color="#14ccbc" stop-opacity="0.98"/>
+      <stop offset="0.887" stop-color="#23d9ea" stop-opacity="0.973"/>
+      <stop offset="1" stop-color="#2adeff" stop-opacity="0.969"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" x1="0.048" y1="-0.483" x2="0.882" y2="1.068" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#90145a"/>
+      <stop offset="0.15" stop-color="#842c6e" stop-opacity="0.996"/>
+      <stop offset="0.468" stop-color="#646aa1" stop-opacity="0.984"/>
+      <stop offset="0.925" stop-color="#33cdf1" stop-opacity="0.973"/>
+      <stop offset="1" stop-color="#2adeff" stop-opacity="0.969"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-5" x1="-0.3" y1="-0.605" x2="0.632" y2="0.682" xlink:href="#linear-gradient-4"/>
+    <linearGradient id="linear-gradient-6" x1="-0.178" y1="0.019" x2="1.275" y2="1.512" xlink:href="#linear-gradient-4"/>
+  </defs>
+  <g id="customer-6" transform="translate(-338.72 -57.96)">
+    <path id="Path_27" data-name="Path 27" d="M338.72,92.18" fill="#e5223f"/>
+    <path id="Path_28" data-name="Path 28" d="M413.03,117.79h0a17.78,17.78,0,0,1-17.78-17.78V89.45h0a17.78,17.78,0,0,1,17.78,17.78Z" fill="url(#linear-gradient)"/>
+    <path id="Path_29" data-name="Path 29" d="M423.59,68.51h0a17.78,17.78,0,0,1-17.78,17.78H395.26a17.78,17.78,0,0,1,17.78-17.78Z" fill="url(#linear-gradient-2)"/>
+    <path id="Path_30" data-name="Path 30" d="M374.31,57.96h0a17.78,17.78,0,0,1,17.78,17.78V86.29h0a17.78,17.78,0,0,1-17.78-17.78Z" fill="url(#linear-gradient-3)"/>
+    <path id="Path_31" data-name="Path 31" d="M356.38,117.67c-6.86,3.62-2.38,26.77,14.08,26.67a21.576,21.576,0,0,0,21.53-21.53V89.45h0a17.78,17.78,0,0,0-17.78,17.78V117.7a8.911,8.911,0,0,1-8.91,8.91h0a8.911,8.911,0,0,1-8.91-8.91" fill="url(#linear-gradient-4)"/>
+    <path id="Path_32" data-name="Path 32" d="M365.41,126.61a9,9,0,0,0,8.8-8.8V106.98a17.654,17.654,0,0,1,17.88-17.53h0V99.76C392.1,125.78,365.41,126.61,365.41,126.61Z" fill="url(#linear-gradient-5)"/>
+    <path id="Path_33" data-name="Path 33" d="M369.97,144.12c-14.44-2.15-13.47-26.42-13.47-26.42V81.05a17.78,17.78,0,0,0-17.78-17.78h0v59.6h0a21.621,21.621,0,0,0,21.53,21.47c1.07,0,6.46.02,9.64-.01,0,0,1.14,0,1.51-.02C371.4,144.31,371.03,144.28,369.97,144.12Z" fill="url(#linear-gradient-6)"/>
+  </g>
+</svg>

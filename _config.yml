@@ -89,6 +89,7 @@ author:
   name             : "Austin Li"
   avatar           : "profile-1.jpg"
   bio              : "Physics & CS @ Harvard"
+  pronouns         : # example: "she/her"
   location         : "New York, NY"
   employer         :
   pubmed           : 

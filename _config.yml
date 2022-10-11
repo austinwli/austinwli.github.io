@@ -186,15 +186,21 @@ collections:
     output: false
     permalink: /:collection/:path/
   projects:
+    output: false
+    permalink: /:collection/:path/
+  projects:
     output: true
     permalink: /:collection/:path/
   publications:
     output: false
+    output: false
     permalink: /:collection/:path/
   portfolio:
     output: false
+    output: false
     permalink: /:collection/:path/
   talks:
+    output: false
     output: false
     permalink: /:collection/:path/
 
@@ -233,7 +239,7 @@ defaults:
       path: ""
       type: projects
     values:
-      layout: single
+      layout: double
       author_profile: true
       share: true
       comments: true

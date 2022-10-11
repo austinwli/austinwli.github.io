@@ -1,5 +1,6 @@
 ---
-title: ""
+title: "Quantum Semidefinite Programming with the Hadamard
+Test and Approximate Amplitude Constraints"
 collection: research
 permalink: /research/htaac-qsdp
 type: "Thesis Project"

@@ -1,11 +1,14 @@
 ---
 permalink: /
 <<<<<<< HEAD
+<<<<<<< HEAD
 title: "About"
 excerpt: "About me"
 =======
 title: "academicpages is a ready-to-fork GitHub Pages template for academic personal websites"
->>>>>>> 46ffad6 (#1902 RM excerpt in pages)
+=======
+title: "About me"
+excerpt: "About me"
 author_profile: true
 redirect_from: 
   - /about/

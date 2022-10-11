@@ -17,7 +17,7 @@ Hello! I am currently a senior at [Harvard](https://www.harvard.edu/) studying P
 - Social impact technology and startups
 
 ## Currently working on
-1. Applying [HTAAC-QSDP](https://arxiv.org/pdf/2206.14999.pdf) to approximations to NP-hard problems. Working on MAX-BISECTION and generalizing method to Karp's 21 problems.
+1. Applying [HTAAC-QSDP](https://arxiv.org/pdf/2206.14999.pdf) to find approximation algorithms for NP-hard problems. Working on max bisection and generalizing method to Karp's 21 problems.
 
 2. Applying to graduate schools (hopefully)!
 

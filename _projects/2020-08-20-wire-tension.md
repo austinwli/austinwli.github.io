@@ -1,7 +1,7 @@
 ---
 title: "Digital wire analyzer of mechanical tension, electrical continuity, and isolation"
 collection: projects
-permalink: /projects/wire-tension
+permalink: /projects/2020-08-20-wire-tension
 type: "Research Project"
 venue: "IEEE Transactions on Instrumentation & Measurement"
 date: 2020-08-20

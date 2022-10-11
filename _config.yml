@@ -29,7 +29,7 @@ comments:
   facebook:
     appid                :
     num_posts            : # 5 (default)
-    colorscheme          : # "light" (default), "dark"
+    colorscheme          : "dark"
 staticman:
   allowedFields          : ['name', 'email', 'url', 'message']
   branch                 : "gh-pages" # "master", "gh-pages"
@@ -81,7 +81,7 @@ analytics:
 # Site Author
 author:
   name             : "Austin Li"
-  avatar           : "images/profile.png"
+  avatar           : "profile.png"
   bio              : "Physics & CS @ Harvard"
   location         : "Cambridge, MA"
   employer         :
@@ -101,8 +101,8 @@ author:
   instagram        :
   impactstory      : 
   lastfm           :
-  linkedin         : "https://www.linkedin.com/in/austinwli/"
-  github           : "https://github.com/austinwli"
+  linkedin         : "austinwli"
+  github           : "austinwli"
   orcid            : 
   pinterest        :
   soundcloud       :

@@ -1,7 +1,7 @@
 ---
 title: "DUNE Wire Tension"
 collection: projects
-permalink: /projects/2020-08-20-wire-tension
+permalink: /projects/DUNE-wire-tension
 type: "Research Project"
 venue: "Guenette Group"
 date: 2020-08-20

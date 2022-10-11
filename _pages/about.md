@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-Hello! I am currently a senior at [Harvard](https://www.harvard.edu/) studying Physics and Computer Science. Welcome to my page! Feel free to peruse and reach out if you have any questions about any of my work.
+Hello! I am currently a senior at [Harvard](https://www.harvard.edu/) studying Physics and Computer Science. Welcome to my page!
 
 ## I like thinking about
 - Quantum computing/quantum information

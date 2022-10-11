@@ -23,6 +23,6 @@ Hello! I am currently a senior at [Harvard](https://www.harvard.edu/) studying P
 
 ## Other interests and hobbies
 - Volleyball. I played throughout high school (both beach and indoor) and have made many friends along the way.
-- I'm a huge foodie! Will usually try one new restaurant a week with my friends and/or girlfriend -- see food pics [here](https://www.instagram.com/austins_belly/).
+- I'm a huge foodie! Will usually try one new restaurant a week with my friends and/or girlfriend -- see [my food pics](https://www.instagram.com/austins_belly/).
 - Listening to podcasts and books. Currently obsessed with _People I (Mostly) Admire_ and _Pod Save the World_.
 - Politics and government. Casually interested in constitutional law and how we choose to govern ourselves and others.

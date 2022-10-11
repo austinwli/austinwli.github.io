@@ -4,6 +4,6 @@ Test and Approximate Amplitude Constraints"
 collection: projects
 permalink: /projects/htaac-qsdp
 type: "Thesis Project"
-venue: "Yelin Group"
+venue: ""
 date: 2022-09-12
 ---

@@ -85,7 +85,7 @@ analytics:
 # Site Author
 author:
   name             : "Austin Li"
-  avatar           : "profile.png"
+  avatar           : "images/profile.png"
   bio              : "Physics & CS @ Harvard"
   location         : "Cambridge, MA"
   employer         :

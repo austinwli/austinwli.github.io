@@ -8,13 +8,13 @@ redirect_from:
   - /about.html
 ---
 
-Hello! I am currently a senior at [Harvard](https://www.harvard.edu/) studying Physics and Computer Science. Welcome to my page!
+Hello! I am currently a senior at [Harvard](https://www.harvard.edu/) studying Physics and Computer Science. Welcome to my page! Feel free to peruse and reach out if you have any questions about any of my work.
 
-## I like thinking about
+## Research interests
 - Quantum computing/quantum information
 - Machine learning
-- Social impact technology and startups
 - Computational social choice
+- Social impact technology and startups
 
 ## Currently working on
 1. Applying [HTAAC-QSDP](https://arxiv.org/pdf/2206.14999.pdf) to approximations to NP-hard problems. Working on MAX-BISECTION and generalizing method to Karp's 21 problems.

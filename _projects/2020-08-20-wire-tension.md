@@ -9,7 +9,7 @@ date: 2020-08-20
 
 Summer research project with the Guenette Group under the guidance of [Dr. Sebastien Prince](https://lppc.physics.harvard.edu/people/sebastien-prince) and [Professor Roxanne Guenette](https://www.physics.harvard.edu/people/facpages/guenette). The project aimed to tune hyperparameters in a novel wire tension measurement device in order to achieve two objectives: to minimize measurement time and have our extracted frequency within 1% of the true frequency.
 
-## Status
+## Current status
 Publication pending in _IEEE Transactions on Instrumentation & Measurement_.
 
 ## Background and goals

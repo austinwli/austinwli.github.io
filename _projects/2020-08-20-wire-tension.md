@@ -7,7 +7,10 @@ venue: "IEEE Transactions on Instrumentation & Measurement"
 date: 2020-08-20
 ---
 
-Summer research project I conducted in the Guenette Group with the help of [Dr. Sebastien Prince](https://lppc.physics.harvard.edu/people/sebastien-prince) and [Professor Roxanne Guenette](https://www.physics.harvard.edu/people/facpages/guenette). The project aimed to tune hyperparameters in a novel wire tension measurement device in order to achieve two objectives: to minimize measurement time and have our extracted frequency within 1% of the true frequency.
+Summer research project with the Guenette Group under the guidance of [Dr. Sebastien Prince](https://lppc.physics.harvard.edu/people/sebastien-prince) and [Professor Roxanne Guenette](https://www.physics.harvard.edu/people/facpages/guenette). The project aimed to tune hyperparameters in a novel wire tension measurement device in order to achieve two objectives: to minimize measurement time and have our extracted frequency within 1% of the true frequency.
+
+## Status
+Publication pending in _IEEE Transactions on Instrumentation & Measurement_.
 
 ## Background and goals
 The Deep Underground Neutrino Experiment (DUNE) is a neutrino experiment under construction, with a near detector at Fermilab and a far detector at the Sanford Underground Research Facility that will observe neutrinos produced at Fermilab. These detectors use liquid argon time projection chambers (LArTPCs), which require large arrays of wires that carry electrical signals — created when electrons are displaced in the liquid argon — to reconstruct neutrino trajectories.

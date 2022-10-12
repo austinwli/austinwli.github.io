@@ -1,6 +1,6 @@
 ---
-title: "Quantum Semidefinite Programming with the Hadamard
-Test and Approximate Amplitude Constraints"
+title: "Quantum semidefinite programming with the Hadamard
+test and approximate amplitude constraints"
 collection: projects
 permalink: /projects/htaac-qsdp
 type: "Thesis Project"

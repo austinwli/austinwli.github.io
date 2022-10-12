@@ -8,6 +8,6 @@ venue: "Department of Physics, Harvard University"
 date: 2022-09-12
 ---
 
-Senior thesis under the guidance of [Dr. Taylor Patti](https://research.nvidia.com/person/taylor-patti) and (Professor Susanne Yelin)[https://www.physics.harvard.edu/people/facpages/yelin].
+Senior thesis under the guidance of [Dr. Taylor Patti](https://research.nvidia.com/person/taylor-patti) and [Professor Susanne Yelin](https://www.physics.harvard.edu/people/facpages/yelin).
 
 ## Background and goals

@@ -19,7 +19,7 @@ Hello! I am currently a senior at [Harvard](https://www.harvard.edu/) studying P
 ## Currently working on
 1. Applying [HTAAC-QSDP](https://arxiv.org/pdf/2206.14999.pdf) to find approximation algorithms for NP-hard problems. Working on max bisection and generalizing method to Karp's 21 problems.
 
-2. Applying to graduate schools (hopefully)!
+2. Thinking about graduate schools!
 
 ## Other interests and hobbies
 - Volleyball. I played throughout high school (both beach and indoor) and have made many friends along the way.

@@ -14,7 +14,56 @@ name                     : &name "Austin Li"
 description              : &description "personal description"
 url                      : https://austinwli.github.io
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
-repository               : "austinwli/austinwli.github.io"
+repository               : "academicpages/academicpages.github.io"
+
+# Site Author
+author:
+  name             : "Your Sidebar Name"
+  avatar           : "profile.png"
+  bio              : "Your biography for the left-hand sidebar"
+  pronouns         : # example: "she/her"
+  location         : "Location"
+  orcid            : "http://orcid.org/yourorcidurl"
+  employer         :
+  email            :  
+  uri              :
+
+  # Manuscript repositories
+  googlescholar    : "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"         # Update with the correct link to your profile
+  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
+
+  # Social media
+  bitbucket        :
+  codepen          :
+  dribbble         :
+  facebook         :
+  flickr           :
+  foursquare       :
+  github           : "academicpages"
+  goodreads        :
+  google_plus      :
+  keybase          :
+  impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
+  instagram        :
+  lastfm           :
+  linkedin         :
+  mastodon         : "mastodonhandle"
+  medium           : #"add medium profile url here"
+  pinterest        :
+  soundcloud       :
+  stackoverflow    : # http://stackoverflow.com/users/123456/username
+  steam            :
+  tumblr           :
+  twitter          : "replacethistwitterhandle"
+  vine             :
+  weibo            :
+  wikipedia        :
+  xing             :
+  youtube          :
+
+
+# Site Settings
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 breadcrumbs              : false # true, false (default)
 words_per_minute         : 160
@@ -80,47 +129,6 @@ analytics:
   provider               :  "false" # false (default), "google", "google-universal", "google-analytics-4", "custom"
   google:
     tracking_id          :
-
-
-# Site Author
-author:
-  name             : "Austin Li"
-  avatar           : "profile-1.jpg"
-  bio              : "Physics & CS @ Harvard"
-  pronouns         : # example: "she/her"
-  location         : "New York, NY"
-  employer         :
-  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
-  googlescholar    : "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"         # Update with the correct link to your profile
-  email            :
-  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
-  uri              :
-  bitbucket        :
-  codepen          :
-  dribbble         :
-  flickr           :
-  facebook         :
-  foursquare       :
-  google_plus      :
-  goodreads        :
-  keybase          :
-  instagram        : 
-  impactstory      : 
-  lastfm           :
-  linkedin         : "austinwli"
-  github           : "austinwli"
-  orcid            : 
-  pinterest        :
-  soundcloud       :
-  stackoverflow    : 
-  steam            :
-  tumblr           :
-  twitter          : 
-  vine             :
-  weibo            :
-  xing             :
-  youtube          :
-  wikipedia        :
 
 
 # Reading Files

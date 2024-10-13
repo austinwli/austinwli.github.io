@@ -67,6 +67,7 @@ facebook:
   app_id                 :
   publisher              :
 og_image                 :  "profile-1.jpg" # Open Graph/Twitter default site image
+og_image                 :  "profile-1.jpg" # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
@@ -85,13 +86,13 @@ analytics:
 # Site Author
 author:
   name             : "Austin Li"
-  avatar           : "profile.png"
-  bio              : "Your biography for the left-hand sidebar"
-  location         : "Cambridge, MA"
+  avatar           : "profile-1.jpg"
+  bio              : "Physics & CS @ Harvard"
+  location         : "New York, NY"
   employer         :
   pubmed           : 
   googlescholar    : 
-  email            : "awli@college.harvard.edu"
+  email            : "austin2000li@gmail.com"
   researchgate     : 
   uri              :
   bitbucket        :
@@ -102,7 +103,7 @@ author:
   foursquare       :
   google_plus      :
   keybase          :
-  instagram        : austins_belly
+  instagram        : 
   impactstory      : 
   lastfm           :
   linkedin         : "https://www.linkedin.com/in/austinwli/"

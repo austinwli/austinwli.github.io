@@ -89,10 +89,10 @@ author:
   bio              : "Physics & CS @ Harvard"
   location         : "New York, NY"
   employer         :
-  pubmed           : 
-  googlescholar    : 
-  email            : "austin2000li@gmail.com"
-  researchgate     : 
+  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  googlescholar    : "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"         # Update with the correct link to your profile
+  email            :
+  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
   codepen          :

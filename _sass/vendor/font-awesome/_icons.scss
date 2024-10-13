@@ -8,3 +8,7 @@ readers do not read off random characters that represent icons */
   .#{$fa-css-prefix}-#{$name}::before { content: unquote("\"#{ $icon }\""); }
 }
 
+.#{$fa-css-prefix}-align-left:before { content: $fa-var-align-left; }
+.#{$fa-css-prefix}-align-center:before { content: $fa-var-align-center; }
+.#{$fa-css-prefix}-align-right:before { content: $fa-var-align-right; }
+.#{$fa-css-prefix}-align-justify:before { content: $fa-var-align-justify; }

@@ -9,9 +9,9 @@
 # Basic Site Settings
 # Basic Site Settings
 locale                   : "en-US"
-title                    : "Austin Li"
+title                    : "Austin W Li"
 title_separator          : "-"
-name                     : &name "Austin Li"
+name                     : &name "Austin W Li"
 description              : &description "personal description"
 url                      : https://austinwli.github.io
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -34,7 +34,7 @@ comments:
     colorscheme          : "dark"
 staticman:
   allowedFields          : ['name', 'email', 'url', 'message']
-  branch                 : "gh-pages" # "master", "gh-pages"
+  branch                 : "master" # "master", "gh-pages"
   commitMessage          : "New comment."
   filename               : comment-{@timestamp}
   format                 : "yml"
@@ -91,7 +91,7 @@ author:
   avatar           : "profile-1.jpg"
   bio              : "Physics & CS @ Harvard"
   location         : "New York, NY"
-  employer         :
+  employer         : "Capital One"
   pubmed           : 
   googlescholar    : 
   email            : "austin2000li@gmail.com"

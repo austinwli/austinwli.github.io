@@ -10,9 +10,6 @@
   -webkit-transform: translate3d(0, 0 , 0);
           transform: translate3d(0, 0 , 0);
 
-  
-  
-
   @include clearfix();
   margin-bottom: 1em;
 
@@ -35,7 +32,6 @@
   }
 
   @include breakpoint($x-large) {
-    max-width: $sidebar-link-max-width;
     padding-right: 0;
   }
 
@@ -55,7 +51,7 @@
   }
 
   img {
-    width: 100%;
+    width: 125%;
   }
 }
 
@@ -83,8 +79,7 @@
   display: table-cell;
   vertical-align: top;
   width: 36px;
-  // set width only, for non-square avatars
-  // height: 36px;
+  height: 36px;
 
   @include breakpoint($large) {
     display: block;
@@ -129,15 +124,6 @@
 .sidebar .author__name {
   font-family: $sans-serif;
   font-size: $type-size-5;
-}
-
-.author__pronouns {
-  margin: 0;
-
-  @include breakpoint($large) {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
 }
 
 .author__bio {

@@ -89,7 +89,7 @@ analytics:
 author:
   name             : "Austin Li"
   avatar           : "profile-1.jpg"
-  bio              : "Physics & CS @ Harvard"
+  bio              : "Software engineer, physics enthusiast, photography hobbyist <br> <br> A.B. Physics & CS @ Harvard College"
   location         : "New York, NY"
   employer         : 
   pubmed           : 
@@ -236,7 +236,7 @@ defaults:
       path: ""
       type: projects
     values:
-      layout: double
+      layout: single
       author_profile: true
       share: true
       comments: true

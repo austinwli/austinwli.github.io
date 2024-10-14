@@ -34,7 +34,7 @@ comments:
     colorscheme          : "dark"
 staticman:
   allowedFields          : ['name', 'email', 'url', 'message']
-  branch                 : "master" # "master", "gh-pages"
+  branch                 : "gh-pages" # "master", "gh-pages"
   commitMessage          : "New comment."
   filename               : comment-{@timestamp}
   format                 : "yml"
@@ -94,7 +94,7 @@ author:
   employer         : 
   pubmed           : 
   googlescholar    : 
-  email            : "austin2000li@gmail.com"
+  email            : 
   researchgate     : 
   uri              :
   bitbucket        :
@@ -109,8 +109,8 @@ author:
   impactstory      : 
   lastfm           :
   linkedin         : "https://www.linkedin.com/in/austinwli/"
-  github           : "https://github.com/austinwli"
-  orcid            : 
+  github           : "austinwli"
+  orcid            : "https://orcid.org/0000-0002-4807-9518"
   pinterest        :
   soundcloud       :
   stackoverflow    : 

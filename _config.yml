@@ -89,7 +89,7 @@ analytics:
 author:
   name             : "Austin Li"
   avatar           : "profile-1.jpg"
-  bio              : "Software engineer, physics enthusiast, photography hobbyist <br> <br> A.B. Physics & CS @ Harvard College"
+  bio              : "Software engineer, physics enthusiast, photography hobbyist. <br> <br> A.B. Physics & CS @  <a href='https://www.harvard.edu/'>Harvard College</a>. <br> <br> Currently <a href='https://www.capitalone.com/'>Capital One</a>. Previously ML @ <a href='https://www.zest.ai/'>Zest AI</a>, NLP @ <a href='https://www.thinkcerca.com/'>ThinkCerca</a>."
   location         : "New York, NY"
   employer         : 
   pubmed           : 

@@ -8,13 +8,14 @@ redirect_from:
   - /about.html
 ---
 
-Hello! I am a software engineer based in New York City. Before moving to the city, I studied Physics and Computer Science at [Harvard College](https://www.harvard.edu/). Welcome to my page! Feel free to peruse and reach out if you have any questions about any of my work.
+Hello! I am a software engineer based in New York City. Before moving to the city, I studied Physics and Computer Science at <a href='https://www.harvard.edu/'>Harvard College</a>.
 
-### I like thinking about
-- Quantum computing/quantum information
-- Machine learning
-- Social impact technology and startups
-- Computational social choice
+<h2>Projects</h2>
+<p>
+  A collection of current and past projects. Previously high energy particle physics research for DUNE, machine learning models for fair lending, quantum machine learning for NP-hard approximation, and algorithms for fair redistricting.
+</p>
+<h3>Engineering</h3>
+{% include_relative about-projects.html %}
 
-### Projects
-Applying [HTAAC-QSDP](https://arxiv.org/pdf/2206.14999.pdf) to approximations to NP-hard problems. Working on MAX-BISECTION and generalizing method to Karp's 21 problems.
+<h3>Research</h3>
+{% include_relative about-research.html %}

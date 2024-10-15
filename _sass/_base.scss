@@ -60,7 +60,7 @@ small, .small {
 
 p {
   font-size: $type-size-6;
-  margin-bottom: 1.3em;
+  // margin-bottom: 1.3em;
 }
 
 u,
@@ -114,6 +114,8 @@ blockquote {
 /* links */
 
 a {
+  text-decoration: none;
+
   &:focus {
     @extend %tab-focus;
   }
@@ -314,4 +316,61 @@ nav {
 b, i, strong, em, blockquote, p, q, span, figure, img, h1, h2, header, input, a, tr, td, form button, input[type="submit"], .btn, .highlight, .archive__item-teaser {
   -webkit-transition: $global-transition;
   transition: $global-transition;
+}
+
+/*
+   Project list
+   ========================================================================== */
+
+.project-post {
+  // margin-bottom: 30px;
+  // margin-top: 30px;
+  // padding-top: 20px;
+  display: flex;
+}
+
+.project-details {
+  flex: 0.9;
+  display: flex;
+}
+
+.project-head {
+  font-family: $global-font-family;
+  font-size: $type-size-6;
+  margin-right: 20px;
+  flex: 0.2;
+}
+
+.project-description {
+  font-family: $global-font-family;
+  font-size: $type-size-6;
+  flex: 0.8;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.project-links {
+  display: flex;
+  flex: 0.1;
+  gap: 10px;
+  align-items: center;
+  font-size: $type-size-6;
+}
+
+.project-link {
+  font-family: $global-font-family;
+  text-decoration: none;
+  background-color: #52adc8;
+  color: #ffffff !important;
+  padding: 5.33px 8px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: inline-block;
+  flex: 0.1;
+}
+
+.project-link:hover {
+  background-color: #6eddff;
+  color: #ffffff;
+  text-decoration: none;
 }

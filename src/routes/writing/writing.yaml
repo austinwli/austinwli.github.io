@@ -3,7 +3,7 @@ papers:
     date: 2023-03-24
     summary: >
       My senior thesis, where I design and implement a quantum variational
-      algorithm for approximating the Max Bisection problem.
+      algorithm for finding approximate solutions to the Max Bisection problem.
     link: /assets/pdf/Senior_Thesis.pdf
 
   - title:

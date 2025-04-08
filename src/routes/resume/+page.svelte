@@ -30,7 +30,9 @@
     <li>
       TF for CS 20 (Discrete Mathematics for Computer Science), Spring 2022
     </li>
-    <li>CA for Math 22a (Vector Calculus and Linear Algebra I), Fall 2020, 2021</li>
+    <li>
+      CA for Math 22a (Vector Calculus and Linear Algebra I), Fall 2020, 2021
+    </li>
     <li>
       CA for Math 22b (Vector Calculus and Linear Algebra II), Spring 2021
     </li>

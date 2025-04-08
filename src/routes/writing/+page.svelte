@@ -12,7 +12,10 @@
 <div class="layout-md text-lg space-y-14">
   <div class="space-y-5">
     <p>
-      In addition to the below, I also maintain a Substack publication <a class="link" href="https://austinli.substack.com/">Collection A</a>. 
+      In addition to the below, I also maintain a Substack publication <a
+        class="link"
+        href="https://austinli.substack.com/">Collection A</a
+      >.
     </p>
 
     <p>

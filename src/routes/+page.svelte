@@ -21,41 +21,43 @@
 <div class="layout-md text-lg space-y-14">
   <div class="space-y-5">
     <p>
-      I currently work at <a class="link" href="https://usekoi.com">Koi</a>, an early stage fintech startup.
+      I currently work at <a class="link" href="https://usekoi.com">Koi</a>, an
+      early stage fintech startup.
     </p>
 
     <p>
-      I am interested in building software for <em>social good</em>, 
-      so that people can have access to and use technology to better their lives.
+      I am interested in building software for <em>social good</em>, so that
+      people can have access to and use technology to better their lives.
     </p>
   </div>
 
   <div class="space-y-5">
     <p>
-      Previously, I have had the opportunity to build mobile fraud and 
-      disputes features at 
-      <a class="link" href="https://www.capitalone.com/">
-        Capital One</a
-      >, fair lending algorithms at
-      <a class="link" href="https://www.zest.ai/">
-        Zest AI</a
-      >, and NLP literacy tools at
-      <a class="link" href="https://info.thinkcerca.com/core">
-        ThinkCerca</a
-      >.
+      Previously, I have had the opportunity to build mobile fraud and disputes
+      features at
+      <a class="link" href="https://www.capitalone.com/"> Capital One</a>, fair
+      lending algorithms at
+      <a class="link" href="https://www.zest.ai/"> Zest AI</a>, and NLP literacy
+      tools at
+      <a class="link" href="https://info.thinkcerca.com/core"> ThinkCerca</a>.
     </p>
 
     <p>
-      I recently graduated from Harvard, where I was a teaching fellow for physics and CS classes, wrote a <a
+      I recently graduated from Harvard, where I was a teaching fellow for
+      physics and CS classes, wrote a <a
         class="link"
         rel="external"
-        href="/assets/pdf/Senior_Thesis.pdf">thesis on quantum machine learning</a
+        href="/assets/pdf/Senior_Thesis.pdf"
+        >thesis on quantum machine learning</a
       >, and studied philosophy, economics, and government.
     </p>
 
     <p>Other interests: math, pottery, reading, and volleyball.</p>
 
-    <p>Template by <a class="link" href="https://www.ekzhang.com/">Eric Zhang</a>.</p>
+    <p>
+      Template by <a class="link" href="https://www.ekzhang.com/">Eric Zhang</a
+      >.
+    </p>
   </div>
 </div>
 

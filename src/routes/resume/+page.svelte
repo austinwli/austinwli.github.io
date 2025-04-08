@@ -23,9 +23,7 @@
 
   <h4 class="font-medium mt-4 mb-1">Teaching:</h4>
   <ul>
-    <li>
-      TF for Physics 153 (Electrodynamics), Spring 2023
-    </li>
+    <li>TF for Physics 153 (Electrodynamics), Spring 2023</li>
     <li>
       TF for CS 20 (Discrete Mathematics for Computer Science), Spring 2023
     </li>
@@ -35,9 +33,7 @@
     <li>
       CA for Math 22b (Vector Calculus and Linear Algebra II), Spring 2021
     </li>
-    <li>
-      CA for Math 22a (Vector Calculus and Linear Algebra I), Fall 2020
-    </li>
+    <li>CA for Math 22a (Vector Calculus and Linear Algebra I), Fall 2020</li>
   </ul>
 
   <h4 class="font-medium mt-4 mb-1">Graduate-level technical coursework:</h4>
@@ -74,12 +70,8 @@
     dates="April 2025 – Current"
     location="New York, NY"
   >
-    <li>
-      First hired engineer at a seed-stage startup.
-    </li>
-    <li>
-      Building a new fintech platform for CRA compliance and trading.
-    </li>
+    <li>First hired engineer at a seed-stage startup.</li>
+    <li>Building a new fintech platform for CRA compliance and trading.</li>
   </Workplace>
 
   <Workplace
@@ -89,47 +81,39 @@
     dates="August 2023 - April 2025"
     location="New York, NY"
   >
-    <li>
-      Mobile fraud and disputes.
-    </li>
+    <li>Mobile fraud and disputes.</li>
   </Workplace>
 
   <Workplace
-  title="Data Science Intern"
-  company="Zest AI"
-  url="https://www.zest.ai/"
+    title="Data Science Intern"
+    company="Zest AI"
+    url="https://www.zest.ai/"
     dates="June 2021 - August 2021"
     location="Los Angeles, CA"
   >
-    <li>
-      Bullet 1
-    </li>
+    <li>Bullet 1</li>
   </Workplace>
 
   <Workplace
-  title="Undergraduate Researcher"
-  company="Harvard Department of Physics"
-  url="https://www.physics.harvard.edu/"
+    title="Undergraduate Researcher"
+    company="Harvard Department of Physics"
+    url="https://www.physics.harvard.edu/"
     dates="June 2020 - September 2020"
     location="Chicago, IL"
     defaultHidden
   >
-    <li>
-      Bullet 1
-    </li>
+    <li>Bullet 1</li>
   </Workplace>
 
   <Workplace
-  title="Math Instructor"
-  company="The University of Chicago"
-  url="https://mathematics.uchicago.edu/young-scholars-program/"
+    title="Math Instructor"
+    company="The University of Chicago"
+    url="https://mathematics.uchicago.edu/young-scholars-program/"
     dates="June 2019 - August 2019"
     location="Chicago, IL"
     defaultHidden
   >
-    <li>
-      Bullet 1
-    </li>
+    <li>Bullet 1</li>
   </Workplace>
 </section>
 

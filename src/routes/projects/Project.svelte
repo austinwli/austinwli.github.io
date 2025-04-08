@@ -1,5 +1,4 @@
 <script lang="ts">
-
   import Markdown from "$lib/components/Markdown.svelte";
   import { formatTime } from "$lib/utils";
 

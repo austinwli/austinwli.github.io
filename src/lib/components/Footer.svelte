@@ -12,7 +12,9 @@
   <div class="row">
     <span>Email</span>
     <hr />
-    <a class="link" href="mailto:austin2000li@gmail.com">austin2000li@gmail.com</a>
+    <a class="link" href="mailto:austin2000li@gmail.com"
+      >austin2000li@gmail.com</a
+    >
   </div>
 </footer>
 

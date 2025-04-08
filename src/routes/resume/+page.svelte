@@ -25,13 +25,13 @@
   <ul>
     <li>TF for Physics 153 (Electrodynamics), Spring 2023</li>
     <li>
-      TF for CS 20 (Discrete Mathematics for Computer Science), Spring 2023
-    </li>
-    <li>
       TF for Physics 15a (Introductory Mechanics and Relativity), Fall 2022
     </li>
     <li>
-      CA for Math 22b (Vector Calculus and Linear Algebra II), Spring 2021
+      TF for CS 20 (Discrete Mathematics for Computer Science), Spring 2022
+    </li>
+    <li>
+      CA for Math 22b (Vector Calculus and Linear Algebra II), Spring 2021 and Fall 2021
     </li>
     <li>CA for Math 22a (Vector Calculus and Linear Algebra I), Fall 2020</li>
   </ul>

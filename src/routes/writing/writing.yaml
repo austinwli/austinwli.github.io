@@ -3,7 +3,7 @@ papers:
     date: 2023-03-24
     summary: >
       My senior thesis, where I design and implement a quantum variational
-      algorithm for approximating the MaxBisection problem.
+      algorithm for approximating the Max Bisection problem.
     link: /assets/pdf/Senior_Thesis.pdf
 
   - title:
@@ -39,7 +39,7 @@ papers:
     date: 2022-10-01
     summary: >
       High energy physics and electrical engineering research paper, published
-      in the IEEE Transactions on Instrumentation and Measurement.
+      in IEEE Transactions on Instrumentation and Measurement.
     link: https://ieeexplore.ieee.org/document/9933727
 
   - title:

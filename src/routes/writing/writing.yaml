@@ -1,0 +1,99 @@
+papers:
+  - title: Quantum variational algorithms for NP-hard approximations
+    date: 2023-03-24
+    summary: >
+      My senior thesis, where I design and implement a quantum variational algorithm
+      for approximating the MaxBisection problem.
+    link: /assets/pdf/Senior_Thesis.pdf
+
+  - title: Measurement of the composite muon lifetime, mass, and determination of the Fermi coupling constant
+    date: 2022-12-07
+    summary: >
+      High fidelity measurements of the muon lifetime and mass. Third experiment for Physics 191, Advanced Laboratory.
+    link: /assets/pdf/Muon_Lifetime.pdf
+
+  - title: Slow group velocity and nonlinear optical effects in a coherently driven hot rubidium gas
+    date: 2022-11-01
+    summary: >
+      Characterization of eight hyperfine transitions of rubidium to demonstrate reduced group velocity of light. Second experiment for Physics 191, Advanced Laboratory.
+    link: /assets/pdf/Nonlinear_Optics.pdf
+
+  - title: Characterization of pure and alloy metal superconductors
+    date: 2022-10-01
+    summary: >
+      Experimental classification of eleven material samples as type I, type II, or non-superconducting. First experiment for Physics 191, Advanced Laboratory.
+    link: /assets/pdf/Superconductivity.pdf
+
+  - title: Digital wire analyzer of mechanical tension, electrical continuity, and isolation
+    date: 2022-10-01
+    summary: >
+      High energy physics and electrical engineering research paper, published in the IEEE Transactions on Instrumentation and Measurement.
+    link: https://ieeexplore.ieee.org/document/9933727
+
+  - title: Computational complexity characterization of protecting elections from bribery
+    date: 2022-04-13
+    summary: >
+      Complexity of protecting approval voting elections and simulations. Final project for CS 238, Optimized Democracy.
+    link: /assets/pdf/Electoral_Bribery.pdf
+
+notes:
+  - title: "Gov 1280: Government and Politics of China"
+    date: 2023-04-26
+    summary: >
+      Contemporary Chinese politics and social change.
+    link: /assets/pdf/Government_1280_Notes.pdf
+
+  - title: "Econ 1800: Economics of Cities"
+    date: 2023-04-25
+    summary: >
+      Why cities exist, what roles cities play in the economy, and what determines the rise and fall of cities.
+    link: /assets/pdf/Economics_1800_Notes.pdf
+
+  - title: "Gov 1790: American Foreign Policy"
+    date: 2022-12-12
+    summary: >
+      American grand strategy, bureaucratic politics, public opinion, anti-Americanism, terrorism, and nuclear weapons.
+    link: /assets/pdf/Government_1790_Notes.pdf
+
+  - title: "CS 51: Abstraction and Design in Computation"
+    date: 2022-05-01
+    summary: >
+      Fundamental concepts in the design of computer programs; functional, imperative, and object-oriented
+      programming.
+    link: /assets/pdf/CS_51_Notes.pdf
+
+  - title: "CS 181: Machine Learning"
+    date: 2022-04-21
+    summary: >
+      Supervised and unsupervised learning, ensemble methods and boosting, neural networks, inference methods, computational learning theory.
+    link: /assets/pdf/CS_181_Notes.pdf
+
+  - title: "CS 238: Optimized Democracy"
+    date: 2022-04-13
+    summary: >
+      Graduate-level economics and computation class on topics at the intersection of social choice theory, theoretical computer science, and multi-agent systems.
+    link: /assets/pdf/CS_238_Notes.pdf
+
+  - title: "8.370: Quantum Computation"
+    date: 2021-12-08
+    summary: >
+      Graduate-level class on quantum computation taught by Peter Shor.
+    link: /assets/pdf/8_370_Notes.pdf
+
+  - title: "CS 136: Economics and Computation"
+    date: 2021-11-22
+    summary: >
+      Behavioral game theory, peer production, prediction markets, auctions and mechanisms, privacy and security, matching and allocation problems.
+    link: /assets/pdf/CS_136_Notes.pdf
+
+  - title: "Physics 143b: Quantum Mechanics II"
+    date: 2021-04-01
+    summary: >
+      The second semester of Physics 143, quantum mechanics. Path integrals, time-dependent perturbation theory, scattering theory, relativistic mechanics, quantum information.
+    link: /assets/pdf/Physics_143b_Notes.pdf
+
+  - title: "6.840: Theory of Computation"
+    date: 2020-12-01
+    summary: >
+      Graduate-level class discussing computability, complexity, and the theory of computation.
+    link: /assets/pdf/6_840_Notes.pdf

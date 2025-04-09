@@ -19,6 +19,7 @@ Built with gradient boosting, trained on voter registration data from North
 Carolina and Florida, validated on a national sample using adjusted tract-level
 American Community Survey (ACS) data. Found that compared to BISG, the `zrp`
 correctly identifies 25% more African Americans as African American, 35% fewer
-African Americans as non-African American, and 60% fewer White Americans as non-White.
+African Americans as non-African American, and 60% fewer White Americans as
+non-White.
 
 **Links: [GitHub](https://github.com/zestai/zrp)**

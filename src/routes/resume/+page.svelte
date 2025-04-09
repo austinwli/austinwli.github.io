@@ -73,7 +73,6 @@
     location="New York, NY"
   >
     <li>First hired engineer at a seed-stage startup.</li>
-    <li>Building a new fintech platform for CRA compliance and trading.</li>
   </Workplace>
 
   <Workplace
@@ -83,7 +82,14 @@
     dates="August 2023 - April 2025"
     location="New York, NY"
   >
-    <li>Mobile fraud and disputes.</li>
+    <li>
+      Led experience modernization and design modernization across entire iOS
+      digital fraud and disputes team in Swift.
+    </li>
+    <li>
+      Built smart document upload orchestration layer and API for digital fraud
+      and disputes using Java, and AWS.
+    </li>
   </Workplace>
 
   <Workplace
@@ -93,18 +99,72 @@
     dates="June 2021 - August 2021"
     location="Los Angeles, CA"
   >
-    <li>Bullet 1</li>
+    <li>
+      Designed, trained, and deployed a geography‐agnostic race prediction model
+      used to measure disparate impact of fair lending tools for clients in
+      PyTorch, available open‐source; method used by Census in October 2022.
+    </li>
+    <li>
+      Developed geocoding method using public Census shapefile data, achieving
+      90% data retention and 99% accuracy, and reducing query times from hours
+      to minutes.
+    </li>
   </Workplace>
 
   <Workplace
-    title="Undergraduate Researcher"
+    title="Director of Growth"
+    company="Wave Learning Festival"
+    url="https://www.wavelf.org/"
+    dates="August 2020 - January 2021"
+    location="Chicago, IL"
+    defaultHidden
+  >
+    <li>
+      Founding Director of Growth, leading 100+ volunteers across strategy,
+      partnerships, and media to reach underserved youth.
+    </li>
+    <li>
+      Developed data‐driven outreach strategies, expanding organizational
+      presence in 20+ cities across the United States and abroad, providing 100+
+      hours of tutoring to 13k+ students by departure from organization.
+    </li>
+    <li>
+      Coordinated partnerships with 600+ schools, libraries, and 40+ community
+      organizations serving low‐income and homeless youth across the United
+      States.
+    </li>
+  </Workplace>
+
+  <Workplace
+    title="Undergraduate Research Fellow"
     company="Harvard Department of Physics"
     url="https://www.physics.harvard.edu/"
     dates="June 2020 - September 2020"
     location="Chicago, IL"
     defaultHidden
   >
-    <li>Bullet 1</li>
+    <li>
+      Developed optimization algorithm for wire tension measurement device in
+      Python, reducing runtime from minutes to seconds and reducing the error to
+      within 1% of ground truth.
+    </li>
+    <li>
+      Researcher in the Deep Underground Neutrino Experiment (<a
+        class="link"
+        href="https://www.dunescience.org/">DUNE</a
+      >) collaboration, fortunate to be mentored by
+      <a
+        class="link"
+        href="https://www.dunescience.org/facesofdune/roxanne-guenette/"
+        >Professor Roxanne Guenette</a
+      >
+      and
+      <a
+        class="link"
+        href="https://www.dunescience.org/facesofdune/sebastien-prince/"
+        >Dr. Sebastien Prince</a
+      >.
+    </li>
   </Workplace>
 
   <Workplace
@@ -115,7 +175,10 @@
     location="Chicago, IL"
     defaultHidden
   >
-    <li>Bullet 1</li>
+    <li>
+      Taught group theory and UCBLogo at the University of Chicago Young
+      Scholars Program.
+    </li>
   </Workplace>
 </section>
 

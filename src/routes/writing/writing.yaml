@@ -18,7 +18,7 @@ papers:
   - title:
       Slow group velocity and nonlinear optical effects in a coherently driven
       hot rubidium gas
-    date: 2022-11-01
+    date: 2022-11-22
     summary: >
       Characterization of eight hyperfine transitions of rubidium to demonstrate
       reduced group velocity of light. Second experiment for Physics 191,
@@ -26,7 +26,7 @@ papers:
     link: /assets/pdf/Nonlinear_Optics.pdf
 
   - title: Characterization of pure and alloy metal superconductors
-    date: 2022-10-01
+    date: 2022-10-11
     summary: >
       Experimental classification of eleven material samples as type I, type II,
       or non-superconducting. First experiment for Physics 191, Advanced
@@ -45,7 +45,7 @@ papers:
   - title:
       Computational complexity characterization of protecting elections from
       bribery
-    date: 2022-04-13
+    date: 2022-05-22
     summary: >
       Complexity of protecting approval voting elections and simulations. Final
       project for CS 238, Optimized Democracy.

@@ -26,8 +26,8 @@
     </p>
 
     <p>
-      I am interested in building software for <em>social good</em>, so that
-      people can have access to and use technology to better their lives.
+      I am passionate about <em>social impact technology</em> — for education, finance,
+      and government — to drive positive sustainable change through software.
     </p>
   </div>
 

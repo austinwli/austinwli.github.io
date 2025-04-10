@@ -1,17 +1,50 @@
-harvard:
-  - title: Eliot House
-    date: 2023-11-23
-    description: >
-      Eliot House, Harvard College.
-    secondDescription: >
-      The best house on campus.
-    link: /assets/images/photography/Eliot.jpg
+- title: Eliot House
+  date: 2023-11-23
+  description: >
+    Eliot House, Harvard College.
+  secondDescription: >
+    The best house on campus.
+  link: /assets/images/photography/Eliot.jpg
 
-  - title: Sever
-    date: 2023-11-19
-    description: >
-      Sever Hall, Harvard Yard.
-    secondDescription: >
-      Designed by American architect H. H. Richardson and built in the late
-      1870s,  designated a National Historic Landmark in 1970.
-    link: /assets/images/photography/Sever.jpg
+- title: Sever
+  date: 2023-11-19
+  description: >
+    Sever Hall, Harvard Yard.
+  secondDescription: >
+    Designed by American architect H. H. Richardson and built in the late 1870s,
+    designated a National Historic Landmark in 1970.
+  link: /assets/images/photography/Sever.jpg
+
+- title: Victoria Harbor
+  date: 2025-01-02
+  description: >
+    Victoria Harbor, Hong Kong.
+  secondDescription: >
+    Passenger boat on Victoria Harbor.
+  link: /assets/images/photography/Victoria_Harbor.jpg
+
+- title: Franklin-Orleans Street Bridge
+  date: 2023-10-17
+  description: >
+    Franklin-Orleans Street Bridge, Chicago.
+  secondDescription: >
+    A bascule bridge over the Chicago River in Chicago, Illinois. Built in
+    October 1920.
+  link: /assets/images/photography/Franklin_Orleans.jpg
+
+- title: Motorcyclist
+  date: 2021-07-15
+  description: >
+    Seongsu Bridge, Seoul.
+  secondDescription: >
+    A motorcyclist on the Seoungsu Bridge in Seoul. Taken on Kai Ford's Nikon
+    FG.
+  link: /assets/images/photography/Motorcyclist.jpg
+
+- title: Itaewon
+  date: 2021-07-15
+  description: >
+    Itaewon, Seoul.
+  secondDescription: >
+    Rooftops in Itaewon, Seoul. Taken on Kai Ford's Nikon FG.
+  link: /assets/images/photography/Itaewon.jpg

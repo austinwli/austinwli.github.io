@@ -13,6 +13,17 @@
 <!-- Images -->
 <div class="space-y-4">
   <div class="grid grid-cols-2 gap-2 md:gap-2 lg:gap-2">
+    <!-- <div class="col-span-2 md:col-span-1">
+        <div class="text-lg text-black">
+          {item.description}
+        </div>
+        <div class="text-lg leading-snug font-serif italic">
+          {item.secondDescription}
+        </div>
+        <div class="sm:ml-auto mb-0.5 text-neutral-500">
+          {formatTime("%B %-d, %Y", item.date)}
+        </div>
+      </div> -->
     {#each data as item}
       <div class="col-span-1 md:col-span-1">
         <!-- svelte-ignore a11y-missing-attribute -->

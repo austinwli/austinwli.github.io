@@ -1,5 +1,7 @@
 <script lang="ts">
   import Seo from "$lib/components/Seo.svelte";
+  import PhotoList from "./PhotoList.svelte";
+  import photos from "./photos.yaml";
 </script>
 
 <Seo
@@ -15,3 +17,9 @@
     </p>
   </div>
 </div>
+
+<section class="py-10">
+  <div class="mx-auto max-w-[1152px] px-4 sm:px-6">
+    <PhotoList data={photos.harvard} />
+  </div>
+</section>

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { ArrowUpRight } from "lucide-svelte";
-
   import { formatTime } from "$lib/utils";
 
   type Writing = {

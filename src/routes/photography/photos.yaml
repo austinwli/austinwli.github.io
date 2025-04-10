@@ -1,0 +1,17 @@
+harvard:
+  - title: Eliot House
+    date: 2023-11-23
+    description: >
+      Eliot House, Harvard College.
+    secondDescription: >
+      The best house on campus.
+    link: /assets/images/photography/Eliot.jpg
+
+  - title: Sever
+    date: 2023-11-19
+    description: >
+      Sever Hall, Harvard Yard.
+    secondDescription: >
+      Designed by American architect H. H. Richardson and built in the late
+      1870s,  designated a National Historic Landmark in 1970.
+    link: /assets/images/photography/Sever.jpg

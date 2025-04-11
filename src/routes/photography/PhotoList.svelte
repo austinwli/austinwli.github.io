@@ -12,7 +12,7 @@
 
 <!-- Images -->
 <div class="space-y-4">
-  <div class="grid grid-cols-2 gap-2 md:gap-2 lg:gap-2">
+  <div class="grid grid-cols-1 gap-2 md:grid-cols-2 gap-2 lg:grid-cols-3 gap-2">
     <!-- <div class="col-span-2 md:col-span-1">
         <div class="text-lg text-black">
           {item.description}

@@ -4,6 +4,7 @@
     date: Date;
     description: string;
     secondDescription?: string;
+    crop?: string;
     link: string;
   };
 
@@ -25,10 +26,17 @@
         </div>
       </div> -->
     {#each data as item}
-      <div class="col-span-1 md:col-span-1">
-        <!-- svelte-ignore a11y-missing-attribute -->
-        <img src={item.link} />
-      </div>
+      {#if item.crop == "letterbox"}
+        <div class="col-span-1 md:col-span-2 lg:col-span-3">
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <img src={item.link} />
+        </div>
+      {:else}
+        <div class="col-span-1 md:col-span-1">
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <img src={item.link} />
+        </div>
+      {/if}
     {/each}
   </div>
 </div>

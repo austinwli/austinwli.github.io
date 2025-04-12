@@ -48,3 +48,11 @@
   secondDescription: >
     Rooftops in Itaewon, Seoul. Taken on Kai Ford's Nikon FG.
   link: /assets/images/photography/Itaewon.jpg
+# - title: Piazzale Michelangelo
+#   date: 2023-06-17
+#   description: >
+#     Piazzale Michelangelo, Florence.
+#   secondDescription: >
+#     A view of Florence from Piazzale Michelangelo.
+#   crop: letterbox
+#   link: /assets/images/photography/Michelangelo.jpg

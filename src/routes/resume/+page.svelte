@@ -37,7 +37,11 @@
       CA for Math 22b (Vector Calculus and Linear Algebra II), Spring 2021
     </li>
     <li>
-      TA for <a class="link" href="https://mathematics.uchicago.edu/young-scholars-program/">Young Scholars Program</a>, Summer 2019
+      TA for <a
+        class="link"
+        href="https://mathematics.uchicago.edu/young-scholars-program/"
+        >Young Scholars Program</a
+      >, Summer 2019
     </li>
   </ul>
 

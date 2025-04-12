@@ -36,6 +36,9 @@
     <li>
       CA for Math 22b (Vector Calculus and Linear Algebra II), Spring 2021
     </li>
+    <li>
+      TA for <a class="link" href="https://mathematics.uchicago.edu/young-scholars-program/">Young Scholars Program</a>, Summer 2019
+    </li>
   </ul>
 
   <h4 class="font-medium mt-4 mb-1">Graduate-level technical coursework:</h4>
@@ -164,20 +167,6 @@
         href="https://www.dunescience.org/facesofdune/sebastien-prince/"
         >Dr. Sebastien Prince</a
       >.
-    </li>
-  </Workplace>
-
-  <Workplace
-    title="Math Instructor"
-    company="The University of Chicago"
-    url="https://mathematics.uchicago.edu/young-scholars-program/"
-    dates="June 2019 - August 2019"
-    location="Chicago, IL"
-    defaultHidden
-  >
-    <li>
-      Taught group theory and UCBLogo at the University of Chicago Young
-      Scholars Program.
     </li>
   </Workplace>
 </section>

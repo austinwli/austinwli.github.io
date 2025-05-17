@@ -11,22 +11,22 @@
 
   // Props
   export let data: Photo[];
-  
+
   // State
   let currentIndex = 0;
-  
+
   // Methods
   function nextPhoto() {
     currentIndex = (currentIndex + 1) % data.length;
   }
-  
+
   function previousPhoto() {
     currentIndex = (currentIndex - 1 + data.length) % data.length;
   }
-  
+
   function formatDate(date: Date): string {
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
     });
   }
 </script>
@@ -40,7 +40,7 @@
         alt={data[currentIndex].title}
         class="w-full h-full object-contain"
       />
-      
+
       <!-- Navigation Controls -->
       <div class="flex items-start justify-between">
         <button
@@ -48,18 +48,18 @@
           on:click={previousPhoto}
           aria-label="Previous photo"
         >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            class="h-8 w-8" 
-            fill="none" 
-            viewBox="0 0 24 24" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path 
-              stroke-linecap="round" 
-              stroke-linejoin="round" 
-              stroke-width="1.5" 
-              d="M15 19l-7-7 7-7" 
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M15 19l-7-7 7-7"
             />
           </svg>
         </button>
@@ -85,27 +85,27 @@
           on:click={nextPhoto}
           aria-label="Next photo"
         >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            class="h-8 w-8" 
-            fill="none" 
-            viewBox="0 0 24 24" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path 
-              stroke-linecap="round" 
-              stroke-linejoin="round" 
-              stroke-width="1.5" 
-              d="M9 5l7 7-7 7" 
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M9 5l7 7-7 7"
             />
           </svg>
         </button>
       </div>
     </div>
-    
+
     <!-- Photo Information -->
     <!-- <div class="text-center text-neutral-500">
       {currentIndex + 1} / {data.length}
     </div> -->
   </div>
-</div> 
+</div>

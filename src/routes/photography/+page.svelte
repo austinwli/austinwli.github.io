@@ -1,6 +1,6 @@
 <script lang="ts">
   import Seo from "$lib/components/Seo.svelte";
-  import PhotoList from "./PhotoList.svelte";
+  import PhotoCarousel from "./PhotoCarousel.svelte";
   import photos from "./photos.yaml";
 </script>
 
@@ -19,7 +19,10 @@
 </div>
 
 <section class="py-10">
-  <div class="mx-auto max-w-[1553px] px-4 sm:px-6">
+  <!-- <div class="mx-auto max-w-[1553px] px-4 sm:px-6">
     <PhotoList data={photos} />
+  </div> -->
+  <div class="mx-auto max-w-[1152px] px-4">
+    <PhotoCarousel data={photos} />
   </div>
 </section>

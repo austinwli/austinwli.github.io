@@ -25,6 +25,11 @@
 </div>
 
 <section class="layout-md py-12">
+  <h2 class="heading2">Technology</h2>
+  <WritingList data={writing.technology} />
+</section>
+
+<section class="layout-md py-12">
   <h2 class="heading2">Academic Writing</h2>
   <WritingList data={writing.papers} />
 </section>

@@ -18,11 +18,11 @@
   </div>
 </div>
 
-<section class="py-10">
+<section>
   <!-- <div class="mx-auto max-w-[1553px] px-4 sm:px-6">
     <PhotoList data={photos} />
   </div> -->
-  <div class="mx-auto max-w-[1152px] px-4">
+  <div class="mx-auto max-w-[1152px]">
     <PhotoCarousel data={photos} />
   </div>
 </section>

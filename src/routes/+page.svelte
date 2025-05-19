@@ -15,7 +15,7 @@
 >
   <span class="g">is a</span> software engineer<span class="g">,</span><br />
   amateur physicist<span class="g">, and</span><br />
-  photographer<span class="g">.</span>
+  <a href="/photography">photographer</a><span class="g">.</span>
 </p>
 
 <div class="layout-md text-lg space-y-14">

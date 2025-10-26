@@ -176,7 +176,7 @@
 </script>
 
 <Seo
-  title="Austin Li – Image Watermark"
+  title="Austin Li – Watermark Tool"
   description="Batch watermark images with timestamps. All processing happens in your browser."
 />
 

@@ -11,10 +11,10 @@
     <div class="form-field">
       <label for="position">Position</label>
       <select id="position" bind:value={options.position}>
-        <option value="bottom-right">Bottom Right</option>
-        <option value="bottom-left">Bottom Left</option>
-        <option value="top-right">Top Right</option>
-        <option value="top-left">Top Left</option>
+        <option value="bottom-right">Top Left</option>
+        <option value="bottom-left">Top Right</option>
+        <option value="top-right">Bottom Left</option>
+        <option value="top-left">Bottom Right</option>
       </select>
     </div>
 

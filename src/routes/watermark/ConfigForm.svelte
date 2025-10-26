@@ -61,7 +61,7 @@
   </div>
 
   <!-- Address Fields -->
-  <div class="form-grid">
+  <div class="form-grid-responsive">
     <div class="form-field full-width">
       <label for="street">Street Address</label>
       <input
@@ -73,39 +73,41 @@
       />
     </div>
 
-    <div class="form-field">
-      <label for="city">City</label>
-      <input
-        id="city"
-        type="text"
-        bind:value={config.city}
-        placeholder="Cambridge"
-        required
-      />
-    </div>
+    <div class="address-row">
+      <div class="form-field">
+        <label for="city">City</label>
+        <input
+          id="city"
+          type="text"
+          bind:value={config.city}
+          placeholder="Cambridge"
+          required
+        />
+      </div>
 
-    <div class="form-field">
-      <label for="state">State</label>
-      <input
-        id="state"
-        type="text"
-        bind:value={config.state}
-        placeholder="MA"
-        maxlength="2"
-        required
-      />
-    </div>
+      <div class="form-field">
+        <label for="state">State</label>
+        <input
+          id="state"
+          type="text"
+          bind:value={config.state}
+          placeholder="MA"
+          maxlength="2"
+          required
+        />
+      </div>
 
-    <div class="form-field">
-      <label for="zip">ZIP Code</label>
-      <input
-        id="zip"
-        type="text"
-        bind:value={config.zip}
-        placeholder="02138"
-        maxlength="10"
-        required
-      />
+      <div class="form-field">
+        <label for="zip">ZIP Code</label>
+        <input
+          id="zip"
+          type="text"
+          bind:value={config.zip}
+          placeholder="02138"
+          maxlength="10"
+          required
+        />
+      </div>
     </div>
   </div>
 
@@ -143,7 +145,7 @@
               </button>
             {/if}
           </div>
-          <div class="range-grid-three">
+          <div class="range-grid-responsive">
             <div class="form-field">
               <label for="startTime-{range.id}">Start Time</label>
               <input
@@ -201,16 +203,20 @@
 </div>
 
 <style lang="postcss">
-  .form-grid {
-    @apply grid sm:grid-cols-3 gap-4;
+  .form-grid-responsive {
+    @apply space-y-4;
+  }
+
+  .address-row {
+    @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
   }
 
   .form-field {
-    @apply space-y-1.5;
+    @apply space-y-2;
   }
 
   .form-field.full-width {
-    @apply sm:col-span-3;
+    @apply w-full;
   }
 
   label {
@@ -218,17 +224,18 @@
   }
 
   input {
-    @apply w-full px-3 py-2 border border-neutral-300 rounded
-           focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400
-           text-neutral-900 bg-white transition-colors;
+    @apply w-full px-4 py-3 border border-neutral-300 rounded
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           text-neutral-900 bg-white transition-colors
+           text-base;
   }
 
   .time-range-card {
     @apply border border-neutral-300 rounded p-4 bg-neutral-50;
   }
 
-  .range-grid-three {
-    @apply grid grid-cols-3 gap-3;
+  .range-grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-3 gap-3;
   }
 
   .preview-text {

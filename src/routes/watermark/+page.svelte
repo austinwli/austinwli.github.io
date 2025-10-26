@@ -120,26 +120,26 @@
   description="Batch watermark images with timestamps. All processing happens in your browser."
 />
 
-<div class="layout-md text-lg space-y-14">
-  <div class="space-y-5">
-    <p>
+<div class="layout-md text-base sm:text-lg space-y-8 sm:space-y-14">
+  <div class="space-y-3 sm:space-y-5">
+    <p class="text-sm sm:text-base">
       Upload images and add timestamped watermarks. All processing happens in
       your browser — nothing is uploaded.
     </p>
   </div>
 
-  <div class="space-y-5">
+  <div class="space-y-4 sm:space-y-5">
     <ConfigForm
       bind:config={watermarkConfig}
       totalImages={selectedFiles.length}
     />
   </div>
 
-  <div class="space-y-5">
+  <div class="space-y-4 sm:space-y-5">
     <AdvancedOptions bind:options={advancedOptions} />
   </div>
 
-  <div class="space-y-5">
+  <div class="space-y-4 sm:space-y-5">
     <UploadZone
       disabled={isProcessing}
       on:filesSelected={handleFilesSelected}
@@ -193,7 +193,7 @@
   }
 
   .progress-card {
-    @apply bg-white rounded-lg p-8 text-center max-w-sm mx-4;
+    @apply bg-white rounded-lg p-6 sm:p-8 text-center max-w-sm mx-4 w-full;
   }
 
   .progress-bar-bg {
@@ -202,6 +202,10 @@
 
   .progress-bar-fill {
     @apply h-full bg-black transition-all duration-300;
+  }
+
+  .progress-card p {
+    @apply text-sm sm:text-lg;
   }
 
   @keyframes spin {

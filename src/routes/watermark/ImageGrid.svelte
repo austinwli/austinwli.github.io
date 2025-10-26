@@ -64,36 +64,36 @@
     </div>
 
     <!-- Image Grid -->
-    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+    <div class="image-grid-responsive">
       {#each files as file, i (i)}
         {@const imageRange = getImageRange(config, i)}
         {@const timestamp = calculateImageTimestamp(config, i)}
-        <div class="image-card group">
+        <div class="image-card-mobile group">
           <!-- Image -->
           <img
             src={blobUrls[i]}
             alt={file.name}
-            class="w-full h-24 object-cover rounded"
+            class="w-full h-20 sm:h-24 object-cover rounded"
           />
 
           <!-- Remove Button -->
           <button
             type="button"
-            class="remove-btn"
+            class="remove-btn-mobile"
             on:click={() => handleRemove(i)}
             aria-label="Remove {file.name}"
           >
-            <X size={14} />
+            <X size={16} />
           </button>
 
           <!-- Assignment Info -->
-          <div class="assignment-info">
+          <div class="assignment-info-mobile">
             {#if imageRange}
-              <p class="text-xs text-neutral-700 font-medium">
+              <p class="text-xs sm:text-xs text-neutral-700 font-medium">
                 Range {imageRange.rangeIndex + 1}
               </p>
               {#if timestamp}
-                <p class="text-xs text-neutral-600">{timestamp}</p>
+                <p class="text-xs text-neutral-600 truncate">{timestamp}</p>
               {/if}
             {:else}
               <p class="text-xs text-neutral-400 italic">Not assigned</p>
@@ -114,17 +114,21 @@
     @apply flex items-center gap-6;
   }
 
-  .image-card {
+  .image-grid-responsive {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3;
+  }
+
+  .image-card-mobile {
     @apply relative rounded-lg overflow-hidden bg-neutral-100;
   }
 
-  .remove-btn {
-    @apply absolute top-2 right-2 bg-black/60 text-white rounded-full
-           p-1 opacity-0 group-hover:opacity-100 transition-opacity
-           hover:bg-black/80 z-10;
+  .remove-btn-mobile {
+    @apply absolute top-1 right-1 sm:top-2 sm:right-2 bg-black/70 text-white rounded-full
+           p-1.5 sm:p-1 opacity-0 group-hover:opacity-100 transition-opacity
+           hover:bg-black/90 z-10 touch-manipulation;
   }
 
-  .assignment-info {
-    @apply mt-1 px-1 pb-1 space-y-0.5;
+  .assignment-info-mobile {
+    @apply mt-1 px-1 pb-1 space-y-0.5 min-h-[2rem] flex flex-col justify-center;
   }
 </style>

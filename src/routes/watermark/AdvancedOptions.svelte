@@ -45,7 +45,7 @@
 
 <style lang="postcss">
   .options-grid {
-    @apply grid sm:grid-cols-3 gap-4;
+    @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
   }
 
   .form-field {
@@ -64,11 +64,11 @@
   }
 
   .radio-label {
-    @apply flex items-center gap-2 cursor-pointer text-sm text-neutral-700
-           hover:text-black transition-colors;
+    @apply flex items-center gap-2 cursor-pointer text-sm sm:text-sm text-neutral-700
+           hover:text-black transition-colors py-2;
   }
 
   input[type="radio"] {
-    @apply cursor-pointer;
+    @apply cursor-pointer w-4 h-4;
   }
 </style>

@@ -88,7 +88,7 @@
 
   <div class="content">
     <Upload size={32} class="mx-auto text-neutral-400" />
-    <p class="text-neutral-700 text-base">
+    <p class="text-neutral-700 text-sm sm:text-base">
       Drag & drop images here, or
       <button
         type="button"
@@ -99,14 +99,15 @@
         browse
       </button>
     </p>
-    <p class="text-sm text-neutral-500">Supports JPG, PNG, WebP</p>
+    <p class="text-xs sm:text-sm text-neutral-500">Supports JPG, PNG, WebP</p>
   </div>
 </div>
 
 <style lang="postcss">
   .upload-zone {
     @apply border border-dashed border-neutral-300 rounded
-           p-12 transition-colors hover:bg-neutral-50 cursor-pointer;
+           p-6 sm:p-12 transition-colors hover:bg-neutral-50 cursor-pointer
+           min-h-[120px] sm:min-h-[160px] flex items-center justify-center;
   }
 
   .upload-zone.drag-over {
@@ -118,7 +119,7 @@
   }
 
   .content {
-    @apply text-center space-y-3 pointer-events-none;
+    @apply text-center space-y-2 sm:space-y-3 pointer-events-none;
   }
 
   .content button {

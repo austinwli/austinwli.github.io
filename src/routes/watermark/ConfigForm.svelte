@@ -53,7 +53,7 @@
   $: hasCountMismatch = totalImages > 0 && totalAssigned !== totalImages;
 </script>
 
-<div class="space-y-4">
+<div class="space-y-4 w-full min-w-0">
   <!-- Date Field -->
   <div class="form-field">
     <label for="date">Date</label>
@@ -230,12 +230,45 @@
            text-base;
   }
 
+  /* Specific styling for date and time inputs to prevent overflow */
+  input[type="date"],
+  input[type="time"] {
+    @apply w-full min-w-0 max-w-full;
+    /* Prevent browser from setting a minimum width */
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure date/time inputs work well in mobile */
+  @media (max-width: 640px) {
+    input[type="date"],
+    input[type="time"] {
+      @apply text-sm;
+      /* Reduce padding slightly on mobile to fit better */
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+  }
+
   .time-range-card {
     @apply border border-neutral-300 rounded p-4 bg-neutral-50;
+    /* Ensure the card doesn't overflow */
+    overflow: hidden;
   }
 
   .range-grid-responsive {
     @apply grid grid-cols-1 sm:grid-cols-3 gap-3;
+    /* Ensure grid items don't overflow */
+    min-width: 0;
+  }
+
+  /* Ensure form fields within time range cards don't overflow */
+  .time-range-card .form-field {
+    @apply min-w-0;
+  }
+
+  .time-range-card input {
+    @apply min-w-0;
   }
 
   .preview-text {

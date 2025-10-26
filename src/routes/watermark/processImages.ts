@@ -208,22 +208,18 @@ export function validateConfig(
     if (!range.startTime) return `Range ${i + 1}: Start time is required`;
     if (range.incrementMinutes < 1)
       return `Range ${i + 1}: Increment must be at least 1 minute`;
+    if (range.photoCount < 0)
+      return `Range ${i + 1}: Photo count cannot be negative`;
   }
 
-  // Validate all images are assigned
+  // Validate total photo count matches uploaded images
   if (totalImages > 0) {
-    const totalAssigned = config.assignments.length;
-    if (totalAssigned !== totalImages) {
-      return `All images must be assigned to a time range (${totalAssigned}/${totalImages} assigned)`;
-    }
-
-    // Validate all assignments reference valid ranges
-    const validRangeIds = new Set(config.timeRanges.map((r) => r.id));
-    const invalidAssignment = config.assignments.find(
-      (a) => !validRangeIds.has(a.rangeId)
+    const totalAssigned = config.timeRanges.reduce(
+      (sum, range) => sum + range.photoCount,
+      0
     );
-    if (invalidAssignment) {
-      return "Some images are assigned to invalid time ranges";
+    if (totalAssigned !== totalImages) {
+      return `Total photos in ranges (${totalAssigned}) must equal uploaded images (${totalImages})`;
     }
   }
 

@@ -29,10 +29,10 @@
       {
         id: crypto.randomUUID(),
         startTime: "10:00",
-        incrementMinutes: 2,
+        incrementMinutes: 1,
+        photoCount: 0,
       },
     ],
-    assignments: [],
   };
   let advancedOptions: AdvancedOptionsType = {
     position: "top-left",
@@ -42,7 +42,6 @@
   let isProcessing = false;
   let progress: ProcessingProgress = { current: 0, total: 0, currentFile: "" };
   let errorMessage = "";
-  let selectedImageIndices: Set<number> = new Set();
 
   // Computed
   $: canProcess = selectedFiles.length > 0 && !isProcessing;
@@ -62,70 +61,11 @@
   function handleRemove(event: CustomEvent<number>) {
     const index = event.detail;
     selectedFiles = selectedFiles.filter((_, i) => i !== index);
-
-    // Remove assignment for this image and update indices
-    watermarkConfig.assignments = watermarkConfig.assignments
-      .filter((a) => a.imageIndex !== index)
-      .map((a) => ({
-        ...a,
-        imageIndex: a.imageIndex > index ? a.imageIndex - 1 : a.imageIndex,
-      }));
-
-    // Update selection indices
-    selectedImageIndices = new Set(
-      Array.from(selectedImageIndices)
-        .filter((i) => i !== index)
-        .map((i) => (i > index ? i - 1 : i))
-    );
   }
 
   function handleClearAll() {
     selectedFiles = [];
-    watermarkConfig.assignments = [];
-    selectedImageIndices = new Set();
     errorMessage = "";
-  }
-
-  function handleImageSelectionToggle(index: number) {
-    const newSelection = new Set(selectedImageIndices);
-    if (newSelection.has(index)) {
-      newSelection.delete(index);
-    } else {
-      newSelection.add(index);
-    }
-    selectedImageIndices = newSelection;
-  }
-
-  function handleSelectAll() {
-    selectedImageIndices = new Set(selectedFiles.map((_, i) => i));
-  }
-
-  function handleSelectNone() {
-    selectedImageIndices = new Set();
-  }
-
-  function handleBulkAssign(rangeId: string) {
-    // Remove existing assignments for selected images
-    const selectedSet = new Set(selectedImageIndices);
-    watermarkConfig.assignments = watermarkConfig.assignments.filter(
-      (a) => !selectedSet.has(a.imageIndex)
-    );
-
-    // Add new assignments
-    const newAssignments = Array.from(selectedImageIndices).map(
-      (imageIndex) => ({
-        imageIndex,
-        rangeId,
-      })
-    );
-
-    watermarkConfig.assignments = [
-      ...watermarkConfig.assignments,
-      ...newAssignments,
-    ];
-
-    // Clear selection after assignment
-    selectedImageIndices = new Set();
   }
 
   async function handleProcess() {
@@ -209,11 +149,6 @@
       onProcess={handleProcess}
       canProcess={canProcess && !hasErrors}
       config={watermarkConfig}
-      selectedIndices={selectedImageIndices}
-      onSelectionToggle={handleImageSelectionToggle}
-      onSelectAll={handleSelectAll}
-      onSelectNone={handleSelectNone}
-      onBulkAssign={handleBulkAssign}
       on:remove={handleRemove}
       on:clearAll={handleClearAll}
     />

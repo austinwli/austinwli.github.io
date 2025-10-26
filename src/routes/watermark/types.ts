@@ -2,11 +2,7 @@ export interface TimeRange {
   id: string; // Unique identifier
   startTime: string; // "10:00"
   incrementMinutes: number; // 2
-}
-
-export interface ImageAssignment {
-  imageIndex: number; // Index in files array
-  rangeId: string; // Which time range this image belongs to
+  photoCount: number; // Number of photos assigned to this range
 }
 
 export interface WatermarkConfig {
@@ -15,8 +11,7 @@ export interface WatermarkConfig {
   city: string; // "CAMBRIDGE"
   state: string; // "MA"
   zip: string; // "02138"
-  timeRanges: TimeRange[]; // Available time ranges
-  assignments: ImageAssignment[]; // Image to range mappings
+  timeRanges: TimeRange[]; // Available time ranges with photo counts
 }
 
 export interface AdvancedOptions {

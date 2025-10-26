@@ -1,36 +1,34 @@
 import type { WatermarkConfig, TimeRange } from "./types";
 
 /**
- * Calculate timestamp for an image based on its assignment
+ * Calculate timestamp for an image based on sequential assignment
+ * Images are assigned to ranges in upload order based on photoCount
  */
 export function calculateImageTimestamp(
   config: WatermarkConfig,
   imageIndex: number
 ): string | null {
-  // Find assignment for this image
-  const assignment = config.assignments.find(
-    (a) => a.imageIndex === imageIndex
-  );
-  if (!assignment) return null;
+  let cumulativeCount = 0;
 
-  // Find the range
-  const range = config.timeRanges.find((r) => r.id === assignment.rangeId);
-  if (!range) return null;
+  // Iterate through ranges to find which one contains this image
+  for (const range of config.timeRanges) {
+    const rangeEndIndex = cumulativeCount + range.photoCount;
 
-  // Find position within range (sorted by image index)
-  const imagesInRange = config.assignments
-    .filter((a) => a.rangeId === assignment.rangeId)
-    .sort((a, b) => a.imageIndex - b.imageIndex);
+    if (imageIndex < rangeEndIndex) {
+      // This image belongs to the current range
+      const positionInRange = imageIndex - cumulativeCount;
+      return formatTimestamp(
+        range.startTime,
+        range.incrementMinutes,
+        positionInRange
+      );
+    }
 
-  const positionInRange = imagesInRange.findIndex(
-    (a) => a.imageIndex === imageIndex
-  );
+    cumulativeCount = rangeEndIndex;
+  }
 
-  return formatTimestamp(
-    range.startTime,
-    range.incrementMinutes,
-    positionInRange
-  );
+  // Image index exceeds total assigned photos
+  return null;
 }
 
 /**
@@ -55,9 +53,29 @@ export function formatTimestamp(
 }
 
 /**
- * Get the display name for a range
+ * Get which range an image belongs to based on sequential assignment
+ * Returns range object and position within that range, or null if unassigned
  */
-export function getRangeName(timeRanges: TimeRange[], rangeId: string): string {
-  const rangeIndex = timeRanges.findIndex((r) => r.id === rangeId);
-  return rangeIndex >= 0 ? `Range ${rangeIndex + 1}` : "Unknown";
+export function getImageRange(
+  config: WatermarkConfig,
+  imageIndex: number
+): { range: TimeRange; rangeIndex: number; positionInRange: number } | null {
+  let cumulativeCount = 0;
+
+  for (let i = 0; i < config.timeRanges.length; i++) {
+    const range = config.timeRanges[i];
+    const rangeEndIndex = cumulativeCount + range.photoCount;
+
+    if (imageIndex < rangeEndIndex) {
+      return {
+        range,
+        rangeIndex: i,
+        positionInRange: imageIndex - cumulativeCount,
+      };
+    }
+
+    cumulativeCount = rangeEndIndex;
+  }
+
+  return null;
 }

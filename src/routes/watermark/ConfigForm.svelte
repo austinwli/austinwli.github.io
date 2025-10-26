@@ -53,7 +53,7 @@
   $: hasCountMismatch = totalImages > 0 && totalAssigned !== totalImages;
 </script>
 
-<div class="space-y-4 w-full min-w-0">
+<div class="space-y-4">
   <!-- Date Field -->
   <div class="form-field">
     <label for="date">Date</label>
@@ -212,7 +212,7 @@
   }
 
   .form-field {
-    @apply space-y-2;
+    @apply space-y-2 min-w-0;
   }
 
   .form-field.full-width {
@@ -230,29 +230,35 @@
            text-base;
   }
 
-  /* Specific styling for date and time inputs to prevent overflow */
+  /* Override browser defaults for date and time inputs */
   input[type="date"],
   input[type="time"] {
     @apply w-full min-w-0 max-w-full;
-    /* Prevent browser from setting a minimum width */
+    /* Force override browser minimum width */
     min-width: 0 !important;
     max-width: 100% !important;
+    /* Ensure text alignment matches other inputs */
+    text-align: left !important;
+    /* Prevent browser from centering content */
+    justify-content: flex-start !important;
   }
 
-  /* Ensure date/time inputs work well in mobile */
+  /* Mobile-specific fixes for date/time inputs */
   @media (max-width: 640px) {
     input[type="date"],
     input[type="time"] {
       @apply text-sm;
       /* Reduce padding slightly on mobile to fit better */
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
+      padding-left: 0.75rem !important;
+      padding-right: 0.75rem !important;
+      /* Force smaller font size on mobile */
+      font-size: 14px !important;
     }
   }
 
   .time-range-card {
     @apply border border-neutral-300 rounded p-4 bg-neutral-50;
-    /* Ensure the card doesn't overflow */
+    /* Prevent overflow */
     overflow: hidden;
   }
 

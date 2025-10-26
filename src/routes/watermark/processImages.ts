@@ -3,6 +3,7 @@ import type {
   AdvancedOptions,
   ProcessingProgress,
 } from "./types";
+import { calculateImageTimestamp } from "./utils";
 
 /**
  * Process multiple images with watermarks
@@ -54,7 +55,7 @@ async function processImage(
   ctx.drawImage(img, 0, 0);
 
   // Calculate timestamp for this image based on assignments
-  const timestamp = calculateTimestampFromRanges(config, index);
+  const timestamp = calculateImageTimestamp(config, index) || "12:00PM";
 
   // Convert date from YYYY-MM-DD to MM/DD/YYYY
   const [year, month, day] = config.date.split("-");
@@ -84,64 +85,6 @@ async function processImage(
       0.92
     );
   });
-}
-
-/**
- * Calculate timestamp for image based on assignments
- */
-function calculateTimestampFromRanges(
-  config: import("./types").WatermarkConfig,
-  imageIndex: number
-): string {
-  // Find assignment for this image
-  const assignment = config.assignments.find(
-    (a) => a.imageIndex === imageIndex
-  );
-  if (!assignment) {
-    return "12:00PM"; // Fallback for unassigned images
-  }
-
-  // Find the range
-  const range = config.timeRanges.find((r) => r.id === assignment.rangeId);
-  if (!range) {
-    return "12:00PM"; // Fallback for invalid range
-  }
-
-  // Find position within range (sorted by image index)
-  const imagesInRange = config.assignments
-    .filter((a) => a.rangeId === assignment.rangeId)
-    .sort((a, b) => a.imageIndex - b.imageIndex);
-
-  const positionInRange = imagesInRange.findIndex(
-    (a) => a.imageIndex === imageIndex
-  );
-
-  return calculateTimestamp(
-    range.startTime,
-    range.incrementMinutes,
-    positionInRange
-  );
-}
-
-/**
- * Calculate timestamp for a single image within a range
- */
-function calculateTimestamp(
-  startTime: string,
-  incrementMinutes: number,
-  index: number
-): string {
-  const [hours, minutes] = startTime.split(":").map(Number);
-  const totalMinutes = hours * 60 + minutes + index * incrementMinutes;
-
-  const newHours = Math.floor(totalMinutes / 60) % 24;
-  const newMinutes = totalMinutes % 60;
-
-  // Format as 12-hour time with AM/PM (no space before AM/PM)
-  const period = newHours >= 12 ? "PM" : "AM";
-  const displayHours = newHours % 12 || 12;
-
-  return `${displayHours}:${String(newMinutes).padStart(2, "0")}${period}`;
 }
 
 /**

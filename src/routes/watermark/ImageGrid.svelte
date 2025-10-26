@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import { X } from "lucide-svelte";
   import type { WatermarkConfig } from "./types";
+  import { calculateImageTimestamp, getRangeName } from "./utils";
 
   export let files: File[] = [];
   export let onProcess: (() => void) | null = null;
@@ -29,43 +30,6 @@
 
   function getAssignment(imageIndex: number) {
     return config.assignments.find((a) => a.imageIndex === imageIndex);
-  }
-
-  function getRange(rangeId: string) {
-    return config.timeRanges.find((r) => r.id === rangeId);
-  }
-
-  function calculateTimestamp(imageIndex: number): string | null {
-    const assignment = getAssignment(imageIndex);
-    if (!assignment) return null;
-
-    const range = getRange(assignment.rangeId);
-    if (!range) return null;
-
-    // Find position within range
-    const imagesInRange = config.assignments
-      .filter((a) => a.rangeId === assignment.rangeId)
-      .sort((a, b) => a.imageIndex - b.imageIndex);
-
-    const positionInRange = imagesInRange.findIndex(
-      (a) => a.imageIndex === imageIndex
-    );
-
-    // Calculate time
-    const [hours, minutes] = range.startTime.split(":").map(Number);
-    const totalMinutes =
-      hours * 60 + minutes + positionInRange * range.incrementMinutes;
-    const newHours = Math.floor(totalMinutes / 60) % 24;
-    const newMinutes = totalMinutes % 60;
-    const period = newHours >= 12 ? "PM" : "AM";
-    const displayHours = newHours % 12 || 12;
-
-    return `${displayHours}:${String(newMinutes).padStart(2, "0")}${period}`;
-  }
-
-  function getRangeName(rangeId: string): string {
-    const rangeIndex = config.timeRanges.findIndex((r) => r.id === rangeId);
-    return rangeIndex >= 0 ? `Range ${rangeIndex + 1}` : "Unknown";
   }
 
   // Initialize selectedRangeId only if it's not set or invalid
@@ -165,7 +129,7 @@
     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
       {#each files as file, i (i)}
         {@const assignment = getAssignment(i)}
-        {@const timestamp = calculateTimestamp(i)}
+        {@const timestamp = calculateImageTimestamp(config, i)}
         <div class="image-card group" class:selected={selectedIndices.has(i)}>
           <!-- Checkbox -->
           <button
@@ -204,7 +168,7 @@
           <div class="assignment-info">
             {#if assignment}
               <p class="text-xs text-neutral-700 font-medium">
-                {getRangeName(assignment.rangeId)}
+                {getRangeName(config.timeRanges, assignment.rangeId)}
               </p>
               {#if timestamp}
                 <p class="text-xs text-neutral-600">{timestamp}</p>

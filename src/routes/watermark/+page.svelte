@@ -173,15 +173,6 @@
       disabled={isProcessing}
       on:filesSelected={handleFilesSelected}
     />
-    <ImageGrid
-      files={selectedFiles}
-      onProcess={handleProcess}
-      canProcess={canProcess && !hasErrors}
-      config={watermarkConfig}
-      on:remove={handleRemove}
-      on:reorder={handleReorder}
-      on:clearAll={handleClearAll}
-    />
 
     {#if (errorMessage || hasErrors) && selectedFiles.length > 0}
       <p class="text-sm text-neutral-600">
@@ -189,6 +180,19 @@
       </p>
     {/if}
   </div>
+</div>
+
+<!-- Break out of layout-md for wider image grid -->
+<div class="image-grid-container">
+  <ImageGrid
+    files={selectedFiles}
+    onProcess={handleProcess}
+    canProcess={canProcess && !hasErrors}
+    config={watermarkConfig}
+    on:remove={handleRemove}
+    on:reorder={handleReorder}
+    on:clearAll={handleClearAll}
+  />
 </div>
 
 {#if isProcessing}
@@ -218,6 +222,10 @@
 {/if}
 
 <style lang="postcss">
+  .image-grid-container {
+    @apply mx-auto max-w-[1152px] px-4 sm:px-6;
+  }
+
   .progress-overlay {
     @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50;
   }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, onDestroy } from "svelte";
-  import { X, GripVertical } from "lucide-svelte";
+  import { X } from "lucide-svelte";
   import type { WatermarkConfig } from "./types";
   import { calculateImageTimestamp, getImageRange } from "./utils";
 
@@ -135,11 +135,6 @@
           tabindex="0"
           aria-label="Drag to reorder image {i + 1}"
         >
-          <!-- Drag Handle -->
-          <div class="drag-handle" aria-hidden="true">
-            <GripVertical size={12} />
-          </div>
-
           <!-- Image -->
           <img
             src={blobUrls[i]}
@@ -187,7 +182,7 @@
   }
 
   .image-grid-responsive {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4;
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4;
   }
 
   .image-card-mobile {
@@ -205,17 +200,6 @@
 
   .image-card-mobile.drag-over {
     @apply ring-2 ring-blue-500 ring-offset-2;
-  }
-
-  .drag-handle {
-    @apply absolute top-2 left-2 sm:top-3 sm:left-3
-           bg-black/70 text-white rounded p-2
-           opacity-0 group-hover:opacity-100 transition-opacity
-           z-10 pointer-events-none min-w-[44px] min-h-[44px] flex items-center justify-center;
-  }
-
-  .image-card-mobile.is-dragging .drag-handle {
-    @apply opacity-100;
   }
 
   .remove-btn-mobile {

@@ -38,7 +38,7 @@
   };
   let advancedOptions: AdvancedOptionsType = {
     position: "top-left",
-    fontSize: "medium",
+    fontSize: "large",
     textColor: "white",
     hasBorder: false,
     borderColor: "black",

@@ -2,6 +2,71 @@
   import type { AdvancedOptions } from "./types";
 
   export let options: AdvancedOptions;
+
+  const borderWidths = [
+    { name: "Thin", value: "thin" },
+    { name: "Medium", value: "medium" },
+    { name: "Thick", value: "thick" },
+  ];
+
+  $: isCustomColor =
+    options.textColor !== "white" &&
+    options.textColor !== "black" &&
+    typeof options.textColor === "string" &&
+    options.textColor.startsWith("#");
+  $: isCustomBorderColor =
+    options.hasBorder &&
+    options.borderColor !== "white" &&
+    options.borderColor !== "black" &&
+    typeof options.borderColor === "string" &&
+    options.borderColor.startsWith("#");
+
+  // Initialize custom color if user selects "custom"
+  function handleTextColorChange(value: string) {
+    if (value === "custom") {
+      options.textColor = "#FFFFFF";
+    }
+  }
+
+  function handleBorderColorChange(value: string) {
+    if (value === "custom") {
+      options.borderColor = "#000000";
+    }
+  }
+
+  function handleTextColorPickerChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (target) {
+      options.textColor = target.value.toUpperCase();
+    }
+  }
+
+  function handleBorderColorPickerChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (target) {
+      options.borderColor = target.value.toUpperCase();
+    }
+  }
+
+  function handleTextColorHexChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (target) {
+      const value = target.value.trim();
+      if (value.match(/^#[0-9A-Fa-f]{6}$/)) {
+        options.textColor = value.toUpperCase();
+      }
+    }
+  }
+
+  function handleBorderColorHexChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (target) {
+      const value = target.value.trim();
+      if (value.match(/^#[0-9A-Fa-f]{6}$/)) {
+        options.borderColor = value.toUpperCase();
+      }
+    }
+  }
 </script>
 
 <div class="space-y-4">
@@ -26,34 +91,154 @@
         <option value="large">Large</option>
       </select>
     </div>
+  </div>
 
-    <div class="form-field">
-      <span class="field-label">Text Color</span>
-      <div class="flex gap-4 mt-2">
-        <label class="radio-label">
+  <!-- Text Color Section -->
+  <div class="form-field">
+    <label for="textColor">Text Color</label>
+    <div class="color-selector">
+      <div class="color-options">
+        <label class="color-option">
           <input type="radio" bind:group={options.textColor} value="white" />
-          White
+          <div class="color-preview white" />
+          <span>White</span>
         </label>
-        <label class="radio-label">
+        <label class="color-option">
           <input type="radio" bind:group={options.textColor} value="black" />
-          Black
+          <div class="color-preview black" />
+          <span>Black</span>
+        </label>
+        <label class="color-option">
+          <input
+            type="radio"
+            bind:group={options.textColor}
+            value="custom"
+            on:change={() => handleTextColorChange("custom")}
+          />
+          <div class="color-preview custom" />
+          <span>Custom</span>
         </label>
       </div>
+      {#if isCustomColor}
+        <div class="color-picker-wrapper">
+          <label for="textColorPicker" class="color-picker-label"
+            >Choose Color</label
+          >
+          <div class="color-picker-container">
+            <input
+              id="textColorPicker"
+              type="color"
+              value={options.textColor}
+              on:change={handleTextColorPickerChange}
+              class="color-picker"
+            />
+            <input
+              type="text"
+              bind:value={options.textColor}
+              on:input={handleTextColorHexChange}
+              placeholder="#FFFFFF"
+              class="color-hex-input"
+              pattern="#[0-9A-Fa-f]{6}"
+            />
+          </div>
+        </div>
+      {/if}
     </div>
+  </div>
+
+  <!-- Border Options -->
+  <div class="form-field">
+    <label class="checkbox-label">
+      <input type="checkbox" bind:checked={options.hasBorder} />
+      <span>Add text border/outline</span>
+    </label>
+
+    {#if options.hasBorder}
+      <div class="mt-3 space-y-3">
+        <div>
+          <label for="borderColor" class="text-sm text-neutral-500"
+            >Border Color</label
+          >
+          <div class="color-selector">
+            <div class="color-options">
+              <label class="color-option">
+                <input
+                  type="radio"
+                  bind:group={options.borderColor}
+                  value="white"
+                />
+                <div class="color-preview white" />
+                <span>White</span>
+              </label>
+              <label class="color-option">
+                <input
+                  type="radio"
+                  bind:group={options.borderColor}
+                  value="black"
+                />
+                <div class="color-preview black" />
+                <span>Black</span>
+              </label>
+              <label class="color-option">
+                <input
+                  type="radio"
+                  bind:group={options.borderColor}
+                  value="custom"
+                  on:change={() => handleBorderColorChange("custom")}
+                />
+                <div class="color-preview custom" />
+                <span>Custom</span>
+              </label>
+            </div>
+            {#if isCustomBorderColor}
+              <div class="color-picker-wrapper mt-2">
+                <label for="borderColorPicker" class="color-picker-label"
+                  >Choose Color</label
+                >
+                <div class="color-picker-container">
+                  <input
+                    id="borderColorPicker"
+                    type="color"
+                    value={options.borderColor}
+                    on:change={handleBorderColorPickerChange}
+                    class="color-picker"
+                  />
+                  <input
+                    type="text"
+                    bind:value={options.borderColor}
+                    on:input={handleBorderColorHexChange}
+                    placeholder="#000000"
+                    class="color-hex-input"
+                    pattern="#[0-9A-Fa-f]{6}"
+                  />
+                </div>
+              </div>
+            {/if}
+          </div>
+        </div>
+        <div>
+          <label for="borderWidth">Border Width</label>
+          <select id="borderWidth" bind:value={options.borderWidth}>
+            {#each borderWidths as width}
+              <option value={width.value}>{width.name}</option>
+            {/each}
+          </select>
+        </div>
+      </div>
+    {/if}
   </div>
 </div>
 
 <style lang="postcss">
   .options-grid {
-    @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
   }
 
   .form-field {
     @apply space-y-1.5;
   }
 
-  label,
-  .field-label {
+  label {
     @apply block text-sm text-neutral-500;
   }
 
@@ -63,12 +248,67 @@
            bg-white text-neutral-900 cursor-pointer transition-colors;
   }
 
-  .radio-label {
-    @apply flex items-center gap-2 cursor-pointer text-sm sm:text-sm text-neutral-700
-           hover:text-black transition-colors py-2;
+  .color-selector {
+    @apply space-y-3;
+  }
+
+  .color-options {
+    @apply flex gap-3 flex-wrap;
+  }
+
+  .color-option {
+    @apply flex items-center gap-2 cursor-pointer text-sm text-neutral-700
+           hover:text-black transition-colors;
+  }
+
+  .color-preview {
+    @apply w-6 h-6 rounded border border-neutral-300;
+  }
+
+  .color-preview.white {
+    @apply bg-white;
+  }
+
+  .color-preview.black {
+    @apply bg-black;
+  }
+
+  .color-preview.custom {
+    @apply bg-gradient-to-br from-red-500 via-blue-500 to-green-500;
+  }
+
+  .color-picker-wrapper {
+    @apply space-y-2;
+  }
+
+  .color-picker-label {
+    @apply text-sm text-neutral-500;
+  }
+
+  .color-picker-container {
+    @apply flex gap-2 items-center;
+  }
+
+  .color-picker {
+    @apply w-16 h-10 cursor-pointer rounded border border-neutral-300;
+  }
+
+  .color-hex-input {
+    @apply flex-1 px-3 py-2 border border-neutral-300 rounded
+           focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400
+           bg-white text-neutral-900 font-mono text-sm;
+  }
+
+  .checkbox-label {
+    @apply flex items-center gap-2 cursor-pointer text-sm text-neutral-700;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    @apply cursor-pointer;
   }
 
   input[type="radio"] {
-    @apply cursor-pointer w-4 h-4;
+    @apply w-4 h-4;
   }
 </style>

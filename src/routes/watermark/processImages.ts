@@ -6,6 +6,74 @@ import type {
 import { calculateImageTimestamp } from "./utils";
 
 /**
+ * Check if Alibaba Sans Medium font is loaded, wait if necessary
+ */
+async function ensureFontLoaded(): Promise<void> {
+  const fontName = "Alibaba Sans Medium";
+
+  // Check if FontFace API is available
+  if (!document.fonts || !document.fonts.check) {
+    // Fallback: wait a bit for font to load
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return;
+  }
+
+  // Check if font is already loaded
+  try {
+    const isLoaded = document.fonts.check(`12px "${fontName}"`);
+    if (isLoaded) {
+      return;
+    }
+
+    // Wait for font to load (max 5 seconds)
+    const maxWaitTime = 5000;
+    const startTime = Date.now();
+
+    return new Promise((resolve, reject) => {
+      const checkFont = () => {
+        const elapsed = Date.now() - startTime;
+
+        if (document.fonts.check(`12px "${fontName}"`)) {
+          resolve();
+          return;
+        }
+
+        if (elapsed > maxWaitTime) {
+          console.warn(
+            `Font "${fontName}" did not load within ${maxWaitTime}ms, proceeding anyway`
+          );
+          resolve(); // Proceed even if font didn't load
+          return;
+        }
+
+        requestAnimationFrame(checkFont);
+      };
+
+      // Also listen for font loading events
+      document.fonts.ready
+        .then(() => {
+          if (document.fonts.check(`12px "${fontName}"`)) {
+            resolve();
+          } else {
+            checkFont();
+          }
+        })
+        .catch(() => {
+          // If fonts.ready fails, just check manually
+          checkFont();
+        });
+
+      // Start checking immediately
+      checkFont();
+    });
+  } catch (error) {
+    console.warn(`Error checking font "${fontName}":`, error);
+    // Fallback: wait a bit
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+}
+
+/**
  * Process multiple images with watermarks
  */
 export async function processImages(
@@ -14,6 +82,9 @@ export async function processImages(
   options: AdvancedOptions,
   onProgress?: (progress: ProcessingProgress) => void
 ): Promise<Blob[]> {
+  // Ensure font is loaded before processing
+  await ensureFontLoaded();
+
   const processed: Blob[] = [];
 
   for (let i = 0; i < files.length; i++) {
@@ -105,14 +176,30 @@ function applyWatermark(
   };
 
   const fontSize = fontSizes[options.fontSize];
-  const lineHeight = fontSize * 1.2;
 
-  // Configure text style
-  ctx.font = `${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+  // Adjust leading: original was fontSize * 1.2, now reduce by 25
+  const baseLineHeight = fontSize * 1.2;
+  const lineHeight = Math.max(baseLineHeight - 25, fontSize * 0.8); // Minimum 0.8x to prevent overlap
+
+  // Use Alibaba Sans Medium font
+  ctx.font = `${fontSize}px "Alibaba Sans Medium", "Alibaba Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
   ctx.textBaseline = "top";
 
+  // Kerning adjustment: -4 pixels
+  const letterSpacing = -4;
+
   // Measure the widest line to determine positioning
-  const lineWidths = lines.map((line) => ctx.measureText(line).width);
+  // We need to account for letter spacing when measuring
+  const lineWidths = lines.map((line) => {
+    // Calculate width with letter spacing
+    let totalWidth = 0;
+    for (let i = 0; i < line.length; i++) {
+      totalWidth += ctx.measureText(line[i]).width;
+    }
+    totalWidth += letterSpacing * (line.length - 1);
+    return totalWidth;
+  });
+
   const maxWidth = Math.max(...lineWidths);
   const totalHeight = lineHeight * lines.length;
   const padding = fontSize * 0.8;
@@ -133,19 +220,55 @@ function applyWatermark(
     startY = padding;
   }
 
+  // Border width mapping
+  const borderWidths = {
+    thin: 1,
+    medium: 2,
+    thick: 3,
+  };
+
+  // Helper function to draw text with spacing (for both fill and stroke)
+  const drawText = (text: string, x: number, y: number, useStroke = false) => {
+    let currentX = x;
+    for (let j = 0; j < text.length; j++) {
+      if (useStroke) {
+        ctx.strokeText(text[j], currentX, y);
+      } else {
+        ctx.fillText(text[j], currentX, y);
+      }
+      const charWidth = ctx.measureText(text[j]).width;
+      currentX += charWidth + letterSpacing;
+    }
+  };
+
   // Draw each line
-  const fillStyle =
-    options.textColor === "white"
-      ? "rgba(255,255,255,0.95)"
-      : "rgba(0,0,0,0.9)";
-
-  ctx.fillStyle = fillStyle;
-
   lines.forEach((line, i) => {
     const y = startY + i * lineHeight;
 
-    // Draw text
-    ctx.fillText(line, startX, y);
+    // Draw border/outline if enabled
+    if (options.hasBorder) {
+      const borderWidth = borderWidths[options.borderWidth];
+      ctx.strokeStyle =
+        options.borderColor === "white"
+          ? "rgba(255,255,255,0.95)"
+          : options.borderColor === "black"
+          ? "rgba(0,0,0,0.9)"
+          : options.borderColor;
+      ctx.lineWidth = borderWidth * 2;
+      ctx.lineJoin = "round";
+      ctx.miterLimit = 2;
+      drawText(line, startX, y, true);
+    }
+
+    // Draw text fill
+    ctx.fillStyle =
+      options.textColor === "white"
+        ? "rgba(255,255,255,0.95)"
+        : options.textColor === "black"
+        ? "rgba(0,0,0,0.9)"
+        : options.textColor;
+
+    drawText(line, startX, y, false);
   });
 }
 

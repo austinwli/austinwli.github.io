@@ -37,6 +37,9 @@
     position: "top-left",
     fontSize: "small",
     textColor: "white",
+    hasBorder: false,
+    borderColor: "black",
+    borderWidth: "medium",
   };
   let isProcessing = false;
   let progress: ProcessingProgress = { current: 0, total: 0, currentFile: "" };
@@ -113,6 +116,10 @@
     }
   }
 </script>
+
+<svelte:head>
+  <link rel="stylesheet" href="https://use.typekit.net/evw2arl.css" />
+</svelte:head>
 
 <Seo
   title="Austin Li – Watermark Tool"

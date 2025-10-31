@@ -27,7 +27,10 @@ export interface WatermarkConfig {
 export interface AdvancedOptions {
   position: "top-left" | "top-right" | "bottom-left" | "bottom-right";
   fontSize: "small" | "medium" | "large";
-  textColor: "white" | "black";
+  textColor: "white" | "black" | string; // Allow custom hex colors
+  hasBorder: boolean; // Enable/disable border
+  borderColor: "white" | "black" | string; // Border color
+  borderWidth: "thin" | "medium" | "thick"; // Border thickness
 }
 
 export interface ProcessingProgress {

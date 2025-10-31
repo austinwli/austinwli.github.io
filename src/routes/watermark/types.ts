@@ -1,7 +1,17 @@
+/**
+ * Represents a single increment in a time pattern.
+ * Can be either:
+ * - A number: minutes to add from the previous entry
+ * - An object: minutes to add relative to a specific entry index
+ */
+export type IncrementPattern =
+  | number // Direct increment in minutes from previous entry
+  | { relativeTo: number; add: number }; // Add X minutes to entry at index Y (0-based)
+
 export interface TimeRange {
   id: string; // Unique identifier
   startTime: string; // "10:00"
-  incrementMinutes: number; // 2
+  incrementPattern: IncrementPattern[]; // Pattern of increments (length = photoCount - 1)
   photoCount: number; // Number of photos assigned to this range
 }
 

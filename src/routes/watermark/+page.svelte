@@ -11,6 +11,7 @@
     validateConfig,
   } from "./processImages";
   import { downloadAsZip } from "./downloadZip";
+  import { DEFAULT_PATTERNS, DEFAULT_PHOTO_COUNTS } from "./utils";
   import type {
     WatermarkConfig,
     AdvancedOptions as AdvancedOptionsType,
@@ -25,14 +26,12 @@
     city: "",
     state: "",
     zip: "",
-    timeRanges: [
-      {
-        id: crypto.randomUUID(),
-        startTime: "10:00",
-        incrementMinutes: 1,
-        photoCount: 0,
-      },
-    ],
+    timeRanges: DEFAULT_PATTERNS.map((pattern, i) => ({
+      id: crypto.randomUUID(),
+      startTime: "10:00",
+      incrementPattern: pattern,
+      photoCount: DEFAULT_PHOTO_COUNTS[i],
+    })),
   };
   let advancedOptions: AdvancedOptionsType = {
     position: "top-left",

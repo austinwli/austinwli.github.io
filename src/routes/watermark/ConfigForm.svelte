@@ -8,7 +8,7 @@
     const newRange: TimeRange = {
       id: crypto.randomUUID(),
       startTime: "10:00",
-      incrementMinutes: 2,
+      incrementPattern: [2], // Default simple pattern: +2 minutes per photo
       photoCount: 0,
     };
     config.timeRanges = [...config.timeRanges, newRange];
@@ -25,20 +25,23 @@
     return `${displayHours}:${String(minutes).padStart(2, "0")}${period}`;
   }
 
-  function formatPreview(cfg: WatermarkConfig): string {
+  /**
+   * Format a single range preview string
+   */
+  function formatRangePreview(
+    cfg: WatermarkConfig,
+    range: TimeRange
+  ): string | null {
     if (!cfg.date || !cfg.street || !cfg.city || !cfg.state || !cfg.zip) {
-      return "Fill in all fields to see preview...";
+      return null;
     }
 
     // Convert date from YYYY-MM-DD to MM/DD/YYYY
     const [year, month, day] = cfg.date.split("-");
     const dateStr = `${month}/${day}/${year}`;
 
-    // Use first time range for preview
-    const timeStr =
-      cfg.timeRanges.length > 0
-        ? formatTime(cfg.timeRanges[0].startTime)
-        : "10:00AM";
+    // Format start time
+    const timeStr = formatTime(range.startTime);
 
     // Format address in uppercase for preview
     return `${dateStr} ${timeStr}\n${cfg.street.toUpperCase()}\n${cfg.city.toUpperCase()}, ${cfg.state.toUpperCase()} ${
@@ -156,17 +159,6 @@
               />
             </div>
             <div class="form-field">
-              <label for="increment-{range.id}">Increment (min)</label>
-              <input
-                id="increment-{range.id}"
-                type="number"
-                bind:value={range.incrementMinutes}
-                min="1"
-                max="1440"
-                required
-              />
-            </div>
-            <div class="form-field">
               <label for="photoCount-{range.id}">Number of Photos</label>
               <input
                 id="photoCount-{range.id}"
@@ -199,7 +191,31 @@
     {/if}
   </div>
 
-  <pre class="preview-text">{formatPreview(config)}</pre>
+  <!-- Preview Section -->
+  <div class="preview-section">
+    <p class="text-sm text-neutral-500 mb-3">Preview</p>
+    {#if !config.date || !config.street || !config.city || !config.state || !config.zip}
+      <p class="text-sm text-neutral-400 italic">
+        Fill in all fields to see preview...
+      </p>
+    {:else}
+      <div class="preview-grid">
+        {#each config.timeRanges as range, i}
+          {@const preview = formatRangePreview(config, range)}
+          <div class="preview-card">
+            <div class="preview-header">Range {i + 1}</div>
+            {#if preview}
+              <pre class="preview-text">{preview}</pre>
+            {:else}
+              <p class="text-sm text-neutral-400 italic">
+                Invalid configuration
+              </p>
+            {/if}
+          </div>
+        {/each}
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style lang="postcss">
@@ -322,7 +338,7 @@
   }
 
   .range-grid-responsive {
-    @apply grid grid-cols-1 sm:grid-cols-3 gap-3;
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
     /* Ensure grid items don't overflow */
     min-width: 0;
   }
@@ -334,6 +350,22 @@
 
   .time-range-card input {
     @apply min-w-0;
+  }
+
+  .preview-section {
+    @apply mt-6;
+  }
+
+  .preview-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+  }
+
+  .preview-card {
+    @apply min-w-0;
+  }
+
+  .preview-header {
+    @apply text-xs font-medium text-neutral-600 mb-1;
   }
 
   .preview-text {

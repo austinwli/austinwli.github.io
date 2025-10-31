@@ -206,10 +206,51 @@ export function validateConfig(
   for (let i = 0; i < config.timeRanges.length; i++) {
     const range = config.timeRanges[i];
     if (!range.startTime) return `Range ${i + 1}: Start time is required`;
-    if (range.incrementMinutes < 1)
-      return `Range ${i + 1}: Increment must be at least 1 minute`;
+    if (!range.incrementPattern || !Array.isArray(range.incrementPattern))
+      return `Range ${i + 1}: Increment pattern is required`;
     if (range.photoCount < 0)
       return `Range ${i + 1}: Photo count cannot be negative`;
+    // Pattern length should be photoCount - 1 (first image uses start time)
+    if (
+      range.photoCount > 0 &&
+      range.incrementPattern.length !== range.photoCount - 1
+    ) {
+      return `Range ${i + 1}: Pattern length (${
+        range.incrementPattern.length
+      }) must be ${range.photoCount - 1} for ${range.photoCount} photos`;
+    }
+    // Validate pattern entries: numbers must be >= 0, relative references must be valid
+    for (let j = 0; j < range.incrementPattern.length; j++) {
+      const entry = range.incrementPattern[j];
+      if (typeof entry === "number") {
+        if (entry < 0) {
+          return `Range ${i + 1}: Pattern entry ${j + 1} cannot be negative`;
+        }
+      } else if (typeof entry === "object" && entry !== null) {
+        if (
+          typeof entry.relativeTo !== "number" ||
+          typeof entry.add !== "number"
+        ) {
+          return `Range ${i + 1}: Pattern entry ${
+            j + 1
+          } has invalid relative reference format`;
+        }
+        // At pattern position j, we have computed times[0] through times[j+1]
+        // relativeTo can reference any already-computed time (0 <= relativeTo <= j+1)
+        if (entry.relativeTo < 0 || entry.relativeTo > j + 1) {
+          return `Range ${i + 1}: Pattern entry ${
+            j + 1
+          } references invalid index (must reference an already-computed entry)`;
+        }
+        if (entry.add < 0) {
+          return `Range ${i + 1}: Pattern entry ${
+            j + 1
+          } has negative add value`;
+        }
+      } else {
+        return `Range ${i + 1}: Pattern entry ${j + 1} has invalid format`;
+      }
+    }
   }
 
   // Validate total photo count matches uploaded images

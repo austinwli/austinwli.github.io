@@ -210,6 +210,18 @@
 
   select {
     @apply cursor-pointer;
+    /* Ensure consistent spacing with date/time inputs */
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem !important;
   }
 
   /* Override browser defaults for date and time inputs */
@@ -248,14 +260,15 @@
     }
   }
 
-  /* Mobile-specific fixes for date/time inputs */
+  /* Mobile-specific fixes for date/time inputs and select */
   @media (max-width: 640px) {
     input[type="date"],
-    input[type="time"] {
+    input[type="time"],
+    select {
       @apply text-sm;
       /* Reduce padding slightly on mobile to fit better */
       padding-left: 0.75rem !important;
-      padding-right: 0.75rem !important;
+      padding-right: 2.25rem !important; /* Extra space for select caret */
       /* Force smaller font size on mobile */
       font-size: 14px !important;
       /* Mobile Safari specific overrides */
@@ -265,6 +278,10 @@
       min-width: 0 !important;
       max-width: 100% !important;
       width: 100% !important;
+    }
+
+    select {
+      padding-right: 2.25rem !important; /* Space for caret on mobile */
     }
   }
 

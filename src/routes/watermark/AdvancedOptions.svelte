@@ -301,9 +301,37 @@
   }
 
   select {
-    @apply w-full px-3 py-2 border border-neutral-300 rounded
-           focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400
-           bg-white text-neutral-900 cursor-pointer transition-colors;
+    @apply w-full px-4 py-3 border border-neutral-300 rounded
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           bg-white text-neutral-900 cursor-pointer transition-colors
+           text-base;
+    /* Ensure consistent spacing with date/time inputs */
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem !important;
+  }
+
+  /* Mobile-specific fixes for select */
+  @media (max-width: 640px) {
+    select {
+      @apply text-sm;
+      padding-left: 0.75rem !important;
+      padding-right: 2.25rem !important; /* Space for caret */
+      font-size: 14px !important;
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
   }
 
   .color-selector {

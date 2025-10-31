@@ -69,10 +69,20 @@
   function handleReorder(event: CustomEvent<{ from: number; to: number }>) {
     const { from, to } = event.detail;
 
-    // Create new array with reordered items (immutable update)
+    // Validate indices
+    if (
+      from === to ||
+      from < 0 ||
+      from >= selectedFiles.length ||
+      to < 0 ||
+      to >= selectedFiles.length
+    ) {
+      return;
+    }
+
+    // Create new array and swap the two items (immutable update)
     const newFiles = [...selectedFiles];
-    const [movedItem] = newFiles.splice(from, 1);
-    newFiles.splice(to, 0, movedItem);
+    [newFiles[from], newFiles[to]] = [newFiles[to], newFiles[from]];
 
     selectedFiles = newFiles;
     errorMessage = "";

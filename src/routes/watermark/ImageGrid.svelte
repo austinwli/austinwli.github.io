@@ -2,7 +2,7 @@
   import { createEventDispatcher, onDestroy } from "svelte";
   import { X } from "lucide-svelte";
   import type { WatermarkConfig } from "./types";
-  import { calculateImageTimestamp, getImageRange } from "./utils";
+  import { calculateImageTimestamp } from "./utils";
 
   export let files: File[] = [];
   export let onProcess: (() => void) | null = null;
@@ -119,7 +119,6 @@
     <!-- Image Grid -->
     <div class="image-grid-responsive">
       {#each files as file, i (i)}
-        {@const imageRange = getImageRange(config, i)}
         {@const timestamp = calculateImageTimestamp(config, i)}
         <div
           class="image-card-mobile group"
@@ -155,13 +154,8 @@
 
           <!-- Assignment Info -->
           <div class="assignment-info-mobile">
-            {#if imageRange}
-              <p class="text-sm text-neutral-700 font-medium">
-                Range {imageRange.rangeIndex + 1}
-              </p>
-              {#if timestamp}
-                <p class="text-sm text-neutral-600 truncate">{timestamp}</p>
-              {/if}
+            {#if timestamp}
+              <p class="text-sm text-neutral-600 truncate">{timestamp}</p>
             {:else}
               <p class="text-sm text-neutral-400 italic">Not assigned</p>
             {/if}
@@ -209,6 +203,6 @@
   }
 
   .assignment-info-mobile {
-    @apply mt-2 px-2 pb-2 space-y-1 min-h-[2.5rem] flex flex-col justify-center;
+    @apply mt-2 px-2 pb-2 min-h-[2.5rem] flex flex-col justify-center;
   }
 </style>

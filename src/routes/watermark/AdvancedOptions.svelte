@@ -211,7 +211,7 @@
 
     {#if options.hasBorder}
       <div class="mt-3 space-y-3">
-        <div>
+        <div class="mt-2">
           <label for="borderColor" class="text-sm text-neutral-500"
             >Border Color</label
           >

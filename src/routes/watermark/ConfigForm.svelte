@@ -101,24 +101,6 @@
     </div>
   </div>
 
-  <!-- Preview Section -->
-  <div class="preview-section">
-    <p class="text-sm text-neutral-500 mb-3">Preview</p>
-    {#if !config.date || !config.street || !config.city || !config.state || !config.zip}
-      <p class="text-sm text-neutral-400 italic">
-        Fill in all fields to see preview...
-      </p>
-    {:else if config.timeRanges.length > 0}
-      {@const range = config.timeRanges[0]}
-      {@const preview = formatRangePreview(config, range)}
-      {#if preview}
-        <pre class="preview-text">{preview}</pre>
-      {:else}
-        <p class="text-sm text-neutral-400 italic">Invalid configuration</p>
-      {/if}
-    {/if}
-  </div>
-
   <!-- Time Range -->
   <div class="space-y-3">
     <span class="text-sm text-neutral-500 font-medium">Time Range</span>
@@ -162,6 +144,24 @@
       <p class="text-sm text-red-600">
         Total photos in ranges must equal uploaded images
       </p>
+    {/if}
+  </div>
+
+  <!-- Preview Section -->
+  <div class="preview-section">
+    <p class="text-sm text-neutral-500 mb-3">Preview</p>
+    {#if !config.date || !config.street || !config.city || !config.state || !config.zip}
+      <p class="text-sm text-neutral-400 italic">
+        Fill in all fields to see preview...
+      </p>
+    {:else if config.timeRanges.length > 0}
+      {@const range = config.timeRanges[0]}
+      {@const preview = formatRangePreview(config, range)}
+      {#if preview}
+        <pre class="preview-text">{preview}</pre>
+      {:else}
+        <p class="text-sm text-neutral-400 italic">Invalid configuration</p>
+      {/if}
     {/if}
   </div>
 </div>

@@ -11,7 +11,7 @@
     validateConfig,
   } from "./processImages";
   import { downloadAsZip } from "./downloadZip";
-  import { DEFAULT_PATTERNS, DEFAULT_PHOTO_COUNTS } from "./utils";
+  import { DEFAULT_PATTERNS, getPatternByPhotoCount } from "./utils";
   import type {
     WatermarkConfig,
     AdvancedOptions as AdvancedOptionsType,
@@ -20,18 +20,21 @@
 
   // State
   let selectedFiles: File[] = [];
+  let selectedPhotoCount: 18 | 30 | 42 | 66 = 18;
   let watermarkConfig: WatermarkConfig = {
     date: new Date().toISOString().split("T")[0],
     street: "",
     city: "",
     state: "",
     zip: "",
-    timeRanges: DEFAULT_PATTERNS.map((pattern, i) => ({
-      id: crypto.randomUUID(),
-      startTime: "10:00",
-      incrementPattern: pattern,
-      photoCount: DEFAULT_PHOTO_COUNTS[i],
-    })),
+    timeRanges: [
+      {
+        id: crypto.randomUUID(),
+        startTime: "10:00",
+        incrementPattern: DEFAULT_PATTERNS[0], // 18 photos pattern
+        photoCount: 18,
+      },
+    ],
   };
   let advancedOptions: AdvancedOptionsType = {
     position: "top-left",
@@ -45,6 +48,19 @@
   let isProcessing = false;
   let progress: ProcessingProgress = { current: 0, total: 0, currentFile: "" };
   let errorMessage = "";
+
+  // Reactive: Update time range when photo count changes
+  $: if (selectedPhotoCount !== null && watermarkConfig.timeRanges.length > 0) {
+    const range = watermarkConfig.timeRanges[0];
+    if (range.photoCount !== selectedPhotoCount) {
+      // Update pattern and photoCount, keep same id and startTime
+      range.incrementPattern = getPatternByPhotoCount(selectedPhotoCount);
+      range.photoCount = selectedPhotoCount;
+      // Clear files when photo count changes
+      selectedFiles = [];
+      errorMessage = "";
+    }
+  }
 
   // Computed
   $: canProcess = selectedFiles.length > 0 && !isProcessing;
@@ -160,6 +176,7 @@
   <div class="space-y-4 sm:space-y-5">
     <ConfigForm
       bind:config={watermarkConfig}
+      bind:selectedPhotoCount
       totalImages={selectedFiles.length}
     />
   </div>

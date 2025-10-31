@@ -2,21 +2,8 @@
   import type { WatermarkConfig, TimeRange } from "./types";
 
   export let config: WatermarkConfig;
+  export let selectedPhotoCount: 18 | 30 | 42 | 66;
   export let totalImages: number = 0;
-
-  function addTimeRange() {
-    const newRange: TimeRange = {
-      id: crypto.randomUUID(),
-      startTime: "10:00",
-      incrementPattern: [2], // Default simple pattern: +2 minutes per photo
-      photoCount: 0,
-    };
-    config.timeRanges = [...config.timeRanges, newRange];
-  }
-
-  function removeTimeRange(id: string) {
-    config.timeRanges = config.timeRanges.filter((r) => r.id !== id);
-  }
 
   function formatTime(time24: string): string {
     const [hours, minutes] = time24.split(":").map(Number);
@@ -114,65 +101,50 @@
     </div>
   </div>
 
-  <!-- Time Ranges -->
-  <div class="space-y-3">
-    <div class="flex items-center justify-between">
-      <span class="text-sm text-neutral-500 font-medium">Time Ranges</span>
-      <button
-        type="button"
-        class="text-sm text-blue-500 hover:text-blue-600 transition-colors"
-        on:click={addTimeRange}
-      >
-        + Add range
-      </button>
-    </div>
-
-    {#if config.timeRanges.length === 0}
-      <p class="text-sm text-neutral-500">
-        No time ranges defined. Add at least one.
+  <!-- Preview Section -->
+  <div class="preview-section">
+    <p class="text-sm text-neutral-500 mb-3">Preview</p>
+    {#if !config.date || !config.street || !config.city || !config.state || !config.zip}
+      <p class="text-sm text-neutral-400 italic">
+        Fill in all fields to see preview...
       </p>
-    {:else}
-      <div class="time-ranges-grid">
-        {#each config.timeRanges as range, i (range.id)}
-          <div class="time-range-card">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-sm font-medium text-neutral-700"
-                >Range {i + 1}</span
-              >
-              {#if config.timeRanges.length > 1}
-                <button
-                  type="button"
-                  class="text-sm text-red-600 hover:text-red-700 transition-colors"
-                  on:click={() => removeTimeRange(range.id)}
-                >
-                  Remove
-                </button>
-              {/if}
-            </div>
-            <div class="space-y-3">
-              <div class="form-field">
-                <label for="startTime-{range.id}">Start Time</label>
-                <input
-                  id="startTime-{range.id}"
-                  type="time"
-                  bind:value={range.startTime}
-                  required
-                />
-              </div>
-              <div class="form-field">
-                <label for="photoCount-{range.id}">Number of Photos</label>
-                <input
-                  id="photoCount-{range.id}"
-                  type="number"
-                  bind:value={range.photoCount}
-                  min="0"
-                  max="100"
-                  required
-                />
-              </div>
-            </div>
+    {:else if config.timeRanges.length > 0}
+      {@const range = config.timeRanges[0]}
+      {@const preview = formatRangePreview(config, range)}
+      {#if preview}
+        <pre class="preview-text">{preview}</pre>
+      {:else}
+        <p class="text-sm text-neutral-400 italic">Invalid configuration</p>
+      {/if}
+    {/if}
+  </div>
+
+  <!-- Time Range -->
+  <div class="space-y-3">
+    <span class="text-sm text-neutral-500 font-medium">Time Range</span>
+
+    {#if config.timeRanges.length > 0}
+      <div class="time-range-card">
+        <div class="space-y-3">
+          <div class="form-field">
+            <label for="startTime-{config.timeRanges[0].id}">Start Time</label>
+            <input
+              id="startTime-{config.timeRanges[0].id}"
+              type="time"
+              bind:value={config.timeRanges[0].startTime}
+              required
+            />
           </div>
-        {/each}
+          <div class="form-field">
+            <label for="photoCount">Number of Photos</label>
+            <select id="photoCount" bind:value={selectedPhotoCount}>
+              <option value={18}>18</option>
+              <option value={30}>30</option>
+              <option value={42}>42</option>
+              <option value={66}>66</option>
+            </select>
+          </div>
+        </div>
       </div>
     {/if}
 
@@ -190,32 +162,6 @@
       <p class="text-sm text-red-600">
         Total photos in ranges must equal uploaded images
       </p>
-    {/if}
-  </div>
-
-  <!-- Preview Section -->
-  <div class="preview-section">
-    <p class="text-sm text-neutral-500 mb-3">Preview</p>
-    {#if !config.date || !config.street || !config.city || !config.state || !config.zip}
-      <p class="text-sm text-neutral-400 italic">
-        Fill in all fields to see preview...
-      </p>
-    {:else}
-      <div class="preview-grid">
-        {#each config.timeRanges as range, i}
-          {@const preview = formatRangePreview(config, range)}
-          <div class="preview-card">
-            <div class="preview-header">Range {i + 1}</div>
-            {#if preview}
-              <pre class="preview-text">{preview}</pre>
-            {:else}
-              <p class="text-sm text-neutral-400 italic">
-                Invalid configuration
-              </p>
-            {/if}
-          </div>
-        {/each}
-      </div>
     {/if}
   </div>
 </div>
@@ -254,11 +200,16 @@
     @apply block text-sm text-neutral-500;
   }
 
-  input {
+  input,
+  select {
     @apply w-full px-4 py-3 border border-neutral-300 rounded
            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
            text-neutral-900 bg-white transition-colors
            text-base;
+  }
+
+  select {
+    @apply cursor-pointer;
   }
 
   /* Override browser defaults for date and time inputs */
@@ -333,10 +284,6 @@
     }
   }
 
-  .time-ranges-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3;
-  }
-
   .time-range-card {
     @apply border border-neutral-300 rounded p-3 bg-neutral-50;
     /* Prevent overflow */
@@ -354,18 +301,6 @@
 
   .preview-section {
     @apply mt-6;
-  }
-
-  .preview-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
-  }
-
-  .preview-card {
-    @apply min-w-0;
-  }
-
-  .preview-header {
-    @apply text-xs font-medium text-neutral-600 mb-1;
   }
 
   .preview-text {

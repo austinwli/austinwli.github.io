@@ -159,6 +159,29 @@ export const DEFAULT_PATTERNS: IncrementPattern[][] = [
 export const DEFAULT_PHOTO_COUNTS = [18, 30, 42, 66];
 
 /**
+ * Available photo count options
+ */
+export const PHOTO_COUNT_OPTIONS = [18, 30, 42, 66] as const;
+
+/**
+ * Get the increment pattern for a given photo count
+ * @param photoCount - Must be one of: 18, 30, 42, or 66
+ * @returns The corresponding increment pattern array
+ * @throws Error if photoCount is not one of the valid options
+ */
+export function getPatternByPhotoCount(photoCount: number): IncrementPattern[] {
+  const index = DEFAULT_PHOTO_COUNTS.indexOf(photoCount);
+  if (index === -1) {
+    throw new Error(
+      `Invalid photo count: ${photoCount}. Must be one of: ${DEFAULT_PHOTO_COUNTS.join(
+        ", "
+      )}`
+    );
+  }
+  return DEFAULT_PATTERNS[index];
+}
+
+/**
  * Calculate timestamp for an image based on pattern-based assignment.
  * Images are assigned to ranges in upload order based on photoCount.
  */

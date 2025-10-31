@@ -71,7 +71,7 @@
         id="street"
         type="text"
         bind:value={config.street}
-        placeholder="101 Dunster St."
+        placeholder="101 Dunster St"
         required
       />
     </div>

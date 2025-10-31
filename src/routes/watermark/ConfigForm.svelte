@@ -132,46 +132,48 @@
         No time ranges defined. Add at least one.
       </p>
     {:else}
-      {#each config.timeRanges as range, i (range.id)}
-        <div class="time-range-card">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-sm font-medium text-neutral-700"
-              >Range {i + 1}</span
-            >
-            {#if config.timeRanges.length > 1}
-              <button
-                type="button"
-                class="text-sm text-red-600 hover:text-red-700 transition-colors"
-                on:click={() => removeTimeRange(range.id)}
+      <div class="time-ranges-grid">
+        {#each config.timeRanges as range, i (range.id)}
+          <div class="time-range-card">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm font-medium text-neutral-700"
+                >Range {i + 1}</span
               >
-                Remove
-              </button>
-            {/if}
-          </div>
-          <div class="range-grid-responsive">
-            <div class="form-field">
-              <label for="startTime-{range.id}">Start Time</label>
-              <input
-                id="startTime-{range.id}"
-                type="time"
-                bind:value={range.startTime}
-                required
-              />
+              {#if config.timeRanges.length > 1}
+                <button
+                  type="button"
+                  class="text-sm text-red-600 hover:text-red-700 transition-colors"
+                  on:click={() => removeTimeRange(range.id)}
+                >
+                  Remove
+                </button>
+              {/if}
             </div>
-            <div class="form-field">
-              <label for="photoCount-{range.id}">Number of Photos</label>
-              <input
-                id="photoCount-{range.id}"
-                type="number"
-                bind:value={range.photoCount}
-                min="0"
-                max="100"
-                required
-              />
+            <div class="space-y-3">
+              <div class="form-field">
+                <label for="startTime-{range.id}">Start Time</label>
+                <input
+                  id="startTime-{range.id}"
+                  type="time"
+                  bind:value={range.startTime}
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label for="photoCount-{range.id}">Number of Photos</label>
+                <input
+                  id="photoCount-{range.id}"
+                  type="number"
+                  bind:value={range.photoCount}
+                  min="0"
+                  max="100"
+                  required
+                />
+              </div>
             </div>
           </div>
-        </div>
-      {/each}
+        {/each}
+      </div>
     {/if}
 
     {#if totalImages > 0}
@@ -331,16 +333,14 @@
     }
   }
 
-  .time-range-card {
-    @apply border border-neutral-300 rounded p-4 bg-neutral-50;
-    /* Prevent overflow */
-    overflow: hidden;
+  .time-ranges-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3;
   }
 
-  .range-grid-responsive {
-    @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
-    /* Ensure grid items don't overflow */
-    min-width: 0;
+  .time-range-card {
+    @apply border border-neutral-300 rounded p-3 bg-neutral-50;
+    /* Prevent overflow */
+    overflow: hidden;
   }
 
   /* Ensure form fields within time range cards don't overflow */

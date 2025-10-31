@@ -11,12 +11,11 @@ export async function downloadAsZip(
 ): Promise<void> {
   const zip = new JSZip();
 
-  // Add each processed image to ZIP with watermarked filename
+  // Add each processed image to ZIP with sequential numbered filenames
+  // All processed images are JPEG format, so use .jpg extension
   blobs.forEach((blob, i) => {
-    const originalName = originalFiles[i].name;
-    const baseName = originalName.replace(/\.[^/.]+$/, "");
-    const extension = originalName.split(".").pop() || "jpg";
-    const newName = `${baseName}_watermarked.${extension}`;
+    // Use 1-indexed numbering: 1.jpg, 2.jpg, etc.
+    const newName = `${i + 1}.jpg`;
 
     zip.file(newName, blob);
   });

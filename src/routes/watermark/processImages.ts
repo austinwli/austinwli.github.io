@@ -335,9 +335,9 @@ export function validateConfig(
             j + 1
           } has invalid relative reference format`;
         }
-        // At pattern position j, we have computed times[0] through times[j+1]
-        // relativeTo can reference any already-computed time (0 <= relativeTo <= j+1)
-        if (entry.relativeTo < 0 || entry.relativeTo > j + 1) {
+        // At pattern position j, we have computed times[0] through times[j]
+        // relativeTo can reference any already-computed time (0 <= relativeTo <= j)
+        if (entry.relativeTo < 0 || entry.relativeTo > j) {
           return `Range ${i + 1}: Pattern entry ${
             j + 1
           } references invalid index (must reference an already-computed entry)`;

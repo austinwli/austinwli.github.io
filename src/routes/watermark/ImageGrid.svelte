@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, onDestroy } from "svelte";
-  import { X } from "lucide-svelte";
+  import { X, GripVertical } from "lucide-svelte";
   import type { WatermarkConfig } from "./types";
   import { calculateImageTimestamp, getImageRange } from "./utils";
 
@@ -9,7 +9,15 @@
   export let canProcess = false;
   export let config: WatermarkConfig;
 
-  const dispatch = createEventDispatcher<{ remove: number; clearAll: void }>();
+  const dispatch = createEventDispatcher<{
+    remove: number;
+    clearAll: void;
+    reorder: { from: number; to: number };
+  }>();
+
+  // Drag and drop state
+  let draggedIndex: number | null = null;
+  let dragOverIndex: number | null = null;
 
   // Cache blob URLs to prevent memory leaks
   let blobUrls: string[] = [];
@@ -31,6 +39,51 @@
 
   function handleClearAll() {
     dispatch("clearAll");
+  }
+
+  // Drag handlers
+  function handleDragStart(e: DragEvent, index: number) {
+    draggedIndex = index;
+    e.dataTransfer!.effectAllowed = "move";
+    e.dataTransfer!.setData("text/plain", index.toString());
+
+    // Add visual feedback
+    if (e.dataTransfer) {
+      e.dataTransfer.dropEffect = "move";
+    }
+  }
+
+  function handleDragEnd() {
+    draggedIndex = null;
+    dragOverIndex = null;
+  }
+
+  function handleDragOver(e: DragEvent, index: number) {
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = "move";
+
+    if (draggedIndex !== null && draggedIndex !== index) {
+      dragOverIndex = index;
+    }
+  }
+
+  function handleDragLeave() {
+    dragOverIndex = null;
+  }
+
+  function handleDrop(e: DragEvent, dropIndex: number) {
+    e.preventDefault();
+
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      dragOverIndex = null;
+      return;
+    }
+
+    // Dispatch reorder event
+    dispatch("reorder", { from: draggedIndex, to: dropIndex });
+
+    draggedIndex = null;
+    dragOverIndex = null;
   }
 </script>
 
@@ -68,12 +121,31 @@
       {#each files as file, i (i)}
         {@const imageRange = getImageRange(config, i)}
         {@const timestamp = calculateImageTimestamp(config, i)}
-        <div class="image-card-mobile group">
+        <div
+          class="image-card-mobile group"
+          class:drag-over={dragOverIndex === i}
+          class:is-dragging={draggedIndex === i}
+          draggable="true"
+          on:dragstart={(e) => handleDragStart(e, i)}
+          on:dragend={handleDragEnd}
+          on:dragover={(e) => handleDragOver(e, i)}
+          on:dragleave={handleDragLeave}
+          on:drop={(e) => handleDrop(e, i)}
+          role="button"
+          tabindex="0"
+          aria-label="Drag to reorder image {i + 1}"
+        >
+          <!-- Drag Handle -->
+          <div class="drag-handle" aria-hidden="true">
+            <GripVertical size={12} />
+          </div>
+
           <!-- Image -->
           <img
             src={blobUrls[i]}
             alt={file.name}
             class="w-full h-20 sm:h-24 object-cover rounded"
+            draggable="false"
           />
 
           <!-- Remove Button -->
@@ -115,11 +187,35 @@
   }
 
   .image-grid-responsive {
-    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3;
+    @apply grid grid-cols-2 sm:grid-cols-4 gap-3;
   }
 
   .image-card-mobile {
-    @apply relative rounded-lg overflow-hidden bg-neutral-100;
+    @apply relative rounded-lg overflow-hidden bg-neutral-100
+           transition-all cursor-move;
+  }
+
+  .image-card-mobile:hover {
+    @apply shadow-md;
+  }
+
+  .image-card-mobile.is-dragging {
+    @apply opacity-50 scale-95;
+  }
+
+  .image-card-mobile.drag-over {
+    @apply ring-2 ring-blue-500 ring-offset-2;
+  }
+
+  .drag-handle {
+    @apply absolute top-1 left-1 sm:top-2 sm:left-2
+           bg-black/70 text-white rounded p-1
+           opacity-0 group-hover:opacity-100 transition-opacity
+           z-10 pointer-events-none;
+  }
+
+  .image-card-mobile.is-dragging .drag-handle {
+    @apply opacity-100;
   }
 
   .remove-btn-mobile {

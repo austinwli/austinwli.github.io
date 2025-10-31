@@ -9,28 +9,62 @@
     { name: "Thick", value: "thick" },
   ];
 
-  $: isCustomColor =
-    options.textColor !== "white" &&
-    options.textColor !== "black" &&
-    typeof options.textColor === "string" &&
-    options.textColor.startsWith("#");
-  $: isCustomBorderColor =
-    options.hasBorder &&
-    options.borderColor !== "white" &&
-    options.borderColor !== "black" &&
-    typeof options.borderColor === "string" &&
-    options.borderColor.startsWith("#");
+  // Track selected radio state for text and border colors
+  // Initialize based on current color values
+  let selectedTextColorRadio: "white" | "black" | "custom" =
+    options.textColor === "white" || options.textColor === "black"
+      ? options.textColor
+      : "custom";
+  let selectedBorderColorRadio: "white" | "black" | "custom" =
+    options.borderColor === "white" || options.borderColor === "black"
+      ? options.borderColor
+      : "custom";
 
-  // Initialize custom color if user selects "custom"
-  function handleTextColorChange(value: string) {
-    if (value === "custom") {
-      options.textColor = "#FFFFFF";
+  // Sync radio selection with actual color value (reactive)
+  $: {
+    if (options.textColor === "white" || options.textColor === "black") {
+      selectedTextColorRadio = options.textColor;
+    } else if (
+      typeof options.textColor === "string" &&
+      options.textColor.startsWith("#")
+    ) {
+      selectedTextColorRadio = "custom";
     }
   }
 
-  function handleBorderColorChange(value: string) {
+  $: {
+    if (options.hasBorder) {
+      if (options.borderColor === "white" || options.borderColor === "black") {
+        selectedBorderColorRadio = options.borderColor;
+      } else if (
+        typeof options.borderColor === "string" &&
+        options.borderColor.startsWith("#")
+      ) {
+        selectedBorderColorRadio = "custom";
+      }
+    }
+  }
+
+  $: isCustomColor = selectedTextColorRadio === "custom";
+  $: isCustomBorderColor =
+    options.hasBorder && selectedBorderColorRadio === "custom";
+
+  // Initialize custom color if user selects "custom"
+  function handleTextColorChange(value: "white" | "black" | "custom") {
+    selectedTextColorRadio = value;
+    if (value === "custom") {
+      options.textColor = "#FFFFFF";
+    } else {
+      options.textColor = value;
+    }
+  }
+
+  function handleBorderColorChange(value: "white" | "black" | "custom") {
+    selectedBorderColorRadio = value;
     if (value === "custom") {
       options.borderColor = "#000000";
+    } else {
+      options.borderColor = value;
     }
   }
 
@@ -38,6 +72,7 @@
     const target = e.target as HTMLInputElement;
     if (target) {
       options.textColor = target.value.toUpperCase();
+      selectedTextColorRadio = "custom";
     }
   }
 
@@ -45,6 +80,7 @@
     const target = e.target as HTMLInputElement;
     if (target) {
       options.borderColor = target.value.toUpperCase();
+      selectedBorderColorRadio = "custom";
     }
   }
 
@@ -54,6 +90,7 @@
       const value = target.value.trim();
       if (value.match(/^#[0-9A-Fa-f]{6}$/)) {
         options.textColor = value.toUpperCase();
+        selectedTextColorRadio = "custom";
       }
     }
   }
@@ -64,6 +101,7 @@
       const value = target.value.trim();
       if (value.match(/^#[0-9A-Fa-f]{6}$/)) {
         options.borderColor = value.toUpperCase();
+        selectedBorderColorRadio = "custom";
       }
     }
   }
@@ -99,19 +137,29 @@
     <div class="color-selector">
       <div class="color-options">
         <label class="color-option">
-          <input type="radio" bind:group={options.textColor} value="white" />
+          <input
+            type="radio"
+            bind:group={selectedTextColorRadio}
+            value="white"
+            on:change={() => handleTextColorChange("white")}
+          />
           <div class="color-preview white" />
           <span>White</span>
         </label>
         <label class="color-option">
-          <input type="radio" bind:group={options.textColor} value="black" />
+          <input
+            type="radio"
+            bind:group={selectedTextColorRadio}
+            value="black"
+            on:change={() => handleTextColorChange("black")}
+          />
           <div class="color-preview black" />
           <span>Black</span>
         </label>
         <label class="color-option">
           <input
             type="radio"
-            bind:group={options.textColor}
+            bind:group={selectedTextColorRadio}
             value="custom"
             on:change={() => handleTextColorChange("custom")}
           />
@@ -164,8 +212,9 @@
               <label class="color-option">
                 <input
                   type="radio"
-                  bind:group={options.borderColor}
+                  bind:group={selectedBorderColorRadio}
                   value="white"
+                  on:change={() => handleBorderColorChange("white")}
                 />
                 <div class="color-preview white" />
                 <span>White</span>
@@ -173,8 +222,9 @@
               <label class="color-option">
                 <input
                   type="radio"
-                  bind:group={options.borderColor}
+                  bind:group={selectedBorderColorRadio}
                   value="black"
+                  on:change={() => handleBorderColorChange("black")}
                 />
                 <div class="color-preview black" />
                 <span>Black</span>
@@ -182,7 +232,7 @@
               <label class="color-option">
                 <input
                   type="radio"
-                  bind:group={options.borderColor}
+                  bind:group={selectedBorderColorRadio}
                   value="custom"
                   on:change={() => handleBorderColorChange("custom")}
                 />

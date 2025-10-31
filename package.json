@@ -19,7 +19,8 @@
     "lucide-svelte": "^0.130.0",
     "marked": "^4.3.0",
     "strftime": "^0.10.1",
-    "svelte": "^3.58.0"
+    "svelte": "^3.58.0",
+    "svelte-dnd-action": "^0.9.66"
   },
   "devDependencies": {
     "@rollup/plugin-yaml": "^4.0.1",

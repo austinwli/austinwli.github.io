@@ -65,6 +65,18 @@
     selectedFiles = selectedFiles.filter((_, i) => i !== index);
   }
 
+  function handleReorder(event: CustomEvent<{ from: number; to: number }>) {
+    const { from, to } = event.detail;
+
+    // Create new array with reordered items (immutable update)
+    const newFiles = [...selectedFiles];
+    const [movedItem] = newFiles.splice(from, 1);
+    newFiles.splice(to, 0, movedItem);
+
+    selectedFiles = newFiles;
+    errorMessage = "";
+  }
+
   function handleClearAll() {
     selectedFiles = [];
     errorMessage = "";
@@ -156,6 +168,7 @@
       canProcess={canProcess && !hasErrors}
       config={watermarkConfig}
       on:remove={handleRemove}
+      on:reorder={handleReorder}
       on:clearAll={handleClearAll}
     />
 

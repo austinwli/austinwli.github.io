@@ -144,7 +144,7 @@
           <img
             src={blobUrls[i]}
             alt={file.name}
-            class="w-full h-20 sm:h-24 object-cover rounded"
+            class="w-full h-48 sm:h-56 md:h-64 object-cover rounded"
             draggable="false"
           />
 
@@ -161,14 +161,14 @@
           <!-- Assignment Info -->
           <div class="assignment-info-mobile">
             {#if imageRange}
-              <p class="text-xs sm:text-xs text-neutral-700 font-medium">
+              <p class="text-sm text-neutral-700 font-medium">
                 Range {imageRange.rangeIndex + 1}
               </p>
               {#if timestamp}
-                <p class="text-xs text-neutral-600 truncate">{timestamp}</p>
+                <p class="text-sm text-neutral-600 truncate">{timestamp}</p>
               {/if}
             {:else}
-              <p class="text-xs text-neutral-400 italic">Not assigned</p>
+              <p class="text-sm text-neutral-400 italic">Not assigned</p>
             {/if}
           </div>
         </div>
@@ -187,7 +187,7 @@
   }
 
   .image-grid-responsive {
-    @apply grid grid-cols-2 sm:grid-cols-4 gap-3;
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4;
   }
 
   .image-card-mobile {
@@ -208,10 +208,10 @@
   }
 
   .drag-handle {
-    @apply absolute top-1 left-1 sm:top-2 sm:left-2
-           bg-black/70 text-white rounded p-1
+    @apply absolute top-2 left-2 sm:top-3 sm:left-3
+           bg-black/70 text-white rounded p-2
            opacity-0 group-hover:opacity-100 transition-opacity
-           z-10 pointer-events-none;
+           z-10 pointer-events-none min-w-[44px] min-h-[44px] flex items-center justify-center;
   }
 
   .image-card-mobile.is-dragging .drag-handle {
@@ -219,12 +219,12 @@
   }
 
   .remove-btn-mobile {
-    @apply absolute top-1 right-1 sm:top-2 sm:right-2 bg-black/70 text-white rounded-full
-           p-1.5 sm:p-1 opacity-0 group-hover:opacity-100 transition-opacity
-           hover:bg-black/90 z-10 touch-manipulation;
+    @apply absolute top-2 right-2 sm:top-3 sm:right-3 bg-black/70 text-white rounded-full
+           p-2 opacity-0 group-hover:opacity-100 transition-opacity
+           hover:bg-black/90 z-10 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center;
   }
 
   .assignment-info-mobile {
-    @apply mt-1 px-1 pb-1 space-y-0.5 min-h-[2rem] flex flex-col justify-center;
+    @apply mt-2 px-2 pb-2 space-y-1 min-h-[2.5rem] flex flex-col justify-center;
   }
 </style>

@@ -35,11 +35,12 @@
   };
   let advancedOptions: AdvancedOptionsType = {
     position: "top-left",
-    fontSize: "small",
+    fontSize: "medium",
     textColor: "white",
     hasBorder: false,
     borderColor: "black",
     borderWidth: "medium",
+    bold: true,
   };
   let isProcessing = false;
   let progress: ProcessingProgress = { current: 0, total: 0, currentFile: "" };

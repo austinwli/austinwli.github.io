@@ -131,6 +131,14 @@
     </div>
   </div>
 
+  <!-- Bold Toggle -->
+  <div class="form-field">
+    <label class="flex items-center space-x-2 cursor-pointer">
+      <input type="checkbox" bind:checked={options.bold} />
+      <span>Bold text</span>
+    </label>
+  </div>
+
   <!-- Text Color Section -->
   <div class="form-field">
     <label for="textColor">Text Color</label>

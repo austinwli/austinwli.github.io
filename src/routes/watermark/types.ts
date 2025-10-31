@@ -31,6 +31,7 @@ export interface AdvancedOptions {
   hasBorder: boolean; // Enable/disable border
   borderColor: "white" | "black" | string; // Border color
   borderWidth: "thin" | "medium" | "thick"; // Border thickness
+  bold: boolean; // Enable/disable bold text
 }
 
 export interface ProcessingProgress {

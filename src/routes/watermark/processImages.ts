@@ -177,28 +177,19 @@ function applyWatermark(
 
   const fontSize = fontSizes[options.fontSize];
 
-  // Adjust leading: original was fontSize * 1.2, now reduce by 25
+  // Adjust leading: original was fontSize * 1.2, now reduce by 10
   const baseLineHeight = fontSize * 1.2;
-  const lineHeight = Math.max(baseLineHeight - 25, fontSize * 0.8); // Minimum 0.8x to prevent overlap
+  const lineHeight = Math.max(baseLineHeight - 10, fontSize * 0.8); // Minimum 0.8x to prevent overlap
 
-  // Use Alibaba Sans Medium font
-  ctx.font = `${fontSize}px "Alibaba Sans Medium", "Alibaba Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+  // Use Alibaba Sans Bold or Medium font based on bold option
+  const fontFamily = options.bold
+    ? '"Alibaba Sans Bold", "Alibaba Sans Medium", "Alibaba Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    : '"Alibaba Sans Medium", "Alibaba Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.font = `${fontSize}px ${fontFamily}`;
   ctx.textBaseline = "top";
 
-  // Kerning adjustment: -4 pixels
-  const letterSpacing = -4;
-
   // Measure the widest line to determine positioning
-  // We need to account for letter spacing when measuring
-  const lineWidths = lines.map((line) => {
-    // Calculate width with letter spacing
-    let totalWidth = 0;
-    for (let i = 0; i < line.length; i++) {
-      totalWidth += ctx.measureText(line[i]).width;
-    }
-    totalWidth += letterSpacing * (line.length - 1);
-    return totalWidth;
-  });
+  const lineWidths = lines.map((line) => ctx.measureText(line).width);
 
   const maxWidth = Math.max(...lineWidths);
   const totalHeight = lineHeight * lines.length;
@@ -227,20 +218,6 @@ function applyWatermark(
     thick: 3,
   };
 
-  // Helper function to draw text with spacing (for both fill and stroke)
-  const drawText = (text: string, x: number, y: number, useStroke = false) => {
-    let currentX = x;
-    for (let j = 0; j < text.length; j++) {
-      if (useStroke) {
-        ctx.strokeText(text[j], currentX, y);
-      } else {
-        ctx.fillText(text[j], currentX, y);
-      }
-      const charWidth = ctx.measureText(text[j]).width;
-      currentX += charWidth + letterSpacing;
-    }
-  };
-
   // Draw each line
   lines.forEach((line, i) => {
     const y = startY + i * lineHeight;
@@ -257,7 +234,7 @@ function applyWatermark(
       ctx.lineWidth = borderWidth * 2;
       ctx.lineJoin = "round";
       ctx.miterLimit = 2;
-      drawText(line, startX, y, true);
+      ctx.strokeText(line, startX, y);
     }
 
     // Draw text fill
@@ -268,7 +245,7 @@ function applyWatermark(
         ? "rgba(0,0,0,0.9)"
         : options.textColor;
 
-    drawText(line, startX, y, false);
+    ctx.fillText(line, startX, y);
   });
 }
 

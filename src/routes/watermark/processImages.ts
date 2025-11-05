@@ -110,20 +110,45 @@ async function processImage(
   options: AdvancedOptions,
   index: number
 ): Promise<Blob> {
-  // Load image to canvas
+  // Load image
   const img = await loadImage(file);
   const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", {
+    alpha: false, // No transparency for JPEG
+    desynchronized: false, // Consistent rendering
+  });
 
   if (!ctx) {
     throw new Error("Could not get canvas context");
   }
 
-  canvas.width = img.width;
-  canvas.height = img.height;
+  // Normalize ALL images to a standard dimension for consistent watermark sizing
+  // This ensures all images are processed at the same resolution, making watermarks identical
+  const STANDARD_DIMENSION = 3000;
+  const aspectRatio = img.width / img.height;
 
-  // Draw original image
-  ctx.drawImage(img, 0, 0);
+  let targetWidth: number;
+  let targetHeight: number;
+
+  if (img.width > img.height) {
+    // Landscape: normalize to standard width
+    targetWidth = STANDARD_DIMENSION;
+    targetHeight = Math.floor(targetWidth / aspectRatio);
+  } else {
+    // Portrait or square: normalize to standard height
+    targetHeight = STANDARD_DIMENSION;
+    targetWidth = Math.floor(targetHeight * aspectRatio);
+  }
+
+  canvas.width = targetWidth;
+  canvas.height = targetHeight;
+
+  // Set high-quality rendering for consistent output
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+
+  // Draw resized image
+  ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
   // Calculate timestamp for this image based on assignments
   const timestamp = calculateImageTimestamp(config, index) || "12:00PM";
@@ -140,9 +165,9 @@ async function processImage(
   ];
 
   // Apply watermark
-  applyWatermark(ctx, watermarkLines, canvas.width, canvas.height, options);
+  applyWatermark(ctx, watermarkLines, targetWidth, targetHeight, options);
 
-  // Convert to blob
+  // Convert to blob with consistent quality
   return new Promise((resolve, reject) => {
     canvas.toBlob(
       (blob) => {
@@ -168,11 +193,14 @@ function applyWatermark(
   height: number,
   options: AdvancedOptions
 ): void {
-  // Font size mapping based on image height
+  // Font size mapping based on STANDARD dimension (not actual image height)
+  // Since all images are normalized to 3000px on longest side, font size is consistent
+  // This ensures watermarks look identical across all images regardless of source quality
+  const STANDARD_HEIGHT = 3000;
   const fontSizes = {
-    small: Math.floor(height * 0.025),
-    medium: Math.floor(height * 0.035),
-    large: Math.floor(height * 0.045),
+    small: Math.floor(STANDARD_HEIGHT * 0.025),
+    medium: Math.floor(STANDARD_HEIGHT * 0.035),
+    large: Math.floor(STANDARD_HEIGHT * 0.045),
   };
 
   const fontSize = fontSizes[options.fontSize];
@@ -211,16 +239,19 @@ function applyWatermark(
     startY = padding;
   }
 
-  // Border width mapping
+  // Border width mapping - relative to font size for consistent visibility
+  // This ensures borders scale proportionally with text size
   const borderWidths = {
-    thin: 1,
-    medium: 2,
-    thick: 3,
+    thin: Math.max(1, Math.floor(fontSize * 0.05)),
+    medium: Math.max(2, Math.floor(fontSize * 0.08)),
+    thick: Math.max(3, Math.floor(fontSize * 0.12)),
   };
 
-  // Draw each line
+  // Draw each line with pixel-perfect rendering
   lines.forEach((line, i) => {
-    const y = startY + i * lineHeight;
+    // Round coordinates for pixel-perfect rendering (prevents blurry text)
+    const y = Math.round(startY + i * lineHeight);
+    const x = Math.round(startX);
 
     // Draw border/outline if enabled
     if (options.hasBorder) {
@@ -234,7 +265,7 @@ function applyWatermark(
       ctx.lineWidth = borderWidth * 2;
       ctx.lineJoin = "round";
       ctx.miterLimit = 2;
-      ctx.strokeText(line, startX, y);
+      ctx.strokeText(line, x, y);
     }
 
     // Draw text fill
@@ -245,7 +276,7 @@ function applyWatermark(
         ? "rgba(0,0,0,0.9)"
         : options.textColor;
 
-    ctx.fillText(line, startX, y);
+    ctx.fillText(line, x, y);
   });
 }
 

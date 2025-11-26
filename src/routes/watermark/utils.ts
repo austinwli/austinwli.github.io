@@ -33,7 +33,7 @@ export const DEFAULT_PATTERNS: IncrementPattern[][] = [
     4,
     16,
     16,
-    3,
+    2,
     { relativeTo: 22, add: 2 },
     16,
     17,

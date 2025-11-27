@@ -1,36 +1,145 @@
 <script lang="ts">
   import { createEventDispatcher, onDestroy } from "svelte";
   import { X } from "lucide-svelte";
-  import type { WatermarkConfig } from "./types";
+  import type { WatermarkConfig, ImageAdjustment } from "./types";
   import { calculateImageTimestamp } from "./utils";
+  import {
+    DEFAULT_IMAGE_ADJUSTMENT,
+    applyImageAdjustmentsToCanvas,
+  } from "./imageTransforms";
 
   export let files: File[] = [];
+  export let imageAdjustments: ImageAdjustment[] = [];
   export let onProcess: (() => void) | null = null;
   export let canProcess = false;
   export let config: WatermarkConfig;
+  export let previewOverrides: (string | null)[] = [];
 
   const dispatch = createEventDispatcher<{
     remove: number;
     clearAll: void;
     reorder: { from: number; to: number };
+    edit: number;
   }>();
+  function handleEdit(index: number) {
+    dispatch("edit", index);
+  }
 
   // Drag and drop state
   let draggedIndex: number | null = null;
   let dragOverIndex: number | null = null;
 
+  const aspectRatioMap: Record<ImageAdjustment["aspectRatio"], string> = {
+    "4:3": "4 / 3",
+    "3:4": "3 / 4",
+    "1:1": "1 / 1",
+  };
+
+  function aspectRatioValue(ratio: ImageAdjustment["aspectRatio"]) {
+    return aspectRatioMap[ratio] ?? "auto";
+  }
+
   // Cache blob URLs to prevent memory leaks
   let blobUrls: string[] = [];
   $: {
-    // Revoke old URLs
     blobUrls.forEach((url) => URL.revokeObjectURL(url));
-    // Create new URLs for current files
     blobUrls = files.map((file) => URL.createObjectURL(file));
   }
+
+  // Pre-render adjusted previews
+  let previewUrls: string[] = [];
+  let previewGeneration = 0;
+
+  async function loadImage(file: File): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(img.src);
+        resolve(img);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(img.src);
+        reject(new Error(`Failed to load image: ${file.name}`));
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  async function createPreviewUrl(
+    file: File,
+    adjustment?: ImageAdjustment
+  ): Promise<string> {
+    const img = await loadImage(file);
+    const canvas = applyImageAdjustmentsToCanvas(img, adjustment);
+
+    const maxSide = 600;
+    const largestSide = Math.max(canvas.width, canvas.height);
+    let targetCanvas = canvas;
+
+    if (largestSide > maxSide) {
+      const scale = maxSide / largestSide;
+      const scaledCanvas = document.createElement("canvas");
+      scaledCanvas.width = Math.max(1, Math.round(canvas.width * scale));
+      scaledCanvas.height = Math.max(1, Math.round(canvas.height * scale));
+      const ctx = scaledCanvas.getContext("2d");
+      if (ctx) {
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(canvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+        targetCanvas = scaledCanvas;
+      }
+    }
+
+    return new Promise<string>((resolve, reject) => {
+      targetCanvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(URL.createObjectURL(blob));
+          } else {
+            reject(new Error("Failed to generate preview"));
+          }
+        },
+        "image/jpeg",
+        0.9
+      );
+    });
+  }
+
+  async function regeneratePreviews() {
+    if (typeof window === "undefined") return;
+    const currentGeneration = ++previewGeneration;
+
+    if (files.length === 0) {
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+      previewUrls = [];
+      return;
+    }
+
+    try {
+      const urls = await Promise.all(
+        files.map((file, index) =>
+          createPreviewUrl(file, imageAdjustments[index])
+        )
+      );
+
+      if (currentGeneration !== previewGeneration) {
+        urls.forEach((url) => URL.revokeObjectURL(url));
+        return;
+      }
+
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+      previewUrls = urls;
+    } catch (error) {
+      console.error("Failed to generate previews:", error);
+    }
+  }
+
+  $: regeneratePreviews();
 
   // Clean up on component destroy
   onDestroy(() => {
     blobUrls.forEach((url) => URL.revokeObjectURL(url));
+    previewUrls.forEach((url) => URL.revokeObjectURL(url));
   });
 
   function handleRemove(index: number) {
@@ -120,6 +229,7 @@
     <div class="image-grid-responsive">
       {#each files as file, i (i)}
         {@const timestamp = calculateImageTimestamp(config, i)}
+        {@const adjustment = imageAdjustments[i] ?? DEFAULT_IMAGE_ADJUSTMENT}
         <div
           class="image-card-mobile group"
           class:drag-over={dragOverIndex === i}
@@ -135,12 +245,34 @@
           aria-label="Drag to reorder image {i + 1}"
         >
           <!-- Image -->
-          <img
-            src={blobUrls[i]}
-            alt={file.name}
-            class="w-full h-48 sm:h-56 md:h-64 object-cover rounded"
-            draggable="false"
-          />
+          <div
+            class="image-wrapper"
+            role="button"
+            tabindex="0"
+            aria-label="Edit image {i + 1}"
+            on:click|stopPropagation={() => handleEdit(i)}
+            on:keydown={(event) =>
+              event.key === "Enter" && (event.preventDefault(), handleEdit(i))}
+            style={`aspect-ratio: ${aspectRatioValue(adjustment.aspectRatio)};`}
+          >
+            <img
+              src={previewOverrides[i] ?? previewUrls[i] ?? blobUrls[i]}
+              alt={file.name}
+              class="image-preview"
+              draggable="false"
+            />
+
+            <!-- Timestamp Overlay -->
+            <div class="assignment-info-mobile">
+              {#if timestamp}
+                <p>{timestamp}</p>
+              {:else}
+                <p>Not assigned</p>
+              {/if}
+            </div>
+
+            <div class="edit-indicator" aria-hidden="true">Click to edit</div>
+          </div>
 
           <!-- Remove Button -->
           <button
@@ -151,15 +283,6 @@
           >
             <X size={16} />
           </button>
-
-          <!-- Assignment Info -->
-          <div class="assignment-info-mobile">
-            {#if timestamp}
-              <p class="text-sm text-neutral-600 truncate">{timestamp}</p>
-            {:else}
-              <p class="text-sm text-neutral-400 italic">Not assigned</p>
-            {/if}
-          </div>
         </div>
       {/each}
     </div>
@@ -176,12 +299,29 @@
   }
 
   .image-grid-responsive {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start;
   }
 
   .image-card-mobile {
     @apply relative rounded-lg overflow-hidden bg-neutral-100
            transition-all cursor-move;
+  }
+
+  .image-wrapper {
+    @apply relative w-full cursor-pointer rounded-lg overflow-hidden bg-white focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+
+  .image-preview {
+    @apply block w-full h-full object-cover rounded-lg transition-transform duration-300 ease-out;
+  }
+
+  .edit-indicator {
+    @apply absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 text-xs text-white bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity;
+  }
+
+  .image-wrapper:focus-visible .edit-indicator,
+  .image-wrapper:focus-within .edit-indicator {
+    @apply opacity-100;
   }
 
   .image-card-mobile:hover {
@@ -203,6 +343,13 @@
   }
 
   .assignment-info-mobile {
-    @apply mt-2 px-2 pb-2 min-h-[2.5rem] flex flex-col justify-center;
+    @apply absolute top-2 left-2 sm:top-3 sm:left-3 bg-black/70 text-white
+           rounded-full px-3 py-1 text-xs sm:text-sm font-medium
+           flex items-center justify-center min-h-[28px] min-w-[28px]
+           pointer-events-none;
+  }
+
+  .assignment-info-mobile p {
+    @apply leading-tight whitespace-nowrap;
   }
 </style>

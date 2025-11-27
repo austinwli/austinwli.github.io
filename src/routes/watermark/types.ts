@@ -39,3 +39,18 @@ export interface ProcessingProgress {
   total: number;
   currentFile: string;
 }
+
+export type AspectRatio = "4:3" | "3:4" | "1:1";
+
+export interface CropRect {
+  x: number; // 0-1 normalized left offset
+  y: number; // 0-1 normalized top offset
+  width: number; // 0-1 normalized width
+  height: number; // 0-1 normalized height
+}
+
+export interface ImageAdjustment {
+  rotation: 0 | 90 | 180 | 270;
+  aspectRatio: AspectRatio;
+  crop?: CropRect; // Normalized crop rectangle
+}

@@ -2,8 +2,10 @@ import type {
   WatermarkConfig,
   AdvancedOptions,
   ProcessingProgress,
+  ImageAdjustment,
 } from "./types";
 import { calculateImageTimestamp } from "./utils";
+import { applyImageAdjustmentsToCanvas } from "./imageTransforms";
 
 /**
  * Check if Alibaba Sans Medium font is loaded, wait if necessary
@@ -80,7 +82,8 @@ export async function processImages(
   files: File[],
   config: WatermarkConfig,
   options: AdvancedOptions,
-  onProgress?: (progress: ProcessingProgress) => void
+  onProgress?: (progress: ProcessingProgress) => void,
+  adjustments: ImageAdjustment[] = []
 ): Promise<Blob[]> {
   // Ensure font is loaded before processing
   await ensureFontLoaded();
@@ -94,7 +97,13 @@ export async function processImages(
       currentFile: files[i].name,
     });
 
-    const blob = await processImage(files[i], config, options, i);
+    const blob = await processImage(
+      files[i],
+      config,
+      options,
+      i,
+      adjustments[i]
+    );
     processed.push(blob);
   }
 
@@ -108,10 +117,12 @@ async function processImage(
   file: File,
   config: WatermarkConfig,
   options: AdvancedOptions,
-  index: number
+  index: number,
+  adjustment?: ImageAdjustment
 ): Promise<Blob> {
   // Load image
   const img = await loadImage(file);
+  const sourceCanvas = applyImageAdjustmentsToCanvas(img, adjustment);
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d", {
     alpha: false, // No transparency for JPEG
@@ -125,12 +136,12 @@ async function processImage(
   // Normalize ALL images to a standard dimension for consistent watermark sizing
   // This ensures all images are processed at the same resolution, making watermarks identical
   const STANDARD_DIMENSION = 3000;
-  const aspectRatio = img.width / img.height;
+  const aspectRatio = sourceCanvas.width / sourceCanvas.height;
 
   let targetWidth: number;
   let targetHeight: number;
 
-  if (img.width > img.height) {
+  if (sourceCanvas.width > sourceCanvas.height) {
     // Landscape: normalize to standard width
     targetWidth = STANDARD_DIMENSION;
     targetHeight = Math.floor(targetWidth / aspectRatio);
@@ -148,7 +159,7 @@ async function processImage(
   ctx.imageSmoothingQuality = "high";
 
   // Draw resized image
-  ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+  ctx.drawImage(sourceCanvas, 0, 0, targetWidth, targetHeight);
 
   // Calculate timestamp for this image based on assignments
   const timestamp = calculateImageTimestamp(config, index) || "12:00PM";

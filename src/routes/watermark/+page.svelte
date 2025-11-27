@@ -16,11 +16,17 @@
     WatermarkConfig,
     AdvancedOptions as AdvancedOptionsType,
     ProcessingProgress,
+    ImageAdjustment,
   } from "./types";
+  import ImageEditorModal from "./ImageEditorModal.svelte";
+  import { DEFAULT_IMAGE_ADJUSTMENT, cloneAdjustment } from "./imageTransforms";
 
   // State
   let selectedFiles: File[] = [];
   let selectedPhotoCount: 18 | 30 | 42 | 66 = 18;
+  let imageAdjustments: ImageAdjustment[] = [];
+  let previewOverrides: (string | null)[] = [];
+  let editingIndex: number | null = null;
   let watermarkConfig: WatermarkConfig = {
     date: new Date().toISOString().split("T")[0],
     street: "",
@@ -58,6 +64,8 @@
       range.photoCount = selectedPhotoCount;
       // Clear files when photo count changes
       selectedFiles = [];
+      cleanupPreviewOverrides();
+      imageAdjustments = [];
       errorMessage = "";
     }
   }
@@ -74,12 +82,21 @@
   function handleFilesSelected(event: CustomEvent<File[]>) {
     const newFiles = event.detail;
     selectedFiles = [...selectedFiles, ...newFiles];
+    const newAdjustments = newFiles.map(() => cloneAdjustment());
+    imageAdjustments = [...imageAdjustments, ...newAdjustments];
+    previewOverrides = [
+      ...previewOverrides,
+      ...new Array(newFiles.length).fill(null),
+    ];
     errorMessage = "";
   }
 
   function handleRemove(event: CustomEvent<number>) {
     const index = event.detail;
+    revokePreview(previewOverrides[index]);
     selectedFiles = selectedFiles.filter((_, i) => i !== index);
+    imageAdjustments = imageAdjustments.filter((_, i) => i !== index);
+    previewOverrides = previewOverrides.filter((_, i) => i !== index);
   }
 
   function handleReorder(event: CustomEvent<{ from: number; to: number }>) {
@@ -98,15 +115,70 @@
 
     // Create new array and swap the two items (immutable update)
     const newFiles = [...selectedFiles];
+    const newAdjustments = [...imageAdjustments];
+    const newPreviews = [...previewOverrides];
     [newFiles[from], newFiles[to]] = [newFiles[to], newFiles[from]];
+    [newAdjustments[from], newAdjustments[to]] = [
+      newAdjustments[to],
+      newAdjustments[from],
+    ];
+    [newPreviews[from], newPreviews[to]] = [newPreviews[to], newPreviews[from]];
 
     selectedFiles = newFiles;
+    imageAdjustments = newAdjustments;
+    previewOverrides = newPreviews;
     errorMessage = "";
   }
 
   function handleClearAll() {
     selectedFiles = [];
+    cleanupPreviewOverrides();
+    imageAdjustments = [];
+    previewOverrides = [];
     errorMessage = "";
+  }
+
+  function handleEditRequest(event: CustomEvent<number>) {
+    editingIndex = event.detail;
+  }
+
+  function handleAdjustmentSave(
+    event: CustomEvent<{
+      adjustment: ImageAdjustment;
+      previewUrl?: string | null;
+    }>
+  ) {
+    if (editingIndex === null) return;
+    const index = editingIndex;
+    const updated = event.detail.adjustment;
+    imageAdjustments = imageAdjustments.map((adj, idx) =>
+      idx === index ? updated : adj
+    );
+    if (event.detail.previewUrl) {
+      previewOverrides = previewOverrides.map((url, idx) => {
+        if (idx !== index) return url;
+        if (url) URL.revokeObjectURL(url);
+        return event.detail.previewUrl ?? null;
+      });
+    }
+    editingIndex = null;
+  }
+
+  function closeEditor() {
+    editingIndex = null;
+  }
+
+  function cleanupPreviewOverrides() {
+    previewOverrides.forEach((url) => {
+      if (url) URL.revokeObjectURL(url);
+    });
+    previewOverrides = [];
+  }
+
+  function revokePreview(url?: string | null) {
+    if (url) {
+      URL.revokeObjectURL(url);
+    }
   }
 
   async function handleProcess() {
@@ -136,7 +208,8 @@
         advancedOptions,
         (p) => {
           progress = p;
-        }
+        },
+        imageAdjustments
       );
 
       await downloadAsZip(processedBlobs, selectedFiles);
@@ -203,12 +276,15 @@
 <div class="image-grid-container">
   <ImageGrid
     files={selectedFiles}
+    {imageAdjustments}
+    {previewOverrides}
     onProcess={handleProcess}
     canProcess={canProcess && !hasErrors}
     config={watermarkConfig}
     on:remove={handleRemove}
     on:reorder={handleReorder}
     on:clearAll={handleClearAll}
+    on:edit={handleEditRequest}
   />
 </div>
 
@@ -236,6 +312,17 @@
       </div>
     </div>
   </div>
+{/if}
+
+{#if editingIndex !== null && selectedFiles[editingIndex]}
+  {#key `${editingIndex}-${selectedFiles[editingIndex].name}-${imageAdjustments[editingIndex]?.rotation ?? 0}-${imageAdjustments[editingIndex]?.aspectRatio ?? "4:3"}-${imageAdjustments[editingIndex]?.crop ? `${imageAdjustments[editingIndex]?.crop?.x ?? 0}-${imageAdjustments[editingIndex]?.crop?.y ?? 0}-${imageAdjustments[editingIndex]?.crop?.width ?? 1}-${imageAdjustments[editingIndex]?.crop?.height ?? 1}` : "nocrop"}`}
+    <ImageEditorModal
+      file={selectedFiles[editingIndex]}
+      adjustment={imageAdjustments[editingIndex] ?? DEFAULT_IMAGE_ADJUSTMENT}
+      on:close={closeEditor}
+      on:save={handleAdjustmentSave}
+    />
+  {/key}
 {/if}
 
 <style lang="postcss">

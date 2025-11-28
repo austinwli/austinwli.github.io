@@ -40,7 +40,7 @@ export interface ProcessingProgress {
   currentFile: string;
 }
 
-export type AspectRatio = "4:3" | "3:4" | "1:1";
+export type AspectRatio = "4:3" | "3:4" | "1:1" | "none";
 
 export interface CropRect {
   x: number; // 0-1 normalized left offset

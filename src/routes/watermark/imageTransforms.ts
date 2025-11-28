@@ -1,6 +1,6 @@
 import type { AspectRatio, CropRect, ImageAdjustment } from "./types";
 
-const ASPECT_RATIO_VALUES: Record<AspectRatio, number> = {
+const ASPECT_RATIO_VALUES: Record<Exclude<AspectRatio, "none">, number> = {
   "4:3": 4 / 3,
   "3:4": 3 / 4,
   "1:1": 1,
@@ -10,19 +10,37 @@ export const MIN_CROP_SIZE = 0.05;
 
 export const DEFAULT_IMAGE_ADJUSTMENT: ImageAdjustment = {
   rotation: 0,
-  aspectRatio: "4:3",
-  crop: getDefaultCrop("4:3"),
+  aspectRatio: "none",
+  crop: {
+    x: 0,
+    y: 0,
+    width: 1,
+    height: 1,
+  },
 };
 
-export function getAspectRatioValue(aspectRatio: AspectRatio): number {
+export function getAspectRatioValue(aspectRatio: AspectRatio): number | null {
+  if (aspectRatio === "none") return null;
   return ASPECT_RATIO_VALUES[aspectRatio] ?? 4 / 3;
 }
 
 export function getDefaultCrop(
   aspectRatio: AspectRatio,
   imageAspectRatio = 1
-): CropRect {
+): CropRect | undefined {
+  // For "none" aspect ratio, return a full-image crop (allows arbitrary resizing)
+  if (aspectRatio === "none") {
+    return {
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1,
+    };
+  }
+
   const ratio = getAspectRatioValue(aspectRatio);
+  if (ratio === null) return undefined;
+
   const normalizedRatio = ratio * imageAspectRatio;
 
   let width: number;
@@ -51,12 +69,23 @@ export function normalizeCrop(
   crop: CropRect | undefined,
   aspectRatio: AspectRatio,
   imageAspectRatio = 1
-): CropRect {
+): CropRect | undefined {
+  // For "none" aspect ratio, return full-image crop or just clamp existing crop
+  if (aspectRatio === "none") {
+    if (!crop) return getDefaultCrop("none", imageAspectRatio);
+    // Just clamp to bounds without enforcing aspect ratio
+    return clampCrop(crop);
+  }
+
   if (!crop) {
     return getDefaultCrop(aspectRatio, imageAspectRatio);
   }
 
   const ratio = getAspectRatioValue(aspectRatio);
+  if (ratio === null) {
+    // Shouldn't happen, but fallback to just clamping
+    return clampCrop(crop);
+  }
   const normalizedRatio = ratio * imageAspectRatio;
 
   let { x, y, width, height } = crop;
@@ -129,7 +158,7 @@ export function applyImageAdjustmentsToCanvas(
   const sourceHeight = image.naturalHeight || image.height;
 
   const rotation = adjustment?.rotation ?? 0;
-  const aspectRatio = adjustment?.aspectRatio ?? "4:3";
+  const aspectRatio = adjustment?.aspectRatio ?? "none";
 
   // Step 1: rotate the source into a temporary canvas
   const rotatedCanvas = document.createElement("canvas");
@@ -139,11 +168,17 @@ export function applyImageAdjustmentsToCanvas(
   rotatedCanvas.height = rotate90 ? sourceWidth : sourceHeight;
 
   const imageAspectRatio = rotatedCanvas.height / rotatedCanvas.width || 1;
-  const cropRect = normalizeCrop(
-    adjustment?.crop,
-    aspectRatio,
-    imageAspectRatio
-  );
+  // Use crop as-is (clamped to bounds) to support arbitrary aspect ratios
+  // For "none" aspect ratio, use the crop if provided, otherwise no crop (full image)
+  // For other aspect ratios, normalize if no crop is provided
+  let cropRect: CropRect | undefined;
+  if (aspectRatio === "none") {
+    cropRect = adjustment?.crop ? clampCrop(adjustment.crop) : undefined;
+  } else {
+    cropRect = adjustment?.crop
+      ? clampCrop(adjustment.crop)
+      : normalizeCrop(undefined, aspectRatio, imageAspectRatio);
+  }
 
   const rctx = rotatedCanvas.getContext("2d");
   if (!rctx) {
@@ -160,7 +195,12 @@ export function applyImageAdjustmentsToCanvas(
     sourceHeight
   );
 
-  // Step 2: crop based on normalized rectangle
+  // Step 2: crop based on normalized rectangle (or return full image if no crop)
+  if (!cropRect) {
+    // No crop - return the full rotated image
+    return rotatedCanvas;
+  }
+
   const cropWidthPx = Math.max(
     1,
     Math.round(rotatedCanvas.width * cropRect.width)

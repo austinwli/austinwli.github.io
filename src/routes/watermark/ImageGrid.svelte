@@ -33,10 +33,24 @@
     "4:3": "4 / 3",
     "3:4": "3 / 4",
     "1:1": "1 / 1",
-  };
+    none: "auto",
+  } as const;
 
   function aspectRatioValue(ratio: ImageAdjustment["aspectRatio"]) {
     return aspectRatioMap[ratio] ?? "auto";
+  }
+
+  // Calculate actual aspect ratio from crop dimensions
+  // This accounts for arbitrary crops that don't match the selected aspect ratio
+  // The preview canvas already has the correct dimensions, so we use "auto"
+  // to let the image display at its natural aspect ratio
+  function getActualAspectRatio(adjustment: ImageAdjustment): string {
+    // If aspect ratio is "none" or there's a crop, the preview canvas will have arbitrary dimensions
+    // so we use "auto" to display it correctly. Otherwise, use the selected aspect ratio.
+    if (adjustment.aspectRatio === "none" || adjustment.crop) {
+      return "auto";
+    }
+    return aspectRatioValue(adjustment.aspectRatio);
   }
 
   // Cache blob URLs to prevent memory leaks
@@ -247,13 +261,14 @@
           <!-- Image -->
           <div
             class="image-wrapper"
+            class:auto-aspect={!!adjustment.crop}
             role="button"
             tabindex="0"
             aria-label="Edit image {i + 1}"
             on:click|stopPropagation={() => handleEdit(i)}
             on:keydown={(event) =>
               event.key === "Enter" && (event.preventDefault(), handleEdit(i))}
-            style={`aspect-ratio: ${aspectRatioValue(adjustment.aspectRatio)};`}
+            style={`aspect-ratio: ${getActualAspectRatio(adjustment)};`}
           >
             <img
               src={previewOverrides[i] ?? previewUrls[i] ?? blobUrls[i]}
@@ -311,8 +326,18 @@
     @apply relative w-full cursor-pointer rounded-lg overflow-hidden bg-white focus:outline-none focus:ring-2 focus:ring-blue-500;
   }
 
+  .image-wrapper.auto-aspect {
+    /* When aspect-ratio is auto, ensure the container sizes to the image */
+    display: block;
+  }
+
   .image-preview {
     @apply block w-full h-full object-cover rounded-lg transition-transform duration-300 ease-out;
+  }
+
+  .image-wrapper.auto-aspect .image-preview {
+    /* When aspect-ratio is auto, use object-contain to show full image without distortion */
+    @apply object-contain;
   }
 
   .edit-indicator {

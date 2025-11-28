@@ -35,6 +35,8 @@
   let rotationPreviewToken = 0;
 
   type CornerHandle = "nw" | "ne" | "sw" | "se";
+  type EdgeHandle = "n" | "s" | "e" | "w";
+  type ResizeHandle = CornerHandle | EdgeHandle;
   type DragState =
     | {
         type: "move";
@@ -44,7 +46,7 @@
       }
     | {
         type: "resize";
-        handle: CornerHandle;
+        handle: ResizeHandle;
         startCrop: CropRect;
       };
 
@@ -59,7 +61,15 @@
   function ensureCropMatchesImage() {
     if (dragState || !draft.crop) return;
     const imageRatio = getImageAspectRatio();
-    const normalized = normalizeCrop(draft.crop, draft.aspectRatio, imageRatio);
+
+    // If aspect ratio is set, normalize to it. Otherwise just clamp to bounds.
+    let normalized: CropRect;
+    if (draft.aspectRatio !== "none") {
+      normalized =
+        normalizeCrop(draft.crop, draft.aspectRatio, imageRatio) || draft.crop;
+    } else {
+      normalized = clampCropRect(draft.crop);
+    }
 
     const epsilon = 0.0001;
     if (
@@ -72,7 +82,8 @@
     }
   }
 
-  $: if (!draft.crop) {
+  // Create default crop if none exists (for "none" aspect ratio, this creates a full-image crop)
+  $: if (!draft.crop && baseImage) {
     draft = {
       ...draft,
       crop: getDefaultCrop(draft.aspectRatio, getImageAspectRatio()),
@@ -81,7 +92,8 @@
 
   $: if (adjustment && adjustment !== previousAdjustment) {
     draft = cloneAdjustment(adjustment);
-    if (!draft.crop) {
+    // If no crop exists, create a default one
+    if (!draft.crop && baseImage) {
       draft.crop = getDefaultCrop(draft.aspectRatio, getImageAspectRatio());
     }
     previousAdjustment = adjustment;
@@ -173,39 +185,120 @@
     };
   }
 
+  function transformCropForRotation(
+    crop: CropRect,
+    oldRotation: 0 | 90 | 180 | 270,
+    newRotation: 0 | 90 | 180 | 270
+  ): CropRect {
+    // Calculate the net rotation
+    const rotationDelta = ((newRotation - oldRotation + 360) % 360) as
+      | 0
+      | 90
+      | 180
+      | 270;
+
+    if (rotationDelta === 0) {
+      return crop;
+    }
+
+    let { x, y, width, height } = crop;
+
+    // Transform crop coordinates based on rotation
+    switch (rotationDelta) {
+      case 90: // Clockwise 90°
+        // Top-left becomes top-right, width/height swap
+        return {
+          x: 1 - y - height,
+          y: x,
+          width: height,
+          height: width,
+        };
+      case 180: // 180°
+        // Top-left becomes bottom-right
+        return {
+          x: 1 - x - width,
+          y: 1 - y - height,
+          width,
+          height,
+        };
+      case 270: // Counter-clockwise 90° (or clockwise 270°)
+        // Top-left becomes bottom-left, width/height swap
+        return {
+          x: y,
+          y: 1 - x - width,
+          width: height,
+          height: width,
+        };
+      default:
+        return crop;
+    }
+  }
+
   function handleRotate(direction: "left" | "right") {
     const delta = direction === "left" ? -90 : 90;
     const raw = (((draft.rotation + delta) % 360) + 360) % 360;
     const normalized =
       raw === 0 || raw === 90 || raw === 180 || raw === 270 ? raw : 0;
-    updateDraft({ rotation: normalized as ImageAdjustment["rotation"] });
+
+    const newRotation = normalized as ImageAdjustment["rotation"];
+
+    // Transform crop coordinates to match the new rotation
+    let newCrop = draft.crop;
+    if (draft.crop) {
+      newCrop = transformCropForRotation(
+        draft.crop,
+        draft.rotation,
+        newRotation
+      );
+      // Clamp to ensure it's within bounds
+      newCrop = clampCropRect(newCrop);
+    }
+
+    updateDraft({
+      rotation: newRotation,
+      crop: newCrop,
+    });
   }
 
   function handleAspectChange(value: AspectRatio) {
     if (value === draft.aspectRatio) return;
-    updateDraft({
-      aspectRatio: value,
-      crop: getDefaultCrop(value, getImageAspectRatio()),
-    });
+    // When changing to "none", create a full-image crop (allows arbitrary resizing)
+    // When changing to a specific aspect ratio, create or normalize the crop
+    if (value === "none") {
+      updateDraft({
+        aspectRatio: value,
+        crop: getDefaultCrop(value, getImageAspectRatio()),
+      });
+    } else {
+      // When changing aspect ratio, normalize the current crop to the new aspect ratio
+      // This locks the crop box to the selected aspect ratio
+      const normalizedCrop = normalizeCrop(
+        draft.crop,
+        value,
+        getImageAspectRatio()
+      );
+      updateDraft({
+        aspectRatio: value,
+        crop: normalizedCrop,
+      });
+    }
   }
 
   function handleReset() {
     updateDraft({
       rotation: 0,
-      crop: getDefaultCrop(draft.aspectRatio, getImageAspectRatio()),
+      aspectRatio: "none",
+      crop: getDefaultCrop("none", getImageAspectRatio()),
     });
   }
 
   async function handleSave() {
     if (isSaving) return;
-    const normalizedCrop = normalizeCrop(
-      draft.crop,
-      draft.aspectRatio,
-      getImageAspectRatio()
-    );
+    // Preserve arbitrary crop dimensions (don't normalize to enforce aspect ratio)
+    const clampedCrop = draft.crop ? clampCropRect(draft.crop) : undefined;
     const adjustmentToSave: ImageAdjustment = {
       ...draft,
-      crop: normalizedCrop,
+      crop: clampedCrop,
     };
     let previewObjectUrl: string | null = null;
     try {
@@ -253,7 +346,7 @@
     window.addEventListener("pointerup", stopPointerDrag);
   }
 
-  function startResize(event: PointerEvent, handle: CornerHandle) {
+  function startResize(event: PointerEvent, handle: ResizeHandle) {
     if (event.button !== 0 || !draft.crop || !stageEl) return;
     event.preventDefault();
     event.stopPropagation();
@@ -295,7 +388,9 @@
       dragState.handle,
       draft.aspectRatio
     );
-    updateDraft({ crop: next });
+    // For corner handles, the aspect ratio is already enforced in resizeCropFromHandle
+    // For edge handles, we allow arbitrary dimensions, so just clamp to bounds
+    updateDraft({ crop: clampCropRect(next) });
   }
 
   $: ensureCropMatchesImage();
@@ -316,11 +411,9 @@
   function resizeCropFromHandle(
     initial: CropRect,
     pointer: { x: number; y: number },
-    handle: CornerHandle,
+    handle: ResizeHandle,
     aspectRatio: AspectRatio
   ): CropRect {
-    const ratio = getAspectRatioValue(aspectRatio);
-    const normalizedRatio = ratio * getImageAspectRatio();
     let anchorX: number;
     let anchorY: number;
     let width: number;
@@ -328,68 +421,126 @@
     let newX: number;
     let newY: number;
 
+    // Check if this is a corner handle (enforce aspect ratio) or edge handle (arbitrary)
+    const isCornerHandle =
+      handle === "nw" || handle === "ne" || handle === "sw" || handle === "se";
+    // For "none" aspect ratio, allow arbitrary resizing for all handles
+    const shouldEnforceAspectRatio = aspectRatio !== "none" && isCornerHandle;
+    const ratio = getAspectRatioValue(aspectRatio);
+    const normalizedRatio = ratio !== null ? ratio * getImageAspectRatio() : 1;
+
     switch (handle) {
       case "se":
+        // Southeast corner - anchor top-left
         anchorX = initial.x;
         anchorY = initial.y;
         width = Math.max(pointer.x - anchorX, MIN_CROP_SIZE);
         height = Math.max(pointer.y - anchorY, MIN_CROP_SIZE);
-        ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        if (shouldEnforceAspectRatio) {
+          ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        }
         width = Math.min(width, 1 - anchorX);
         height = Math.min(height, 1 - anchorY);
-        ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        if (shouldEnforceAspectRatio) {
+          ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        }
         newX = anchorX;
         newY = anchorY;
         break;
       case "sw":
+        // Southwest corner - anchor top-right
         anchorX = initial.x + initial.width;
         anchorY = initial.y;
         width = Math.max(anchorX - pointer.x, MIN_CROP_SIZE);
         height = Math.max(pointer.y - anchorY, MIN_CROP_SIZE);
-        ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        if (shouldEnforceAspectRatio) {
+          ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        }
         width = Math.min(width, anchorX);
         height = Math.min(height, 1 - anchorY);
-        ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        if (shouldEnforceAspectRatio) {
+          ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        }
         newX = anchorX - width;
         newY = anchorY;
         break;
       case "ne":
+        // Northeast corner - anchor bottom-left
         anchorX = initial.x;
         anchorY = initial.y + initial.height;
         width = Math.max(pointer.x - anchorX, MIN_CROP_SIZE);
         height = Math.max(anchorY - pointer.y, MIN_CROP_SIZE);
-        ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        if (shouldEnforceAspectRatio) {
+          ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        }
         width = Math.min(width, 1 - anchorX);
         height = Math.min(height, anchorY);
-        ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        if (shouldEnforceAspectRatio) {
+          ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        }
         newX = anchorX;
         newY = anchorY - height;
         break;
       case "nw":
-      default:
+        // Northwest corner - anchor bottom-right
         anchorX = initial.x + initial.width;
         anchorY = initial.y + initial.height;
         width = Math.max(anchorX - pointer.x, MIN_CROP_SIZE);
         height = Math.max(anchorY - pointer.y, MIN_CROP_SIZE);
-        ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        if (shouldEnforceAspectRatio) {
+          ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        }
         width = Math.min(width, anchorX);
         height = Math.min(height, anchorY);
-        ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        if (shouldEnforceAspectRatio) {
+          ({ width, height } = adjustToRatio(width, height, normalizedRatio));
+        }
         newX = anchorX - width;
         newY = anchorY - height;
         break;
+      case "n":
+        // Top edge - only adjust height and y (arbitrary resizing)
+        newX = initial.x;
+        width = initial.width;
+        height = Math.max(
+          initial.y + initial.height - pointer.y,
+          MIN_CROP_SIZE
+        );
+        height = Math.min(height, initial.y + initial.height);
+        newY = initial.y + initial.height - height;
+        break;
+      case "s":
+        // Bottom edge - only adjust height (arbitrary resizing)
+        newX = initial.x;
+        newY = initial.y;
+        width = initial.width;
+        height = Math.max(pointer.y - initial.y, MIN_CROP_SIZE);
+        height = Math.min(height, 1 - initial.y);
+        break;
+      case "e":
+        // Right edge - only adjust width (arbitrary resizing)
+        newX = initial.x;
+        newY = initial.y;
+        width = Math.max(pointer.x - initial.x, MIN_CROP_SIZE);
+        width = Math.min(width, 1 - initial.x);
+        height = initial.height;
+        break;
+      case "w":
+        // Left edge - adjust width and x (arbitrary resizing)
+        newY = initial.y;
+        height = initial.height;
+        width = Math.max(initial.x + initial.width - pointer.x, MIN_CROP_SIZE);
+        width = Math.min(width, initial.x + initial.width);
+        newX = initial.x + initial.width - width;
+        break;
     }
 
-    return normalizeCrop(
-      {
-        x: newX,
-        y: newY,
-        width,
-        height,
-      },
-      aspectRatio,
-      getImageAspectRatio()
-    );
+    return {
+      x: newX,
+      y: newY,
+      width,
+      height,
+    };
   }
 
   function adjustToRatio(
@@ -414,6 +565,14 @@
 
   function clamp(value: number, min: number, max: number) {
     return Math.min(Math.max(value, min), max);
+  }
+
+  function clampCropRect(crop: CropRect): CropRect {
+    const width = clamp(crop.width, MIN_CROP_SIZE, 1);
+    const height = clamp(crop.height, MIN_CROP_SIZE, 1);
+    const x = clamp(crop.x, 0, 1 - width);
+    const y = clamp(crop.y, 0, 1 - height);
+    return { x, y, width, height };
   }
 </script>
 
@@ -506,59 +665,97 @@
                 on:pointerdown|preventDefault={(event) =>
                   startResize(event, "se")}
               />
+              <button
+                type="button"
+                class="crop-handle edge n"
+                aria-label="Resize from top edge"
+                on:pointerdown|preventDefault={(event) =>
+                  startResize(event, "n")}
+              />
+              <button
+                type="button"
+                class="crop-handle edge s"
+                aria-label="Resize from bottom edge"
+                on:pointerdown|preventDefault={(event) =>
+                  startResize(event, "s")}
+              />
+              <button
+                type="button"
+                class="crop-handle edge e"
+                aria-label="Resize from right edge"
+                on:pointerdown|preventDefault={(event) =>
+                  startResize(event, "e")}
+              />
+              <button
+                type="button"
+                class="crop-handle edge w"
+                aria-label="Resize from left edge"
+                on:pointerdown|preventDefault={(event) =>
+                  startResize(event, "w")}
+              />
             </div>
           {/if}
         </div>
         <p class="helper-text">
-          Drag inside the frame to move or use the corners to resize.
+          Drag inside the frame to move, or drag corners/edges to resize.
         </p>
       </div>
 
       <div class="controls-column">
         <div class="control-group">
-          <p class="control-label">Aspect ratio</p>
-          <div class="segment">
-            <button
-              type="button"
-              class:selected={draft.aspectRatio === "4:3"}
-              on:click={() => handleAspectChange("4:3")}
-            >
-              4 : 3
-            </button>
-            <button
-              type="button"
-              class:selected={draft.aspectRatio === "3:4"}
-              on:click={() => handleAspectChange("3:4")}
-            >
-              3 : 4
-            </button>
-            <button
-              type="button"
-              class:selected={draft.aspectRatio === "1:1"}
-              on:click={() => handleAspectChange("1:1")}
-            >
-              1 : 1
-            </button>
+          <div class="labels-row">
+            <p class="control-label">Aspect ratio</p>
+            <p class="control-label">Rotate</p>
           </div>
-        </div>
-
-        <div class="control-group">
-          <p class="control-label">Rotate</p>
-          <div class="button-row icon">
-            <button
-              type="button"
-              on:click={() => handleRotate("left")}
-              aria-label="Rotate -90 degrees"
-            >
-              <RotateCcw size={18} />
-            </button>
-            <button
-              type="button"
-              on:click={() => handleRotate("right")}
-              aria-label="Rotate +90 degrees"
-            >
-              <RotateCw size={18} />
-            </button>
+          <div class="segment-with-rotate">
+            <div class="segment">
+              <button
+                type="button"
+                class:selected={draft.aspectRatio === "none"}
+                on:click={() => handleAspectChange("none")}
+              >
+                Original
+              </button>
+              <button
+                type="button"
+                class:selected={draft.aspectRatio === "4:3"}
+                on:click={() => handleAspectChange("4:3")}
+              >
+                4 : 3
+              </button>
+              <button
+                type="button"
+                class:selected={draft.aspectRatio === "3:4"}
+                on:click={() => handleAspectChange("3:4")}
+              >
+                3 : 4
+              </button>
+              <button
+                type="button"
+                class:selected={draft.aspectRatio === "1:1"}
+                on:click={() => handleAspectChange("1:1")}
+              >
+                1 : 1
+              </button>
+            </div>
+            <div class="rotate-buttons">
+              <button
+                type="button"
+                class="rotate-btn"
+                on:click={() => handleRotate("left")}
+                aria-label="Rotate -90 degrees"
+              >
+                <RotateCcw size={18} />
+              </button>
+              <button
+                type="button"
+                class="rotate-btn"
+                on:click={() => handleRotate("right")}
+                aria-label="Rotate +90 degrees"
+              >
+                <RotateCw size={18} />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -611,15 +808,22 @@
   }
 
   .editor-body {
-    @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+    @apply grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6;
   }
 
   .preview-column {
-    @apply space-y-3;
+    @apply space-y-3 flex flex-col min-h-0;
   }
 
   .crop-stage {
-    @apply relative w-full bg-neutral-900 rounded-xl overflow-hidden;
+    @apply relative bg-neutral-900 rounded-xl overflow-hidden;
+    max-height: 70vh;
+    max-width: 100%;
+    width: 100%;
+    min-height: 0;
+    flex-shrink: 1;
+    /* Let aspect-ratio control sizing, but respect max-height */
+    height: auto;
   }
 
   .crop-stage img {
@@ -661,12 +865,32 @@
     @apply -bottom-2 -right-2 cursor-nwse-resize;
   }
 
+  .crop-handle.edge {
+    @apply bg-white border border-neutral-400 cursor-pointer;
+  }
+
+  .crop-handle.edge.n {
+    @apply top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-1 rounded cursor-ns-resize;
+  }
+
+  .crop-handle.edge.s {
+    @apply bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-12 h-1 rounded cursor-ns-resize;
+  }
+
+  .crop-handle.edge.e {
+    @apply right-0 top-1/2 -translate-y-1/2 translate-x-1/2 h-12 w-1 rounded cursor-ew-resize;
+  }
+
+  .crop-handle.edge.w {
+    @apply left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-12 w-1 rounded cursor-ew-resize;
+  }
+
   .helper-text {
     @apply text-xs text-neutral-500;
   }
 
   .controls-column {
-    @apply space-y-5;
+    @apply space-y-5 max-w-sm;
   }
 
   .control-group {
@@ -689,12 +913,36 @@
     @apply bg-white text-neutral-900 shadow;
   }
 
-  .button-row {
-    @apply flex gap-3;
+  .labels-row {
+    @apply flex items-start mb-2 gap-3;
   }
 
-  .button-row.icon button {
-    @apply flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-neutral-200 text-sm text-neutral-700 hover:border-neutral-400;
+  .labels-row .control-label {
+    @apply mb-0;
+  }
+
+  .labels-row .control-label:first-child {
+    @apply flex-1;
+  }
+
+  .segment-with-rotate {
+    @apply flex items-center gap-3;
+  }
+
+  .segment-with-rotate .segment {
+    @apply flex-1;
+  }
+
+  .segment-with-rotate .rotate-buttons {
+    @apply flex-shrink-0;
+  }
+
+  .rotate-buttons {
+    @apply flex gap-1;
+  }
+
+  .rotate-btn {
+    @apply w-9 h-9 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 transition-colors;
   }
 
   .control-row {

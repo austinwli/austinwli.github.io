@@ -56,6 +56,8 @@
       // Update pattern and photoCount, keep same id and startTime
       range.incrementPattern = getPatternByPhotoCount(selectedPhotoCount);
       range.photoCount = selectedPhotoCount;
+      // Trigger Svelte reactivity for nested mutation
+      watermarkConfig = watermarkConfig;
       // Clear files when photo count changes
       selectedFiles = [];
       errorMessage = "";

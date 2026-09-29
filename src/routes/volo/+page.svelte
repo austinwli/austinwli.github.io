@@ -113,6 +113,42 @@
     return () => clearInterval(tick);
   });
 
+  // Known venues, so filters can be picked rather than typed. Guessing
+  // substrings fails silently — "Dobbins" never matches "100 Dobbin St".
+  let venues: any[] | null = null;
+  let venuesError = "";
+
+  async function loadVenues() {
+    venuesError = "";
+    busy = "venues";
+    try {
+      const r = await api("/api/venues?days=28");
+      venues = r.venues ?? [];
+    } catch (e: any) {
+      venuesError = e.message;
+    } finally {
+      busy = "";
+    }
+  }
+
+  /**
+   * Pull the venue out of a pickup title, which looks like
+   * "Tuesday 10/6 - Volleyball Pickup (All Levels) - The Post BK - 100 Dobbin St 6:00pm".
+   * Everything from the third segment on is the venue, since venue names can
+   * themselves contain " - ".
+   */
+  function venueLabel(example: string | undefined) {
+    if (!example) return "(unknown venue)";
+    const tail = example.split(" - ").slice(2).join(" - ");
+    return (tail || example).replace(/\s+\d{1,2}:\d{2}\s*(am|pm)?$/i, "").trim();
+  }
+
+  function toggleVenue(id: string) {
+    const set = new Set<string>(config.venueIds ?? []);
+    set.has(id) ? set.delete(id) : set.add(id);
+    config.venueIds = [...set];
+  }
+
   const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   function toggleWeekday(i: number) {
@@ -237,32 +273,65 @@
       </div>
 
       <div>
-        <span class="label">Name must include</span>
+        <div class="flex items-baseline justify-between">
+          <span class="label">Venues</span>
+          <button
+            type="button"
+            class="text-xs text-neutral-500 hover:text-black"
+            on:click={loadVenues}
+            disabled={busy === "venues"}
+          >
+            {busy === "venues" ? "loading…" : venues ? "refresh" : "load venues"}
+          </button>
+        </div>
+
+        {#if venuesError}
+          <p class="err mt-1">{venuesError}</p>
+        {:else if venues === null}
+          <p class="hint">Load to see which venues are actually running.</p>
+        {:else if !venues.length}
+          <p class="hint">No pickups found in the next 4 weeks.</p>
+        {:else}
+          <div class="mt-1 space-y-1">
+            {#each venues as v}
+              <label class="flex items-start gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  class="mt-1"
+                  checked={(config.venueIds ?? []).includes(v.venueId)}
+                  on:change={() => toggleVenue(v.venueId)}
+                />
+                <span>
+                  {venueLabel(v.examples?.[0])}
+                  <span class="text-neutral-400 text-xs">
+                    · {v.count} in 4 wks
+                  </span>
+                </span>
+              </label>
+            {/each}
+          </div>
+        {/if}
+      </div>
+
+      <div>
+        <span class="label">Or name contains</span>
         <input
           class="input"
           value={listToText(config.nameIncludes)}
           on:change={(e) => (config.nameIncludes = textToList(e.currentTarget.value))}
-          placeholder="Pier 25, Chelsea"
+          placeholder="Baruch, Dobbin, Knickerbocker"
         />
         <p class="hint">
-          Comma separated, any one matches. Empty = any. Matched against the
-          pickup title, which includes the venue — e.g. Baruch, Dobbins.
+          For venues not currently running, so they can't be checked above.
+          Comma separated, case-insensitive, any one matches. Use short
+          substrings — "Dobbin" matches "100 Dobbin St", "Dobbins" does not.
         </p>
       </div>
 
-      <div>
-        <span class="label">Venue IDs</span>
-        <input
-          class="input"
-          value={listToText(config.venueIds)}
-          on:change={(e) => (config.venueIds = textToList(e.currentTarget.value))}
-          placeholder="(optional)"
-        />
-        <p class="hint">
-          Sturdier than names. Get them from <code>/api/venues</code>. Combined
-          with the name filter using AND, so leave empty if using names.
-        </p>
-      </div>
+      <p class="hint">
+        Venues and names are OR'd — a pickup matching either is claimed. Day and
+        time windows still apply on top. Leave both empty to allow any venue.
+      </p>
 
       <div>
         <span class="label">Max per night</span>

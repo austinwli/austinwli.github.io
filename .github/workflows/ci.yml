@@ -22,7 +22,7 @@ jobs:
       # run locally. Format in the runner and print the diff, then remove this.
       - name: Show prettier diff (temporary)
         run: |
-          npx prettier --write --plugin-search-dir=. "src/routes/volo/+page.svelte"
+          npx prettier --write --plugin-search-dir=. "src/routes/volo/**"
           echo "===== PRETTIER DIFF BEGIN ====="
           git --no-pager diff -- src/routes/volo/+page.svelte
           echo "===== PRETTIER DIFF END ====="

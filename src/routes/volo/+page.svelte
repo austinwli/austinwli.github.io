@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Seo from "$lib/components/Seo.svelte";
+  import RunHistory from "./RunHistory.svelte";
 
   // Unlisted route: deliberately absent from the nav in Header.svelte. That is
   // obscurity, not security -- so nothing here is secret. The worker URL and
@@ -348,42 +349,7 @@
 
     <!-- History -->
     <h3 class="heading2 text-base">Recent runs</h3>
-    {#if !state?.runs?.length}
-      <p class="text-sm text-neutral-500">No runs yet.</p>
-    {:else}
-      <ul class="space-y-2">
-        {#each state.runs as run}
-          <li class="card text-sm">
-            <div class="flex justify-between">
-              <span class="font-mono text-xs text-neutral-500">{run.started}</span>
-              {#if run.skipped}
-                <span class="text-neutral-400">skipped: {run.skipped}</span>
-              {:else if run.claimed?.length}
-                <span class="text-green-700">
-                  {run.claimed.length} claimed{run.dryRun ? " (dry)" : ""}
-                </span>
-              {:else}
-                <span class="text-red-700">nothing claimed</span>
-              {/if}
-            </div>
-            {#if run.claimed?.length}
-              <ul class="mt-1 text-neutral-700">
-                {#each run.claimed as c}
-                  <li>· {c.name ?? c.programId}</li>
-                {/each}
-              </ul>
-            {/if}
-            {#if run.errors?.length}
-              <ul class="mt-1 text-red-700 text-xs">
-                {#each run.errors as e}
-                  <li>· {e}</li>
-                {/each}
-              </ul>
-            {/if}
-          </li>
-        {/each}
-      </ul>
-    {/if}
+    <RunHistory runs={state?.runs ?? []} limit={5} />
   {/if}
 </section>
 

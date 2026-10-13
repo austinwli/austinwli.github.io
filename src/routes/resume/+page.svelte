@@ -73,13 +73,31 @@
   <h2 class="heading2">Professional Experience</h2>
 
   <Workplace
+    title="Member of Technical Staff"
+    company="Sequence Holdings"
+    url="https://seqholdings.com/"
+    dates="Aug 2026 - Present"
+    location="New York, NY"
+  >
+    <li>Refounding businesses with AI.</li>
+  </Workplace>
+
+  <Workplace
     title="Founding Engineer"
     company="Koi Platforms"
     url="https://usekoi.com/"
-    dates="April 2025 – Current"
+    dates="April 2025 – Aug 2026"
     location="New York, NY"
   >
     <li>First hired engineer at a seed-stage startup.</li>
+    <li>
+      Built core AI-native treasury tools for small businesses, including cash
+      flow forecasting, and automated reconciliation.
+    </li>
+    <li>
+      Conducted user research and interviews to inform product development and
+      improve user experience.
+    </li>
   </Workplace>
 
   <Workplace
@@ -105,6 +123,7 @@
     url="https://www.zest.ai/"
     dates="June 2021 - August 2021"
     location="Los Angeles, CA"
+    defaultHidden
   >
     <li>
       Designed, trained, and deployed a geography‐agnostic race prediction model

@@ -109,7 +109,10 @@
       const h = Math.floor(ms / 3_600_000);
       const m = Math.floor((ms % 3_600_000) / 60_000);
       const s = Math.floor((ms % 60_000) / 1000);
-      remaining = `${h}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`;
+      remaining = `${h}h ${String(m).padStart(2, "0")}m ${String(s).padStart(
+        2,
+        "0"
+      )}s`;
     }, 1000);
     return () => clearInterval(tick);
   });
@@ -141,7 +144,9 @@
   function venueLabel(example: string | undefined) {
     if (!example) return "(unknown venue)";
     const tail = example.split(" - ").slice(2).join(" - ");
-    return (tail || example).replace(/\s+\d{1,2}:\d{2}\s*(am|pm)?$/i, "").trim();
+    return (tail || example)
+      .replace(/\s+\d{1,2}:\d{2}\s*(am|pm)?$/i, "")
+      .trim();
   }
 
   function toggleVenue(id: string) {
@@ -195,7 +200,10 @@
         placeholder="API token"
         autocomplete="off"
       />
-      <button class="btn" disabled={!workerUrl || !apiToken || busy === "connecting"}>
+      <button
+        class="btn"
+        disabled={!workerUrl || !apiToken || busy === "connecting"}
+      >
         {busy === "connecting" ? "Connecting…" : "Connect"}
       </button>
     </form>
@@ -203,7 +211,10 @@
   {:else}
     <div class="flex items-baseline justify-between mb-6">
       <h2 class="heading2 mb-0">Volo</h2>
-      <button class="text-sm text-neutral-500 hover:text-black" on:click={disconnect}>
+      <button
+        class="text-sm text-neutral-500 hover:text-black"
+        on:click={disconnect}
+      >
         disconnect
       </button>
     </div>
@@ -226,7 +237,9 @@
           {busy === "running" ? "Running…" : "Dry run"}
         </button>
         <span class="text-xs text-neutral-500 self-center">
-          {config?.enabled ? "armed" : "disabled — enable below to claim for real"}
+          {config?.enabled
+            ? "armed"
+            : "disabled — enable below to claim for real"}
         </span>
       </div>
     </div>
@@ -282,7 +295,11 @@
             on:click={loadVenues}
             disabled={busy === "venues"}
           >
-            {busy === "venues" ? "loading…" : venues ? "refresh" : "load venues"}
+            {busy === "venues"
+              ? "loading…"
+              : venues
+              ? "refresh"
+              : "load venues"}
           </button>
         </div>
 
@@ -319,7 +336,8 @@
         <input
           class="input"
           value={listToText(config.nameIncludes)}
-          on:change={(e) => (config.nameIncludes = textToList(e.currentTarget.value))}
+          on:change={(e) =>
+            (config.nameIncludes = textToList(e.currentTarget.value))}
           placeholder="Baruch, Dobbin, Knickerbocker"
         />
         <p class="hint">
@@ -336,7 +354,12 @@
 
       <div>
         <span class="label">Max per night</span>
-        <input class="input w-24" type="number" min="1" bind:value={config.maxPerNight} />
+        <input
+          class="input w-24"
+          type="number"
+          min="1"
+          bind:value={config.maxPerNight}
+        />
       </div>
 
       <div class="flex items-center gap-3">

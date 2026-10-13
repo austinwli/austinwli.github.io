@@ -21,8 +21,10 @@
 <div class="layout-md text-lg space-y-14">
   <div class="space-y-5">
     <p>
-      I currently work at <a class="link" href="https://usekoi.com">Koi</a>, an
-      early stage fintech startup.
+      I am currently a Member of Technical Staff at <a
+        class="link"
+        href="https://seqholdings.com">Sequence Holdings</a
+      >, where we reimagine businesses with AI.
     </p>
 
     <p>
@@ -33,8 +35,9 @@
 
   <div class="space-y-5">
     <p>
-      Previously, I have had the opportunity to build mobile fraud and disputes
-      features at
+      Previously, I have had the opportunity to build AI native treasury tools
+      at <a class="link" href="https://usekoi.com">Koi</a>, mobile fraud and
+      disputes features at
       <a class="link" href="https://www.capitalone.com/"> Capital One</a>, fair
       lending algorithms at
       <a class="link" href="https://www.zest.ai/"> Zest AI</a>, and NLP literacy

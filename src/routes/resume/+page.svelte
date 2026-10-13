@@ -23,6 +23,9 @@
 
   <h4 class="font-medium mt-4 mb-1">Teaching:</h4>
   <ul>
+    <li>SL for Introduction to Algorithmic Game Theory (HSYLC), Summer 2026</li>
+    <li>SL for Introduction to Quantum Computation (HSYLC), Summer 2025</li>
+
     <li>TF for Physics 153 (Electrodynamics), Spring 2023</li>
     <li>
       TF for Physics 15a (Introductory Mechanics and Relativity), Fall 2022

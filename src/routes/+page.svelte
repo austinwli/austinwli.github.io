@@ -46,7 +46,7 @@
     </p>
 
     <p>
-      I recently graduated from Harvard, where I was a teaching fellow for
+      I graduated from Harvard in 2023, where I was a teaching fellow for
       physics and CS classes, wrote a <a
         class="link"
         rel="external"

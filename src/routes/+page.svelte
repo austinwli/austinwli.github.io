@@ -24,7 +24,7 @@
       I am currently a Member of Technical Staff at <a
         class="link"
         href="https://seqholdings.com">Sequence Holdings</a
-      >, where we are <em>refounding</em> businesses with AI.
+      >, where we deploy AI to <em>refound</em> businesses.
     </p>
 
     <!-- <p>

@@ -76,7 +76,7 @@
     title="Member of Technical Staff"
     company="Sequence Holdings"
     url="https://seqholdings.com/"
-    dates="Aug 2026 - Present"
+    dates="Oct 2026 - Present"
     location="New York, NY"
   >
     <li>Refounding businesses with AI.</li>
@@ -86,7 +86,7 @@
     title="Founding Engineer"
     company="Koi Platforms"
     url="https://usekoi.com/"
-    dates="April 2025 – Aug 2026"
+    dates="April 2025 – Sep 2026"
     location="New York, NY"
   >
     <li>First hired engineer at a seed-stage startup.</li>

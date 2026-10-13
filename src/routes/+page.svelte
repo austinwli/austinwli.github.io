@@ -27,10 +27,10 @@
       >, where we reimagine businesses with AI.
     </p>
 
-    <p>
+    <!-- <p>
       I am passionate about building <em>social impact technology</em> — for education,
       finance, and government — to drive positive sustainable change through software.
-    </p>
+    </p> -->
   </div>
 
   <div class="space-y-5">

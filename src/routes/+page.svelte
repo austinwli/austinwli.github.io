@@ -21,33 +21,29 @@
 <div class="layout-md text-lg space-y-14">
   <div class="space-y-5">
     <p>
-      I am currently a Member of Technical Staff at <a
-        class="link"
-        href="https://seqholdings.com">Sequence Holdings</a
-      >, where we deploy AI to <em>refound</em> businesses.
+      I work at <a class="link" href="https://seqholdings.com"
+        >Sequence Holdings</a
+      >, a holding company <em>refounding</em> businesses.
     </p>
 
-    <!-- <p>
-      I am passionate about building <em>social impact technology</em> — for education,
-      finance, and government — to drive positive sustainable change through software.
-    </p> -->
+    <p>
+      I am interested in how AI can elevate human labor and potential,
+      particularly in durable industries.
+    </p>
   </div>
 
   <div class="space-y-5">
     <p>
-      Previously, I have had the opportunity to build AI native treasury tools
-      at <a class="link" href="https://usekoi.com">Koi</a>, mobile fraud and
-      disputes features at
-      <a class="link" href="https://www.capitalone.com/"> Capital One</a>, fair
-      lending algorithms at
-      <a class="link" href="https://www.zest.ai/"> Zest AI</a>, and NLP literacy
-      tools at
+      Previously, I worked at
+      <a class="link" href="https://usekoi.com">Koi Platforms</a>,
+      <a class="link" href="https://www.capitalone.com/"> Capital One</a>,
+      <a class="link" href="https://www.zest.ai/"> Zest AI</a>, and
       <a class="link" href="https://info.thinkcerca.com/core"> ThinkCerca</a>.
     </p>
 
     <p>
-      I graduated from Harvard in 2023, where I was a teaching fellow for
-      physics and CS classes, wrote a <a
+      I recently graduated from Harvard, where I was a teaching fellow for
+      physics and CS classes, wrote my <a
         class="link"
         rel="external"
         href="/assets/pdf/Senior_Thesis.pdf"

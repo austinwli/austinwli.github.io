@@ -21,9 +21,10 @@
 <div class="layout-md text-lg space-y-14">
   <div class="space-y-5">
     <p>
-      I work at <a class="link" href="https://seqholdings.com"
-        >Sequence Holdings</a
-      >, a holding company <em>refounding</em> businesses.
+      I am a Member of Technical Staff at <a
+        class="link"
+        href="https://seqholdings.com">Sequence Holdings</a
+      >.
     </p>
 
     <p>

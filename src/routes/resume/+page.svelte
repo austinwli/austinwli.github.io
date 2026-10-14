@@ -82,7 +82,7 @@
     dates="Oct 2026 - Present"
     location="New York, NY"
   >
-    <li>Refounding businesses with AI.</li>
+    <li>Forging the next generation of leaders in the service economy.</li>
   </Workplace>
 
   <Workplace

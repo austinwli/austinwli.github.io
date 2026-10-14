@@ -53,10 +53,10 @@
 
     <p>Other interests: math, pottery, reading, and volleyball.</p>
 
-    <p>
+    <!-- <p>
       Template by <a class="link" href="https://www.ekzhang.com/">Eric Zhang</a
       >.
-    </p>
+    </p> -->
   </div>
 </div>
 
